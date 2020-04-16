@@ -1,0 +1,339 @@
+import jax.numpy as np
+import matplotlib.pyplot as plt
+import numpy as num
+from sympy import *
+from sympy.physics.mechanics import *
+
+from jax.config import config
+config.update("jax_enable_x64", True)
+# config.update("jax_debug_nans", True)
+
+from jax import jit, grad, value_and_grad, vmap
+from jax.experimental.ode import odeint as odeint_jax
+
+init_printing()
+
+lengths = [.5, .25, .125]
+masses = [1., .5, .25]
+inertias = [masses[0] * (lengths[0] ** 2) * (1. / 12.),
+            masses[1] * (lengths[1] ** 2) * (1. / 12.),
+            masses[2] * (lengths[2] ** 2) * (1. / 12.)]
+
+
+def finger_dynamic_model():
+
+    thetas = [dynamicsymbols('theta1'),
+              dynamicsymbols('theta2'),
+              dynamicsymbols('theta3')]
+
+    thetasd = [dynamicsymbols('theta1', 1),
+               dynamicsymbols('theta2', 1),
+               dynamicsymbols('theta3', 1)]
+
+    thetasdd = [dynamicsymbols('theta1', 2),
+                dynamicsymbols('theta2', 2),
+                dynamicsymbols('theta3', 2)]
+
+    t = symbols('t')
+
+    l1, m1, I1, l2, m2, I2, l3, m3, I3, g, c_fr, tau1, tau2, tau3 = symbols(
+        'l1, m1, I1, l2, m2, I2, l3, m3, I3, g, c_fr, tau1, tau2, tau3')
+    x1 = l1 * sin(thetas[0])
+    y1 = -l1 * cos(thetas[0])
+
+    x2 = x1 + l2 * sin(thetas[1])
+    y2 = y1 - l2 * cos(thetas[1])
+
+    x3 = x2 + l3 * sin(thetas[2])
+    y3 = y2 - l3 * cos(thetas[2])
+
+    xc1 = (l1 / 2.) * sin(thetas[0])
+    yc1 = - (l1 / 2.) * cos(thetas[0])
+
+    xc2 = x1 + (l2 / 2.) * sin(thetas[1])
+    yc2 = y1 - (l2 / 2.) * cos(thetas[1])
+
+    xc3 = x2 + (l3 / 2.) * sin(thetas[2])
+    yc3 = y2 - (l3 / 2.) * cos(thetas[2])
+
+    x1d = diff(x1, t)
+    y1d = diff(y1, t)
+
+    x2d = diff(x2, t)
+    y2d = diff(y2, t)
+
+    x3d = diff(x3, t)
+    y3d = diff(y3, t)
+
+    xc1d = diff(xc1, t)
+    yc1d = diff(yc1, t)
+
+    xc2d = diff(xc2, t)
+    yc2d = diff(yc2, t)
+
+    xc3d = diff(xc3, t)
+    yc3d = diff(yc3, t)
+
+    alpha1 = pi - (thetas[1] - thetas[0])
+    alpha1d = diff(alpha1, t)
+
+    alpha2 = pi - (thetas[2] - thetas[1])
+    alpha2d = diff(alpha2, t)
+
+    V = m1 * g * yc1 + m2 * g * yc2 + m3 * g * yc3
+    T1 = Rational(1, 2) * m1 * (xc1d ** 2 + yc1d ** 2) + Rational(1, 2) * (thetasd[0] ** 2) * I1
+    T2 = Rational(1, 2) * m2 * (xc2d ** 2 + yc2d ** 2) + Rational(1, 2) * (thetasd[1] ** 2) * I2
+    T3 = Rational(1, 2) * m3 * (xc3d ** 2 + yc3d ** 2) + Rational(1, 2) * (thetasd[2] ** 2) * I3
+    L = (T1 + T2 + T3) - V
+
+    N = ReferenceFrame('N')
+    r_pp = ReferenceFrame('rigid_pp')
+    r_pp.set_ang_vel(N, thetasd[0] * N.z)
+
+    r_mp = ReferenceFrame('rigid_mp')
+    r_mp.set_ang_vel(N, thetasd[1] * N.z)
+
+    r_dp = ReferenceFrame('rigid_dp')
+    r_dp.set_ang_vel(N, thetasd[2] * N.z)
+
+    j_pp_mp = ReferenceFrame('joint_pp_mp')
+    j_pp_mp.set_ang_vel(N, alpha1d * N.z)
+
+    j_mp_dp = ReferenceFrame('joint_mp_dp')
+    j_mp_dp.set_ang_vel(N, alpha2d * N.z)
+
+    FL = [(r_pp, tau1 * N.z),  # Rigid bodies
+          (r_mp, tau2 * N.z),
+          (r_dp, tau3 * N.z),
+
+          (r_pp, -c_fr * thetasd[0] * N.z),  # Joints
+          (j_pp_mp, -c_fr * alpha1d * N.z),
+          (j_mp_dp, -c_fr * alpha2d * N.z)
+          ]
+
+    LM = LagrangesMethod(L, [thetas[0], thetas[1], thetas[2]], forcelist=FL, frame=N)
+    equations = LM.form_lagranges_equations()
+
+    y = [thetas[0], thetas[1], thetas[2],
+         thetasd[0], thetasd[1], thetasd[2]]
+
+    parameters = [
+                l1, m1, I1, tau1,
+                l2, m2, I2, tau2,
+                l3, m3, I3, tau3,
+                g, c_fr]
+
+    unknowns = [Dummy() for i in y]
+    unknown_dict = dict(zip(y, unknowns))
+
+    mm = LM.mass_matrix_full.subs(unknown_dict)
+    fm = LM.forcing_full.subs(unknown_dict)
+    # mm = LM.mass_matrix_full
+    # fm = LM.forcing_full
+
+    mapping = {'sin': np.sin, 'cos': np.cos, 'pi': np.pi, 'array': np.array, 'ImmutableDenseMatrix': np.array}
+
+    mass_matrix = lambdify([unknowns] + parameters, mm, mapping)
+    forcing_matrix = lambdify([unknowns] + parameters, fm, mapping)
+
+    # equations_of_motion = np.linalg.inv(mass_matrix(*)) * forcing_matrix
+
+    #equations_of_motion = LM.rhs()
+    #mass_matrix = LM.mass_matrix
+    #forcing = LM.forcing
+
+    # equations_of_motion_lambda = lambdify((y,
+    #                                        l1, m1, I1, tau1,
+    #                                        l2, m2, I2, tau2,
+    #                                        l3, m3, I3, tau3,
+    #                                        g, c_fr), equations_of_motion, mapping)
+
+    return mass_matrix, forcing_matrix
+
+
+# Loss function: SSE of end effector positions.
+@jit
+def loss_end_effector(tau1, tau2, tau3, reference):
+    return np.square(np.sum((reference['end_effector'] - solve_for(tau1, tau2, tau3)['end_effector']) ** 2))
+
+
+# Loss function: SSE of velocities.
+@jit
+def loss_velocities(tau1, tau2, tau3, reference):
+    return np.square(np.sum((reference['velocities'] - solve_for(tau1, tau2, tau3)['velocities']) ** 2))
+
+
+# Loss function: SSE of all positions.
+@jit
+def loss_positions(tau1, tau2, tau3, reference):
+    return np.square(np.sum((reference['positions'] - solve_for(tau1, tau2, tau3)['positions']) ** 2))
+
+
+# Loss function: SSE of accelerations.
+@jit
+def loss_accelerations(tau1, tau2, tau3, reference):
+    return np.square(np.sum((reference['accelerations'] - solve_for(tau1, tau2, tau3)['accelerations']) ** 2))
+
+
+@jit
+def loss_mix(tau1, tau2, tau3, reference):
+    trajectory = solve_for(tau1, tau2, tau3)
+
+
+    return np.square((np.sum((reference['positions'] - trajectory['positions']) ** 2)) /
+                     np.sum((reference['accelerations'] - trajectory['accelerations']) ** 2))
+
+
+def plot(reference, loss, x0, xt, title):
+    """
+    Plots a given function for interval [x0, xt].imp
+    """
+    x = num.linspace(x0, xt, num=abs(xt - x0) * 5)
+    y = num.zeros(len(x))
+
+    index = 0
+    for i in x:
+        y[index] = loss(i, 0., 0., reference)
+        index += 1
+
+    plt.plot(x, y)
+    plt.title(title)
+    plt.xlabel('Torque')
+    plt.ylabel('Cost')
+    plt.show()
+
+
+def plot_losses(reference, x0, xt):
+    """
+    Plots all losses given in Solver for interval [x0, xt]
+    """
+    print("Plotting losses...", end='')
+    plot(reference, loss_end_effector, x0, xt, 'End-effector loss function')
+    plot(reference, loss_positions, x0, xt, 'Positions loss function')
+    plot(reference, loss_velocities, x0, xt, 'Velocities loss function')
+    plot(reference, loss_accelerations, x0, xt, 'Accelerations loss function')
+    plot(reference, loss_mix, x0, xt, 'Mix loss function')
+
+    print("DONE")
+
+
+def gradient_descent(reference, loss, iterations, learning_rate, init):
+
+    # Construct grad function.
+    gradient_loss = jit(grad(loss))
+
+    # Assign initial tau1.
+    tau1_start = init
+    print("Starting with tau1: " + str(tau1_start))
+
+    # Number of iterations.
+    for i in range(iterations):
+
+        # Calculate gradient
+        g = gradient_loss(tau1_start, 0., 0., reference)
+        print("Gradient: " + str(g))
+
+        # Perform gradient descent.
+        tau1_start -= learning_rate * g
+
+        print("Tau1 approximation: " + str(tau1_start))
+
+
+# Construct ode
+initial_positions = np.array([0., 0., 0.,
+                              0., 0., 0.])
+MM, FM = finger_dynamic_model()
+tmax, dt = 3., 0.01
+
+
+@jit
+def solve_for(tau1, tau2, tau3):
+
+    interval = np.arange(0, tmax + dt, dt)
+
+    @jit
+    def ode(y, time, _tau1, _tau2, _tau3):
+        params = [y,
+                   lengths[0], masses[0], inertias[0], _tau1,
+                   lengths[1], masses[1], inertias[1], _tau2,
+                   lengths[2], masses[2], inertias[2], _tau3,
+                   9.8, 0.5]
+
+        return np.linalg.inv(MM(*params)) @ FM(*params)
+
+    history = odeint_jax(ode, initial_positions, interval, tau1, tau2, tau3, mxstep=500)
+
+    x_1 = lengths[0] * np.sin(history[:, 0])
+    y_1 = - lengths[0] * np.cos(history[:, 0])
+
+    x_2 = x_1 + lengths[1] * np.sin(history[:, 1])
+    y_2 = y_1 - lengths[1] * np.cos(history[:, 1])
+
+    x_3 = x_2 + lengths[2] * np.sin(history[:, 2])
+    y_3 = y_2 - lengths[2] * np.cos(history[:, 2])
+
+    end_effector = np.array([x_3, y_3])
+    positions = np.array([[x_1, y_1], [x_2, y_2], [x_3, y_3]])
+    velocities = np.array([history[:, 3], history[:, 4], history[:, 5]])
+    accelerations = np.array([np.gradient(velocities[0]), np.gradient(velocities[1]), np.gradient(velocities[2])])
+
+    results = {
+        'end_effector': end_effector,
+        'positions': positions,
+        'velocities': velocities,
+        'accelerations': accelerations,
+    }
+
+    return results
+
+
+# Create reference
+reference = solve_for(5., 0., 0.)
+plt.plot(reference['positions'][0, 0], reference['positions'][0, 1])
+plt.plot(reference['positions'][1, 0], reference['positions'][1, 1])
+plt.plot(reference['positions'][2, 0], reference['positions'][2, 1])
+plt.legend(('Vingertip', 'Tussenstuk', 'Laatste'))
+
+plt.title("Individual trajectories")
+plt.show()
+
+plt.plot(reference['accelerations'][0], reference['accelerations'][1])
+plt.title("Accelerations")
+plt.show()
+
+@jit
+def experiment(tau1):
+    history = solve_for(tau1)
+    return np.square(np.sum((history['positions'] - reference['positions']) ** 2))
+
+
+plot_losses(reference, -20, 20)
+
+
+gradient_descent(reference, loss_end_effector, 1000, 0.0001, 1.)
+
+
+experiment = jit(value_and_grad(experiment))
+
+t = np.arange(4.9999985, 5.0000015, 0.00000001)
+print("START VMAPPING")
+
+h, g = vmap(experiment)(np.array([4.]))
+print(h, g)
+
+print("DONE VMAPPING")
+g_num = (h[1:] - h[:-1]) / 0.1
+
+plt.plot(t, h)
+plt.show()
+
+plt.plot(t, g)
+# plt.plot(t[1:], g_num)
+plt.show()
+
+# # Plot loss functions
+#
+# # Perform gradient descent
+# gradient_descent(loss_end_effector, 10, 0.01, 1.25)
+
+gradient_descent()
