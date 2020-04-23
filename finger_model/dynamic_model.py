@@ -1,3 +1,5 @@
+from finger_model.hopf import *
+
 import jax.numpy as np
 import matplotlib.pyplot as plt
 import numpy as num
@@ -152,36 +154,30 @@ def finger_dynamic_model():
 
 
 # Loss function: SSE of end effector positions.
-@jit
-def loss_end_effector(tau1, tau2, tau3, reference):
-    return np.square(np.sum((reference['end_effector'] - solve_for(tau1, tau2, tau3)['end_effector']) ** 2))
+def loss_end_effector(reference, simulated):
+    return np.sqrt(((reference['end_effector'] - simulated['end_effector']) ** 2).mean())
 
 
 # Loss function: SSE of velocities.
-@jit
-def loss_velocities(tau1, tau2, tau3, reference):
-    return np.square(np.sum((reference['velocities'] - solve_for(tau1, tau2, tau3)['velocities']) ** 2))
+def loss_velocities(reference, simulated):
+    return np.sqrt(((reference['velocities'] - simulated['velocities']) ** 2).mean())
 
 
 # Loss function: SSE of all positions.
-@jit
-def loss_positions(tau1, tau2, tau3, reference):
-    return np.square(np.sum((reference['positions'] - solve_for(tau1, tau2, tau3)['positions']) ** 2))
+def loss_positions(reference, simulated):
+    return np.sqrt(((reference['positions'] - simulated['positions']) ** 2).mean())
 
 
 # Loss function: SSE of accelerations.
-@jit
-def loss_accelerations(tau1, tau2, tau3, reference):
-    return np.square(np.sum((reference['accelerations'] - solve_for(tau1, tau2, tau3)['accelerations']) ** 2))
+def loss_accelerations(reference, simulated):
+    return np.sqrt(((reference['accelerations'] - simulated['accelerations']) ** 2).mean())
 
 
-@jit
-def loss_mix(tau1, tau2, tau3, reference):
-    trajectory = solve_for(tau1, tau2, tau3)
-
-
-    return np.square((np.sum((reference['positions'] - trajectory['positions']) ** 2)) /
-                     np.sum((reference['accelerations'] - trajectory['accelerations']) ** 2))
+# @jit
+# def loss_mix(tau1, tau2, tau3, reference):
+#     trajectory = _calculate_positions(tau1, tau2, tau3)
+#     return np.square((np.sum((reference['positions'] - trajectory['positions']) ** 2)) /
+#                      np.sum((reference['accelerations'] - trajectory['accelerations']) ** 2))
 
 
 def plot(reference, loss, x0, xt, title):
@@ -212,7 +208,7 @@ def plot_losses(reference, x0, xt):
     plot(reference, loss_positions, x0, xt, 'Positions loss function')
     plot(reference, loss_velocities, x0, xt, 'Velocities loss function')
     plot(reference, loss_accelerations, x0, xt, 'Accelerations loss function')
-    plot(reference, loss_mix, x0, xt, 'Mix loss function')
+    # plot(reference, loss_mix, x0, xt, 'Mix loss function')
 
     print("DONE")
 
@@ -220,7 +216,7 @@ def plot_losses(reference, x0, xt):
 def gradient_descent(reference, loss, iterations, learning_rate, init):
 
     # Construct grad function.
-    gradient_loss = jit(grad(loss))
+    gradient_loss = jit(grad(loss, 1))
 
     # Assign initial tau1.
     tau1_start = init
@@ -230,7 +226,7 @@ def gradient_descent(reference, loss, iterations, learning_rate, init):
     for i in range(iterations):
 
         # Calculate gradient
-        g = gradient_loss(tau1_start, 0., 0., reference)
+        g = gradient_loss(reference, tau1_start, 0., 0.)
         print("Gradient: " + str(g))
 
         # Perform gradient descent.
@@ -243,14 +239,34 @@ def gradient_descent(reference, loss, iterations, learning_rate, init):
 initial_positions = np.array([0., 0., 0.,
                               0., 0., 0.])
 MM, FM = finger_dynamic_model()
-tmax, dt = 3., 0.01
+# tmax, dt = 3., 0.01
+
+
+_oscillator_index = 0 # Use with caution.
+
+
+def simulate_oscillator(interval, *params):
+    CPG1, CPG2 = create_CPG(interval, *params)
+
+    @jit
+    def ode(y, time, cpg1):
+        global _oscillator_index
+        _params = [y,
+                  lengths[0], masses[0], inertias[0], cpg1[_oscillator_index],
+                  lengths[1], masses[1], inertias[1], 0.,
+                  lengths[2], masses[2], inertias[2], 0.,
+                  9.8, 0.5]
+
+        _oscillator_index += 1
+
+        return np.linalg.inv(MM(*_params)) @ FM(*_params)
+
+    history = odeint_jax(ode, initial_positions, interval, CPG1, mxstep=500)
+    return _calculate_positions(history)
 
 
 @jit
-def solve_for(tau1, tau2, tau3):
-
-    interval = np.arange(0, tmax + dt, dt)
-
+def simulate_constant(tau1, tau2, tau3, interval):
     @jit
     def ode(y, time, _tau1, _tau2, _tau3):
         params = [y,
@@ -258,10 +274,14 @@ def solve_for(tau1, tau2, tau3):
                    lengths[1], masses[1], inertias[1], _tau2,
                    lengths[2], masses[2], inertias[2], _tau3,
                    9.8, 0.5]
-
         return np.linalg.inv(MM(*params)) @ FM(*params)
 
     history = odeint_jax(ode, initial_positions, interval, tau1, tau2, tau3, mxstep=500)
+    return _calculate_positions(history)
+
+
+@jit
+def _calculate_positions(history):
 
     x_1 = lengths[0] * np.sin(history[:, 0])
     y_1 = - lengths[0] * np.cos(history[:, 0])
@@ -287,53 +307,20 @@ def solve_for(tau1, tau2, tau3):
     return results
 
 
+def plot_movements(reference):
+    plt.plot(reference['positions'][0, 0], reference['positions'][0, 1])
+    plt.plot(reference['positions'][1, 0], reference['positions'][1, 1])
+    plt.plot(reference['positions'][2, 0], reference['positions'][2, 1])
+    plt.legend(('Vingertip', 'Tussenstuk', 'Laatste'))
+
+    plt.title("Individual trajectories")
+    plt.show()
+
+    plt.plot(reference['accelerations'][0], reference['accelerations'][1])
+    plt.title("Accelerations")
+    plt.show()
+
 # Create reference
-reference = solve_for(5., 0., 0.)
-plt.plot(reference['positions'][0, 0], reference['positions'][0, 1])
-plt.plot(reference['positions'][1, 0], reference['positions'][1, 1])
-plt.plot(reference['positions'][2, 0], reference['positions'][2, 1])
-plt.legend(('Vingertip', 'Tussenstuk', 'Laatste'))
+# reference = solve_for(5., 0., 0.)
+# gradient_descent(reference, loss_end_effector, 1000, 0.0001, 1.)
 
-plt.title("Individual trajectories")
-plt.show()
-
-plt.plot(reference['accelerations'][0], reference['accelerations'][1])
-plt.title("Accelerations")
-plt.show()
-
-@jit
-def experiment(tau1):
-    history = solve_for(tau1)
-    return np.square(np.sum((history['positions'] - reference['positions']) ** 2))
-
-
-plot_losses(reference, -20, 20)
-
-
-gradient_descent(reference, loss_end_effector, 1000, 0.0001, 1.)
-
-
-experiment = jit(value_and_grad(experiment))
-
-t = np.arange(4.9999985, 5.0000015, 0.00000001)
-print("START VMAPPING")
-
-h, g = vmap(experiment)(np.array([4.]))
-print(h, g)
-
-print("DONE VMAPPING")
-g_num = (h[1:] - h[:-1]) / 0.1
-
-plt.plot(t, h)
-plt.show()
-
-plt.plot(t, g)
-# plt.plot(t[1:], g_num)
-plt.show()
-
-# # Plot loss functions
-#
-# # Perform gradient descent
-# gradient_descent(loss_end_effector, 10, 0.01, 1.25)
-
-gradient_descent()
