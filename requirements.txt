@@ -1,8 +1,6 @@
 absl-py==0.9.0
 cma==3.0.2
 cycler==0.10.0
--e git+https://github.com/google/jax.git@9c00550c18d542e64da1aa3ab3505fd66a974273#egg=jax
--e git+https://github.com/google/jax.git@9c00550c18d542e64da1aa3ab3505fd66a974273#egg=jaxlib&subdirectory=build
 kiwisolver==1.2.0
 matplotlib==3.2.1
 mpmath==1.1.0
