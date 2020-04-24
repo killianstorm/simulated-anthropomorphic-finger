@@ -1,5 +1,5 @@
-from finger_model.hopf import *
-from finger_model.dynamic_model import *
+from hopf import *
+from dynamic_model import *
 
 import cma
 import numpy as np

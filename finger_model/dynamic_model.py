@@ -1,4 +1,4 @@
-from finger_model.hopf import *
+from hopf import *
 
 import jax.numpy as np
 import matplotlib.pyplot as plt
