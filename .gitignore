@@ -1,5 +1,6 @@
 jax/
 trash/
+finger_model/outcmaes
 # Created by https://www.gitignore.io/api/venv,pycharm
 # Edit at https://www.gitignore.io/?templates=venv,pycharm
 

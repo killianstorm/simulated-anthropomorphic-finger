@@ -7,15 +7,13 @@ import matplotlib.pyplot as plt
 
 
 # Interval.
-tmax, dt = 3., 0.01
+tmax, dt = 5., 0.01
 interval = np.arange(0, tmax + dt, dt)
 
 
-# a, b, w_swing, w_stance, theta, mu, k, scale1, scale2, X0
-
 # Lower and upper bounds.
-lb = [1, 1, 2 * np.pi / 1.5, 2 * np.pi / 1.5, 1 * np.pi / 2, 10, 10, 1, 1]  # lower bounds of the tunable parameters
-ub = [5, 5, 2 * np.pi / 0.8, 2 * np.pi / 0.8, 4 * np.pi / 2, 20, 20, 1, 1]
+lb = [1, 1, 2 * np.pi / 1.5, 2 * np.pi / 1.5, 1 * np.pi / 2, 0, 0, 1, 1]  # lower bounds of the tunable parameters
+ub = [5, 5, 2 * np.pi / 0.8, 2 * np.pi / 0.8, 4 * np.pi / 2, 200, 200, 1, 1]
 
 
 def denormalize(normalized):
@@ -37,12 +35,12 @@ def grad_oscillator(reference, loss, iterations, learning_rate, *init):
     for i in range(iterations):
 
         # Calculate gradients
-        grad_values = [func(reference, interval, *optimised_params) for func in grad_functions]
+        grad_values = np.array([func(reference, interval, *optimised_params) for func in grad_functions])
 
         # Perform gradient descent.
-        optimised_params -= learning_rate * grad_values
+        optimised_params[:7] -= learning_rate * grad_values
 
-        print("Approximations: " + str(optimised_params))
+        print("Iteration " + str(i) + " " + str(optimised_params))
 
 
 def CMA_ES_oscillator(reference):
@@ -93,35 +91,17 @@ def CMA_ES_oscillator(reference):
     # Store best solution.
     best.update(es.best)
     cma.plot()
+    print("Optimal solution:")
     print(best)
     print(best.x)
-
-
-# a = self.params[0]
-# b = self.params[1]
-# w_swing = self.params[2]
-# w_stance = self.params[3]
-# theta = self.params[4]
-# mu = self.params[13]
-# k = self.params[14]
-# X0 = self.X0_init
-# X0[0] = self.params[11]
-# X0[2] = self.params[12]
 
 
 # Create reference.
 params = [2, 2,                              # a, b
           2 * np.pi / 1.2, 2 * np.pi / 1.2,  # w_swing, w_stance
           np.pi,                             # theta
-          15, 15,                            # scale1, scale2
+          100, 100,                          # scale1, scale2
           1, 1]                              # mu, k
-
-
-# params = [1, 50, 2 * pi / 1.7, 2 * pi / 1, 0.7 * pi, 150, 150, 600, 600, 600, 600, 0, 0, 1, 1]
-# X0 = [0.0, -1.0, 0.0, 1.0]
-# a, b, w_swing, w_stance, theta, mu, k, scale1, scale2, X0
-
-# Generate reference trajectory.
 reference = simulate_oscillator(interval, *params)
 
 
@@ -129,4 +109,4 @@ reference = simulate_oscillator(interval, *params)
 # Learn parameters to reproduce reference.
 CMA_ES_oscillator(reference)
 
-# grad_oscillator(reference, )
+# grad_oscillator(reference, loss_end_effector, 2000, 0.01, *(1.9, 1.9, 2*np.pi, 2*np.pi, np.pi, 12, 12, 1, 1))
