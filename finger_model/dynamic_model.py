@@ -1,10 +1,14 @@
-from hopf import *
+from finger_model.hopf import *
 
 import jax.numpy as np
 import matplotlib.pyplot as plt
 import numpy as num
 from sympy import *
 from sympy.physics.mechanics import *
+from jax.tree_util import tree_flatten, tree_unflatten, register_pytree_node
+
+from moviepy.editor import ImageSequenceClip
+from tqdm import tqdm
 
 from jax.config import config
 config.update("jax_enable_x64", True)
@@ -20,6 +24,13 @@ masses = [1., .5, .25]
 inertias = [masses[0] * (lengths[0] ** 2) * (1. / 12.),
             masses[1] * (lengths[1] ** 2) * (1. / 12.),
             masses[2] * (lengths[2] ** 2) * (1. / 12.)]
+
+
+def fig2image(fig):
+    fig.canvas.draw()
+    data = num.fromstring(fig.canvas.tostring_rgb(), dtype=num.uint8, sep='')
+    image = data.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+    return image
 
 
 def finger_dynamic_model():
@@ -155,7 +166,7 @@ def finger_dynamic_model():
 
 # Loss function: SSE of end effector positions.
 def loss_end_effector(reference, simulated):
-    return np.sqrt(((reference['end_effector'] - simulated['end_effector']) ** 2).mean())
+    return np.sqrt(np.mean((reference['end_effector'] - simulated['end_effector']) ** 2))
 
 
 # Loss function: SSE of velocities.
@@ -239,29 +250,38 @@ def gradient_descent(reference, loss, iterations, learning_rate, init):
 initial_positions = np.array([0., 0., 0.,
                               0., 0., 0.])
 MM, FM = finger_dynamic_model()
-# tmax, dt = 3., 0.01
 
 
-_oscillator_index = 0 # Use with caution.
-
-
+@jit
 def simulate_oscillator(interval, *params):
+
+
+    # CPG1 = np.sin(interval)
+
+    #
+    # CPG1 = (1., dict(zip(interval, CPG1)))
+    # flat, tree = tree_flatten(CPG1)
+
+    dt = interval[1] - interval[0]
     CPG1, CPG2 = create_CPG(interval, *params)
+    # plt.plot(interval, CPG1)
+    # plt.plot(interval, CPG2)
+    # plt.show()
 
     @jit
-    def ode(y, time, cpg1):
-        global _oscillator_index
+    def ode(y, time, _dt, _cpg1, _cpg2):
+        index = time / _dt
+        # _cpg = hopf_model(hopf, time, params)
         _params = [y,
-                  lengths[0], masses[0], inertias[0], cpg1[_oscillator_index],
-                  lengths[1], masses[1], inertias[1], 0.,
-                  lengths[2], masses[2], inertias[2], 0.,
+                  lengths[0], masses[0], inertias[0], 0.,
+                  lengths[1], masses[1], inertias[1], _cpg1[index.astype(int)],
+                  lengths[2], masses[2], inertias[2], _cpg2[index.astype(int)],
                   9.8, 0.5]
-
-        _oscillator_index += 1
-
+        # _oscillator_index.append(_oscillator_index[-1] + 1)
         return np.linalg.inv(MM(*_params)) @ FM(*_params)
 
-    history = odeint_jax(ode, initial_positions, interval, CPG1, mxstep=500)
+    history = odeint_jax(ode, initial_positions, interval, dt, CPG1, CPG2)
+
     return _calculate_positions(history)
 
 
@@ -279,7 +299,6 @@ def simulate_constant(tau1, tau2, tau3, interval):
     history = odeint_jax(ode, initial_positions, interval, tau1, tau2, tau3, mxstep=500)
     return _calculate_positions(history)
 
-
 @jit
 def _calculate_positions(history):
 
@@ -293,15 +312,17 @@ def _calculate_positions(history):
     y_3 = y_2 - lengths[2] * np.cos(history[:, 2])
 
     end_effector = np.array([x_3, y_3])
-    positions = np.array([[x_1, y_1], [x_2, y_2], [x_3, y_3]])
+    positions = np.array([np.zeros(len(x_1)), x_1, x_2, x_3, np.zeros(len(x_1)), y_1, y_2, y_3])
     velocities = np.array([history[:, 3], history[:, 4], history[:, 5]])
     accelerations = np.array([np.gradient(velocities[0]), np.gradient(velocities[1]), np.gradient(velocities[2])])
+    end_position = [0, x_1[-1], x_2[-1], x_3[-1], 0, y_1[-1], y_2[-1], y_3[-1]]
 
     results = {
         'end_effector': end_effector,
         'positions': positions,
         'velocities': velocities,
         'accelerations': accelerations,
+        'end_position': end_position
     }
 
     return results
