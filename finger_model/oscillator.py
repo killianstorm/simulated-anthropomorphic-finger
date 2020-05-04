@@ -1,27 +1,10 @@
-from hopf import *
-from dynamic_model import *
-
-from moviepy.editor import ImageSequenceClip
-from datetime import datetime
-from tqdm import tqdm
+from finger_model.dynamic_model import *
 
 import cma
 import numpy as num
 import jax.numpy as np
 import matplotlib.pyplot as plt
-
-# Interval.
-tmax, dt = 20., 0.01
-refresh_rate = tmax/dt
-interval = num.arange(0, tmax + dt, dt)
-
-
-# Lower and upper bounds.
-lb = [1, 1, 2 * num.pi / 1.5, 2 * num.pi / 1.5, 1 * num.pi / 2, 0, 0, 1, 1]  # lower bounds of the tunable parameters
-ub = [5, 5, 2 * num.pi / 0.8, 2 * num.pi / 0.8, 4 * num.pi / 2, 200, 200, 1, 1]
-
-# TODO do grad descent on scale params
-# create animations while optimising
+from jax.tree_util import tree_multimap
 
 
 def fig2image(fig):
@@ -31,66 +14,49 @@ def fig2image(fig):
     return image
 
 
-def animation(history, name):
-    key_points = history['positions']
+def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
 
-
-    fig = plt.figure(figsize=(8.3333, 6.25), dpi=72)
-    ax = fig.add_subplot(111)
-
-    images = []
-    di = 10
-    N = key_points.shape[1]
-    for i in tqdm(range(0, N, di)):
-        plt.cla()
-        plt.plot(key_points[:4, i], key_points[4:, i], marker='.')
-        plt.scatter(history['end_effector'][0][:i], history['end_effector'][1][:i], s=0.5)
-        plt.axhline(0)
-        plt.axis('equal')
-        plt.axis([-1, 4, -1, 2])
-        images.append(fig2image(fig))
-    ImageSequenceClip(images, fps=int(1/dt/di)).write_videofile(str(name) + datetime.now().strftime("_%d-%b-%Y_(%H:%M:%S.%f)") + ".mp4")
-
-
-def denormalize(normalized):
-    return num.multiply((num.array(ub) - num.array(lb)), normalized) + num.array(lb)
-
-
-def grad_oscillator(reference, loss, iterations, learning_rate, *init):
-
-    optimised_params = np.array(init)
+    print("START GRAD")
 
     @jit
-    def _loss_wrapper(_reference, _interval, *_params):
-        _simulated = simulate_oscillator(_interval, *_params)
+    def _loss_wrapper(p):
+        _reference = p['reference']
+        _interval = p['interval']
+        _simulated = simulate_rnn_oscillator(p)
         return loss(_reference, _simulated)
 
-    grad_params = [SCALE1]
-    static_params = [i for i in PARAMS if i not in grad_params]
-
-
     # Create list of grad functions for each parameter of the loss wrapper.
-    grad_functions = [jit(grad(_loss_wrapper, i + 2)) if i in grad_params else None for i in PARAMS]
+    grad_functions = jit(grad(lambda gradient_params, static_params: _loss_wrapper({**gradient_params, **static_params})))
 
-    for i in range(iterations):
+    grad_params = {}
+    static_params = {}
 
-        # Calculate gradients
-        grad_values = np.array([func(reference, interval, *optimised_params) if func is not None else 0. for func in grad_functions])
+    for key in init:
+        if key in grad_params_names:
+            grad_params[key] = init[key]
+        else:
+            static_params[key] = init[key]
 
-        # Perform gradient descent.
-        optimised_params -= learning_rate * grad_values
+    max_val = 10.
+    grads = grad_functions(grad_params, static_params)
+    print(grads)
+    grads = tree_multimap(lambda g: -np.clip(g, - max_val, max_val), grads)
 
-        print("Iteration " + str(i) + " " + str(optimised_params))
+    return grads
 
 
-def CMA_ES_oscillator(reference):
+def CMA_ES_oscillator(reference, interval, lb, ub, iterations):
+
+
+    def denormalize(normalized):
+        return num.multiply((num.array(ub) - num.array(lb)), normalized) + num.array(lb)
 
     all_losses = []
     N = N_OF_PARAMS - 2 # omit mu and k
     pop_size = 4 + num.floor(3 * log(N))
     best = cma.optimization_tools.BestSolution()
 
-    es = cma.CMAEvolutionStrategy(N * [0.5], 0.5, {'bounds': [0, 1], 'popsize': pop_size, 'maxiter': 50, 'verb_append': best.evalsall})
+    es = cma.CMAEvolutionStrategy(N * [0.5], 0.5, {'bounds': [0, 1], 'popsize': pop_size, 'maxiter': iterations, 'verb_append': best.evalsall})
     logger = cma.CMADataLogger().register(es, append = best.evalsall)
 
     while not es.stop():
@@ -103,6 +69,7 @@ def CMA_ES_oscillator(reference):
 
             # Denormalize solution from [0, 1] to [lb, ub].
             try_params = denormalize(norm)
+            print(try_params)
 
             # Simulate the parameters.
             simulated = simulate_oscillator(interval, *try_params)
@@ -117,6 +84,7 @@ def CMA_ES_oscillator(reference):
             plt.scatter(simulated['end_effector'][0], simulated['end_effector'][1])
             plt.title("Loss: " + str(loss))
             plt.show()
+
 
         # Feedback losses.
         es.tell(solutions, loss_vect)
@@ -133,23 +101,4 @@ def CMA_ES_oscillator(reference):
     best.update(es.best)
     cma.plot()
     print("Optimal solution:")
-    print(best)
-    print(best.x)
-
-
-# Create reference.
-params = [2, 2,  # a, b
-          1.5 * num.pi, num.pi / 4,  # w_swing, w_stance
-          num.pi,  # theta
-          1, 0.5,  # scale1, scale2
-          1, 1]                              # mu, k
-reference = simulate_oscillator(interval, *params)
-# animation(reference, "reference")
-
-init_params = params
-init_params[SCALE1] = 0.1
-init_params[SCALE2] = 0.1
-
-# Learn parameters to reproduce reference.
-# CMA_ES_oscillator(reference)
-grad_oscillator(reference, loss_end_effector, 50, 0.1, *params)
+    return best

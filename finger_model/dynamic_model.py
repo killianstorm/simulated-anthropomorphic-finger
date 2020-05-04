@@ -1,4 +1,5 @@
 from finger_model.hopf import *
+from finger_model.rnn_oscillator import *
 
 import jax.numpy as np
 import matplotlib.pyplot as plt
@@ -165,6 +166,7 @@ def finger_dynamic_model():
 
 
 # Loss function: SSE of end effector positions.
+@jit
 def loss_end_effector(reference, simulated):
     return np.sqrt(np.mean((reference['end_effector'] - simulated['end_effector']) ** 2))
 
@@ -253,6 +255,64 @@ MM, FM = finger_dynamic_model()
 
 
 @jit
+def simulate_sin(interval, a1, a2, a3):
+
+    @jit
+    def ode(y, time, _f1, _f2, _f3):
+        _params = [y,
+                   lengths[0], masses[0], inertias[0], np.sin(_f1 * time),
+                   lengths[1], masses[1], inertias[1], np.sin(_f2 * time),
+                   lengths[2], masses[2], inertias[2], np.sin(_f3 * time),
+                   9.8, 0.5]
+        return np.linalg.inv(MM(*_params)) @ FM(*_params)
+
+    history = odeint_jax(ode, initial_positions, interval, a1, a2, a3, mxstep=500)
+
+    return _calculate_positions(history)
+
+
+@jit
+def simulate_rnn_oscillator(p):
+    def sigmoid(s):
+        return 1 / (1 + np.exp(-s))
+
+    dt = p['interval'][1] - p['interval'][0]
+
+    states = np.array([0., 0., 0.])
+    outputs = sigmoid(states)
+    gains = np.ones(RNN_SIZE)
+
+    # Set up network.
+    taus = np.array([p[RNN_TAU1], p[RNN_TAU2], p[RNN_TAU3]])
+    biases = np.array([p[RNN_BIAS1], p[RNN_BIAS2], p[RNN_BIAS3]])
+    weights = np.array(p[RNN_WEIGHTS]).reshape(RNN_SIZE, RNN_SIZE)
+
+    @jit
+    def ode(state, time, _dt, _gains, _taus, _biases, _weights):
+        def _sigmoid(s):
+            return 1 / (1 + np.exp(-s))
+
+        y, _outputs, _states = state
+        external_inputs = np.zeros(RNN_SIZE)  # zero external_inputs
+        total_inputs = external_inputs + np.dot(_weights, _outputs)
+        _states += _dt * (1 / _taus) * (total_inputs - _states)
+        _outputs = np.array(_sigmoid(_gains * (_states + _biases)))
+
+        _params = [y,
+                  lengths[0], masses[0], inertias[0], _outputs[0],
+                  lengths[1], masses[1], inertias[1], _outputs[1],
+                  lengths[2], masses[2], inertias[2], _outputs[2],
+                  9.8, 0.5]
+        return np.linalg.inv(MM(*_params)) @ FM(*_params), _outputs, _states
+
+    history, _, _ = odeint_jax(ode, (initial_positions, outputs, states), p['interval'], dt, gains, taus, biases, weights)
+
+    results = _calculate_positions(history)
+
+    return results
+
+
+@jit
 def simulate_oscillator(interval, *params):
 
 
@@ -280,7 +340,7 @@ def simulate_oscillator(interval, *params):
         # _oscillator_index.append(_oscillator_index[-1] + 1)
         return np.linalg.inv(MM(*_params)) @ FM(*_params)
 
-    history = odeint_jax(ode, initial_positions, interval, dt, CPG1, CPG2)
+    history = odeint_jax(ode, initial_positions, interval, dt, CPG1, CPG2, mxstep=500)
 
     return _calculate_positions(history)
 
@@ -296,10 +356,10 @@ def simulate_constant(tau1, tau2, tau3, interval):
                    9.8, 0.5]
         return np.linalg.inv(MM(*params)) @ FM(*params)
 
-    history = odeint_jax(ode, initial_positions, interval, tau1, tau2, tau3, mxstep=500)
+    history = odeint_jax(ode, initial_positions, interval, tau1, tau2, tau3)
     return _calculate_positions(history)
 
-@jit
+
 def _calculate_positions(history):
 
     x_1 = lengths[0] * np.sin(history[:, 0])
