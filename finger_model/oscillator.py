@@ -26,7 +26,7 @@ def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
         return loss(_reference, _simulated)
 
     # Create list of grad functions for each parameter of the loss wrapper.
-    grad_functions = jit(grad(lambda gradient_params, static_params: _loss_wrapper({**gradient_params, **static_params})))
+    grad_functions = jit(value_and_grad(lambda gradient_params, static_params: _loss_wrapper({**gradient_params, **static_params})))
 
     grad_params = {}
     static_params = {}
@@ -38,11 +38,25 @@ def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
             static_params[key] = init[key]
 
     max_val = 10.
-    grads = grad_functions(grad_params, static_params)
-    print(grads)
-    grads = tree_multimap(lambda g: -np.clip(g, - max_val, max_val), grads)
 
-    return grads
+    for i in range(iterations):
+        print("ITERATION ", i)
+        vals, grads = grad_functions(grad_params, static_params)
+        # print("CURRENT")
+        print(grads)
+        print(grad_params)
+        print("LOSS: ", vals)
+        # grads = tree_multimap(lambda g: -np.clip(g, - max_val, max_val), grads)
+
+        for key in grads:
+            grad_params[key] -= learning_rate * grads[key]
+
+
+        # print("### TREE: ###")
+        # print(grads)
+        # print("... DONE ###")
+
+    return {**grad_params, **static_params}
 
 
 def CMA_ES_oscillator(reference, interval, lb, ub, iterations):
