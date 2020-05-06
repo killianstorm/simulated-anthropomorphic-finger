@@ -1,11 +1,12 @@
 import numpy as num
-from finger_model.oscillator import *
+from oscillator import *
 import jax.numpy as np
 import matplotlib.pyplot as plt
-import finger_model.plots as plots
+import plots
 
 # Interval.
-tmax, dt = 5., 0.01
+tmax, dt = 5., 0.001
+
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
 
@@ -63,10 +64,10 @@ init_params = {
 #                .5, .5, .5,
 #                .5, .5, .5]
 
-iterations = 10000
-learning_rate = 0.001
+iterations = 100000
+learning_rate = 0.1
 print("GOGOGO")
-gradbest = grad_oscillator(loss_positions, iterations, learning_rate, grad_params, init_params)
+gradbest = grad_oscillator(loss_end_effector, iterations, learning_rate, grad_params, init_params)
 print(gradbest)
 
 approximation = simulate_rnn_oscillator(gradbest)

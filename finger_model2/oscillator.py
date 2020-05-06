@@ -1,4 +1,4 @@
-from dynamic_model import *
+from finger_model.dynamic_model import *
 
 import cma
 import numpy as num
@@ -40,20 +40,17 @@ def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
     max_val = 10.
 
     for i in range(iterations):
+        print("ITERATION ", i)
         vals, grads = grad_functions(grad_params, static_params)
         # print("CURRENT")
-        # print(grads)
-        # print(grad_params)
-
-        if i % 1000 == 0:
-            print(grad_params)
+        print(grads)
+        print(grad_params)
+        print("LOSS: ", vals)
         # grads = tree_multimap(lambda g: -np.clip(g, - max_val, max_val), grads)
-
-        if i % 100 == 0:
-            print("ITERATION ", i, " LOSS: ", vals)
 
         for key in grads:
             grad_params[key] -= learning_rate * grads[key]
+
 
         # print("### TREE: ###")
         # print(grads)

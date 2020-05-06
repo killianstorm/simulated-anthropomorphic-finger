@@ -1,15 +1,15 @@
-from finger_model.hopf import *
-from finger_model.rnn_oscillator import *
 
 import jax.numpy as np
 import matplotlib.pyplot as plt
 import numpy as num
 from sympy import *
 from sympy.physics.mechanics import *
-from jax.tree_util import tree_flatten, tree_unflatten, register_pytree_node
+
+from hopf import *
+from rnn_oscillator import *
+
 
 from moviepy.editor import ImageSequenceClip
-from tqdm import tqdm
 
 from jax.config import config
 config.update("jax_enable_x64", True)

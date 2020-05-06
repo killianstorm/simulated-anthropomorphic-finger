@@ -3,7 +3,7 @@ import jax.ops
 import jax.lax
 import matplotlib.pyplot as plt
 # importing the CTRNN class
-# from CTRNN import CTRNN
+from CTRNN import CTRNN
 
 # params
 RNN_SIZE = 3

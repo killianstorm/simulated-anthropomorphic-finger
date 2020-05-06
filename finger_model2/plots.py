@@ -1,9 +1,10 @@
-from oscillator import *
+from finger_model.dynamic_model import *
+from finger_model.oscillator import *
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as num
-import tqdm
+
 from datetime import datetime
 
 
@@ -48,7 +49,7 @@ def animation(history, dt, name=None, history2=None):
     images = []
     di = 10
     N = key_points.shape[1]
-    for i in tqdm.tqdm(range(0, N, di)):
+    for i in tqdm(range(0, N, di)):
         plt.cla()
 
         plt.plot(key_points[:4, i], key_points[4:, i], marker='.')
