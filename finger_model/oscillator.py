@@ -30,14 +30,16 @@ def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
 
     grad_params = {}
     static_params = {}
+    momentum = {}
 
     for key in init:
         if key in grad_params_names:
             grad_params[key] = init[key]
         else:
             static_params[key] = init[key]
+        momentum[key] = 0.
 
-    max_val = 10.
+    beta = 0.9
 
     for i in range(iterations):
         vals, grads = grad_functions(grad_params, static_params)
@@ -45,15 +47,20 @@ def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
         # print(grads)
         # print(grad_params)
 
+
+
         if i % 1000 == 0:
             print(grad_params)
         # grads = tree_multimap(lambda g: -np.clip(g, - max_val, max_val), grads)
 
         if i % 100 == 0:
-            print("ITERATION ", i, " LOSS: ", vals)
+            print("ITERATION ", i, " LOSS: ", vals, " momentum: ", momentum)
 
         for key in grads:
+            momentum[key] = beta * momentum[key] + (1 - beta) * grads[key]
+            # grad_params[key] -= learning_rate * momentum[key]
             grad_params[key] -= learning_rate * grads[key]
+
 
         # print("### TREE: ###")
         # print(grads)

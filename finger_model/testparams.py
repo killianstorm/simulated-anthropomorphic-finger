@@ -42,16 +42,25 @@ plt.show()
 gradbest = {
     'interval': interval,
     'reference': reference,
-    RNN_TAU1: 0.76543037,
-    RNN_TAU2: 0.86420127,
-    RNN_TAU3: 0.9167606,
-    RNN_BIAS1: -1.3312947,
-    RNN_BIAS2: -1.53163464,
-    RNN_BIAS3: 0.38569354,
+    RNN_TAU1: 1.52078217,
+    RNN_TAU2: -3.67559116,
+    RNN_TAU3: 0.1073379,
+    RNN_BIAS1: -7.83351203,
+    RNN_BIAS2: 2.21813962,
+    RNN_BIAS3: 1.40392959,
 
-    RNN_WEIGHTS: np.array([0.37403231, 0.38423551, 0.35306435, 0.29270996, 0.30891777,
-                             0.26351807, 0.2352118, 0.25596476, 0.18884815])
+    RNN_WEIGHTS: np.array([0.83939329,  0.6578198 ,  0.74297608,  0.02959694,
+             -1.67583952, -1.25916017, -2.09885994, -7.78789238,
+             -4.35350639])
 }
+#
+# {'rnn_tau1': DeviceArray(1.52078217, dtype=float64), 'rnn_tau2': DeviceArray(-3.67559116, dtype=float64), 'rnn_tau3': DeviceArray(0.1073379, dtype=float64), 'rnn_bias1': DeviceArray(-7.83351203, dtype=float64), 'rnn_bias2': DeviceArray(2.21813962, dtype=float64), 'rnn_bias3': DeviceArray(1.40392959, dtype=float64), 'rnn_weights': DeviceArray([ 0.83939329,  0.6578198 ,  0.74297608,  0.02959694,
+#              -1.67583952, -1.25916017, -2.09885994, -7.78789238,
+#              -4.35350639], dtype=float64)}
+
+# {'rnn_tau1': DeviceArray(0.88834302, dtype=float64), 'rnn_tau2': DeviceArray(-2.00923132, dtype=float64), 'rnn_tau3': DeviceArray(0.0926683, dtype=float64), 'rnn_bias1': DeviceArray(-4.42911147, dtype=float64), 'rnn_bias2': DeviceArray(-0.64188007, dtype=float64), 'rnn_bias3': DeviceArray(1.51100231, dtype=float64), 'rnn_weights': DeviceArray([ 0.30069799,  0.28069218,  0.19725544, -0.20361389,
+#              -0.4414947 , -0.83405144, -2.99152176, -4.81015911,
+#              -7.51247381], dtype=float64)}
 
 # {'rnn_tau1': DeviceArray(0.76543037, dtype=float64), 'rnn_tau2': DeviceArray(0.86420127, dtype=float64),
 #  'rnn_tau3': DeviceArray(0.9167606, dtype=float64), 'rnn_bias1': DeviceArray(-1.3312947, dtype=float64),

@@ -12,16 +12,16 @@ interval = num.arange(0, tmax + dt, dt)
 
 init_params = {
     'interval': interval,
-    RNN_TAU1: .5,
-    RNN_TAU2: .5,
-    RNN_TAU3: .5,
-    RNN_BIAS1: .5,
-    RNN_BIAS2: .5,
-    RNN_BIAS3: .5,
+    RNN_TAU1: 1.,
+    RNN_TAU2: 1.,
+    RNN_TAU3: 1.,
+    RNN_BIAS1: 1.,
+    RNN_BIAS2: 1.,
+    RNN_BIAS3: 1.,
 
-    RNN_WEIGHTS: np.array([.5, .5, .5,  # Weights
-                           .5, .5, .5,
-                           .5, .5, .5])
+    RNN_WEIGHTS: np.array([1., 1., 1.,  # Weights
+                           1., 1., 1.,
+                           1., 1., 1.])
 }
 
 # cpg = ctrnn(interval, *init_params)
@@ -32,8 +32,8 @@ init_params = {
 # plt.show()
 
 # Create reference.
-# reference = simulate_rnn_oscillator(init_params)
-reference = simulate_sin(interval, 2., 1.5, 1.)
+reference = simulate_rnn_oscillator(init_params)
+# reference = simulate_sin(interval, 2., 1.5, 1.)
 # plots.animation(reference, dt, "opt1")
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])
@@ -64,7 +64,7 @@ init_params = {
 #                .5, .5, .5,
 #                .5, .5, .5]
 
-iterations = 100000
+iterations = 10000
 learning_rate = 0.1
 print("GOGOGO")
 gradbest = grad_oscillator(loss_end_effector, iterations, learning_rate, grad_params, init_params)

@@ -8,7 +8,6 @@ from sympy.physics.mechanics import *
 from hopf import *
 from rnn_oscillator import *
 
-
 from moviepy.editor import ImageSequenceClip
 
 from jax.config import config
@@ -273,13 +272,11 @@ def simulate_sin(interval, a1, a2, a3):
 
 @jit
 def simulate_rnn_oscillator(p):
-    def sigmoid(s):
-        return 1 / (1 + np.exp(-s))
 
     dt = p['interval'][1] - p['interval'][0]
 
     states = np.array([0., 0., 0.])
-    outputs = sigmoid(states)
+    outputs = jax.nn.sigmoid(states)
     gains = np.ones(RNN_SIZE)
 
     # Set up network.
@@ -289,14 +286,11 @@ def simulate_rnn_oscillator(p):
 
     @jit
     def ode(state, time, _dt, _gains, _taus, _biases, _weights):
-        def _sigmoid(s):
-            return 1 / (1 + np.exp(-s))
-
         y, _outputs, _states = state
         external_inputs = np.zeros(RNN_SIZE)  # zero external_inputs
         total_inputs = external_inputs + np.dot(_weights, _outputs)
         _states += _dt * (1 / _taus) * (total_inputs - _states)
-        _outputs = np.array(_sigmoid(_gains * (_states + _biases)))
+        _outputs = np.array(jax.nn.sigmoid(_gains * (_states + _biases)))
 
         _params = [y,
                   lengths[0], masses[0], inertias[0], _outputs[0],
