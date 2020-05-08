@@ -1,17 +1,10 @@
-from dynamic_model import *
+from jax import value_and_grad, jit
+
+from simulation.simulator import *
 
 import cma
 import numpy as num
-import jax.numpy as np
 import matplotlib.pyplot as plt
-from jax.tree_util import tree_multimap
-
-
-def fig2image(fig):
-    fig.canvas.draw()
-    data = num.fromstring(fig.canvas.tostring_rgb(), dtype=num.uint8, sep='')
-    image = data.reshape(fig.canvas.get_width_height()[::-1] + (3,))
-    return image
 
 
 def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
@@ -43,10 +36,6 @@ def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
 
     for i in range(iterations):
         vals, grads = grad_functions(grad_params, static_params)
-        # print("CURRENT")
-        # print(grads)
-        # print(grad_params)
-
 
 
         if i % 1000 == 0:
@@ -60,11 +49,6 @@ def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
             momentum[key] = beta * momentum[key] + (1 - beta) * grads[key]
             # grad_params[key] -= learning_rate * momentum[key]
             grad_params[key] -= learning_rate * grads[key]
-
-
-        # print("### TREE: ###")
-        # print(grads)
-        # print("... DONE ###")
 
     return {**grad_params, **static_params}
 
@@ -96,7 +80,7 @@ def CMA_ES_oscillator(reference, interval, lb, ub, iterations):
             print(try_params)
 
             # Simulate the parameters.
-            simulated = simulate_oscillator(interval, *try_params)
+            simulated = simulate_hopf(interval, *try_params)
 
             # Calculate and store loss.
             loss = num.sqrt(((reference['end_effector'] - simulated['end_effector']) ** 2).mean())

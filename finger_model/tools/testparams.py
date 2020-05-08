@@ -1,8 +1,7 @@
-import numpy as num
-from oscillator import *
+from cpg.oscillator import *
 import jax.numpy as np
 import matplotlib.pyplot as plt
-import plots
+from tools import plots
 
 # Interval.
 tmax, dt = 5., 0.01

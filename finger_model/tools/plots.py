@@ -1,4 +1,5 @@
-from oscillator import *
+from simulation.simulator import *
+from moviepy.editor import ImageSequenceClip
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -7,10 +8,17 @@ import tqdm
 from datetime import datetime
 
 
+def fig2image(fig):
+    fig.canvas.draw()
+    data = num.fromstring(fig.canvas.tostring_rgb(), dtype=num.uint8, sep='')
+    image = data.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+    return image
+
+
 def oscillator_loss_function(loss, interval, params, tau2, tau3):
     # Create reference.
 
-    reference = simulate_oscillator(interval, *params)
+    reference = simulate_hopf(interval, *params)
     # animation(reference, "reference")
 
     init_params = params
@@ -21,7 +29,7 @@ def oscillator_loss_function(loss, interval, params, tau2, tau3):
             # print(i, j)
             init_params[SCALE1] = tau2[i]
             init_params[SCALE2] = tau3[j]
-            temp = simulate_oscillator(interval, *init_params)
+            temp = simulate_hopf(interval, *init_params)
             vals[i, j] = loss(reference, temp)
 
     TAU2, TAU3 = np.meshgrid(tau2, tau3)
@@ -41,6 +49,7 @@ def oscillator_loss_function(loss, interval, params, tau2, tau3):
 def animation(history, dt, name=None, history2=None):
     key_points = history['positions']
 
+    # print(key_points)
 
     fig = plt.figure(figsize=(8.3333, 6.25), dpi=72)
     ax = fig.add_subplot(111)
@@ -49,6 +58,7 @@ def animation(history, dt, name=None, history2=None):
     di = 10
     N = key_points.shape[1]
     for i in tqdm.tqdm(range(0, N, di)):
+
         plt.cla()
 
         plt.plot(key_points[:4, i], key_points[4:, i], marker='.')
@@ -62,7 +72,7 @@ def animation(history, dt, name=None, history2=None):
 
         plt.axhline(0)
         plt.axis('equal')
-        plt.axis([-1, 4, -1, 2])
+        plt.axis([-0.5, 0.5, -0.5, 0.5])
         images.append(fig2image(fig))
 
     filename = str(name) + datetime.now().strftime("_%d-%b-%Y_(%H:%M:%S.%f)") + ".mp4"

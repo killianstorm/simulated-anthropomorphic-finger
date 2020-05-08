@@ -1,11 +1,12 @@
-import numpy as num
-from oscillator import *
+from simulation.optimizer import *
+from simulation.loss_functions import *
+
 import jax.numpy as np
 import matplotlib.pyplot as plt
-import plots
+from tools import plots
 
 # Interval.
-tmax, dt = 5., 0.001
+tmax, dt = 3., 0.001
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
@@ -15,26 +16,25 @@ init_params = {
     RNN_TAU1: 1.,
     RNN_TAU2: 1.,
     RNN_TAU3: 1.,
+    RNN_TAU4: 1.,
     RNN_BIAS1: 1.,
     RNN_BIAS2: 1.,
     RNN_BIAS3: 1.,
+    RNN_BIAS4: 1.,
 
-    RNN_WEIGHTS: np.array([1., 1., 1.,  # Weights
-                           1., 1., 1.,
-                           1., 1., 1.])
+    RNN_WEIGHTS: np.array([1., 1., 1., 1.,  # Weights
+                           1., 1., 1., 1.,
+                           1., 1., 1., 1.,
+                           1., 1., 1., 1.])
 }
 
-# cpg = ctrnn(interval, *init_params)
-# plt.plot(interval, cpg[:, 0])
-# plt.plot(interval, cpg[:, 1])
-# plt.plot(interval, cpg[:, 2])
-# plt.title("CPG")
-# plt.show()
+# cpg = ctrnn(interval, init_params, True)
 
 # Create reference.
-reference = simulate_rnn_oscillator(init_params)
+# reference = simulate_rnn_oscillator(init_params)
 # reference = simulate_sin(interval, 2., 1.5, 1.)
-# plots.animation(reference, dt, "opt1")
+reference = simulate_constant(interval, 0., 0., 30., 40.)
+plots.animation(reference, dt, "tendons")
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])
 plt.title("Reference")
@@ -44,25 +44,21 @@ plt.show()
 grad_params = [RNN_TAU1, RNN_TAU2, RNN_TAU3, RNN_BIAS1, RNN_BIAS2, RNN_BIAS3, RNN_WEIGHTS]
 init_params = {
     'interval': interval,
-    'reference': reference,
-    RNN_TAU1: .5,
-    RNN_TAU2: .5,
-    RNN_TAU3: .5,
-    RNN_BIAS1: .5,
-    RNN_BIAS2: .5,
-    RNN_BIAS3: .5,
+    RNN_TAU1: 1.,
+    RNN_TAU2: 1.,
+    RNN_TAU3: 1.,
+    RNN_TAU4: 1.,
+    RNN_BIAS1: 1.,
+    RNN_BIAS2: 1.,
+    RNN_BIAS3: 1.,
+    RNN_BIAS4: 1.,
 
-    RNN_WEIGHTS: np.array([.5, .5, .5,  # Weights
-                           .5, .5, .5,
-                           .5, .5, .5])
+    RNN_WEIGHTS: np.array([1., 1., 1., 1.,  # Weights
+                           1., 1., 1., 1.,
+                           1., 1., 1., 1.,
+                           1., 1., 1., 1.])
 }
 
-# init_params = [.5, .5, .5,  # Taus
-#                .5, .5, .5,  # Biases
-#
-#                .5, .5, .5,  # Weights
-#                .5, .5, .5,
-#                .5, .5, .5]
 
 iterations = 10000
 learning_rate = 0.1
