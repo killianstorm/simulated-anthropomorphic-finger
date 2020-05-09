@@ -8,7 +8,7 @@ steps = 50000
 
 # MM, FM = finger_dynamic_model()
 
-tendon_force_range = np.array([0., 40.])
+# tendon_force_range = np.array([0., 40.])
 
 RADII = {
     J_DIP: {
@@ -71,7 +71,8 @@ def simulate_rnn_oscillator(p):
         _outputs = np.array(jax.nn.sigmoid(_gains * (_states + _biases)))
 
         # Denormalize
-        _outputs = np.multiply((tendon_force_range[1] - tendon_force_range[0]), _outputs) + tendon_force_range[0]
+        # _outputs = np.multiply((tendon_force_range[1] - tendon_force_range[0]), _outputs) + tendon_force_range[0]
+        _outputs = np.multiply(40.0, _outputs)
 
         _params = [y,
                   lengths[0], masses[0], inertias[0],
