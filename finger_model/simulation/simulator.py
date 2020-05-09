@@ -4,8 +4,11 @@ from simulation.dynamic_model import *
 from jax import jit
 import jax
 
+steps = 50000
 
 # MM, FM = finger_dynamic_model()
+
+tendon_force_range = np.array([0., 40.])
 
 RADII = {
     J_DIP: {
@@ -36,11 +39,11 @@ def simulate_sin(interval, a1, a2, a3, a4):
                    lengths[0], masses[0], inertias[0],
                    lengths[1], masses[1], inertias[1],
                    lengths[2], masses[2], inertias[2],
-                   np.sin(_f1 * time), np.sin(_f2 * time), np.sin(_f3 * time), np.sin(_f4 * time),
+                   _f1 * np.sin(time), _f2 * np.sin(0.5 * time), _f3 * np.sin(2  * time), _f4 * np.sin(0.1 * time),
                    9.8, 0.5]
         return np.linalg.inv(MM(*_params)) @ FM(*_params)
 
-    history = odeint_jax(ode, initial_positions, interval, a1, a2, a3, a4, mxstep=500)
+    history = odeint_jax(ode, initial_positions, interval, a1, a2, a3, a4)
 
     return _calculate_positions(history)
 
@@ -67,15 +70,18 @@ def simulate_rnn_oscillator(p):
         _states += _dt * (1 / _taus) * (total_inputs - _states)
         _outputs = np.array(jax.nn.sigmoid(_gains * (_states + _biases)))
 
+        # Denormalize
+        _outputs = np.multiply((tendon_force_range[1] - tendon_force_range[0]), _outputs) + tendon_force_range[0]
+
         _params = [y,
                   lengths[0], masses[0], inertias[0],
                   lengths[1], masses[1], inertias[1],
                   lengths[2], masses[2], inertias[2],
-                  _outputs[0], _outputs[1], _outputs[2], outputs[3],
+                  _outputs[0], _outputs[1], _outputs[2], _outputs[3],
                   9.8, 0.5]
         return np.linalg.inv(MM(*_params)) @ FM(*_params), _outputs, _states
 
-    history, _, _ = odeint_jax(ode, (initial_positions, outputs, states), p['interval'], dt, gains, taus, biases, weights, mxstep=500)
+    history, _, _ = odeint_jax(ode, (initial_positions, outputs, states), p['interval'], dt, gains, taus, biases, weights)
 
     results = _calculate_positions(history)
 
@@ -110,7 +116,7 @@ def simulate_hopf(interval, *params):
         # _oscillator_index.append(_oscillator_index[-1] + 1)
         return np.linalg.inv(MM(*_params)) @ FM(*_params)
 
-    history = odeint_jax(ode, initial_positions, interval, dt, CPG1, CPG2, mxstep=500)
+    history = odeint_jax(ode, initial_positions, interval, dt, CPG1, CPG2)
 
     return _calculate_positions(history)
 

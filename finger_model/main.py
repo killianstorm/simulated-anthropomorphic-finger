@@ -32,18 +32,19 @@ init_params = {
 
 # Create reference.
 # reference = simulate_rnn_oscillator(init_params)
-# reference = simulate_sin(interval, 2., 1.5, 1.)
-reference = simulate_constant(interval, 0., 0., 30., 40.)
-plots.animation(reference, dt, "tendons")
+reference = simulate_sin(interval, 10., 4., 15., 20.)
+# reference = simulate_constant(interval, 0., 0., 30., 40.)
+# plots.animation(reference, dt, "tendons")
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])
 plt.title("Reference")
 plt.show()
 
 # Params to take grad.
-grad_params = [RNN_TAU1, RNN_TAU2, RNN_TAU3, RNN_BIAS1, RNN_BIAS2, RNN_BIAS3, RNN_WEIGHTS]
+grad_params = [RNN_TAU1, RNN_TAU2, RNN_TAU3, RNN_TAU4, RNN_BIAS1, RNN_BIAS2, RNN_BIAS3, RNN_BIAS4, RNN_WEIGHTS]
 init_params = {
     'interval': interval,
+    'reference': reference,
     RNN_TAU1: 1.,
     RNN_TAU2: 1.,
     RNN_TAU3: 1.,
