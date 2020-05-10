@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from tools import plots
 
 # Interval.
-tmax, dt = 3., 0.1
+tmax, dt = 10., 0.1
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
@@ -34,7 +34,7 @@ init_params = {
 # reference = simulate_rnn_oscillator(init_params)
 # reference = simulate_sin(interval, 10., 4., 15., 20.)
 reference = simulate_constant(interval, 0., 0., 40., 40.)
-plots.animation(reference, dt, "tendons")
+plots.animation(reference, dt, "tendons", tendons=True)
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])
 plt.title("Reference")
