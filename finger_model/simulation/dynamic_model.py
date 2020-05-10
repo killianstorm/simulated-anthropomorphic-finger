@@ -133,7 +133,7 @@ def finger_dynamic_model():
 
     # DIP Moments caused by tendons FP and ED.
     M_FP_DIP = - F_fp * RADII[J_DIP][T_FP]
-    M_ED_DIP = - F_ed * ((alpha2 - pi / 4) / (pi - pi / 4)) * lengths[2] # Lengths[2] because there is no pulley, only several attachments to the length of the dip
+    M_ED_DIP = - F_ed * ((alpha2 - pi / 4) / (pi - pi / 4)) * lengths[2] * 0.1 # Lengths[2] because there is no pulley, only several attachments to the length of the dip
     # M_ED_DIP = - F_ed * RADII[J_DIP][T_ED]
 
     # PIP Moments caused by tendons FS, IO, FP and ED.
