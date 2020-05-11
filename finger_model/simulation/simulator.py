@@ -3,6 +3,8 @@ from cpg.rnn_oscillator import *
 from simulation.dynamic_model import *
 from jax import jit
 import jax
+import jax.ops
+import jax.lax
 
 steps = 50000
 
@@ -53,38 +55,46 @@ def simulate_rnn_oscillator(p):
 
     dt = p['interval'][1] - p['interval'][0]
 
-    states = np.zeros((4,))
-    outputs = jax.nn.sigmoid(states)
+    # outputs = jax.nn.sigmoid(states)
     gains = np.ones(RNN_SIZE)
 
     # Set up network.
-    taus = np.array([p[RNN_TAU1], p[RNN_TAU2], p[RNN_TAU3], p[RNN_TAU4]])
-    biases = np.array([p[RNN_BIAS1], p[RNN_BIAS2], p[RNN_BIAS3], p[RNN_BIAS4]])
+    taus = p[RNN_TAU]
+    biases = p[RNN_BIAS]
     weights = np.array(p[RNN_WEIGHTS]).reshape(RNN_SIZE, RNN_SIZE)
+    states = p[RNN_STATES]
+    # states = np.ones((4,))
+    out = jax.nn.sigmoid(states)
+
+    def step(current_state, index):
+        _output, _state = current_state
+        external_inputs = np.zeros(RNN_SIZE)  # zero external_inputs
+        total_inputs = external_inputs + np.dot(weights, _output)
+        _state += dt * (1 / taus) * (total_inputs - _state)
+        _out = jax.nn.sigmoid(gains * (_state + biases))
+        return (_out, _state), _out
+
+    _, outputs = jax.lax.scan(step, (out, states), p['interval'])
+    outputs = np.multiply(40.0, outputs)
 
     @jit
-    def ode(state, time, _dt, _gains, _taus, _biases, _weights):
-        y, _outputs, _states = state
-        external_inputs = np.zeros(RNN_SIZE)  # zero external_inputs
-        total_inputs = external_inputs + np.dot(_weights, _outputs)
-        _states += _dt * (1 / _taus) * (total_inputs - _states)
-        _outputs = np.array(jax.nn.sigmoid(_gains * (_states + _biases)))
+    def ode(y, time, _dt, _torques):
 
-        # Denormalize
-        # _outputs = np.multiply((tendon_force_range[1] - tendon_force_range[0]), _outputs) + tendon_force_range[0]
-        _outputs = np.multiply(40.0, _outputs)
+        _index = time / _dt
+        _out = _torques[_index.astype(int)]
 
         _params = [y,
                   lengths[0], masses[0], inertias[0],
                   lengths[1], masses[1], inertias[1],
                   lengths[2], masses[2], inertias[2],
-                  _outputs[0], _outputs[1], _outputs[2], _outputs[3],
+                  _out[0], _out[1], _out[2], _out[3],
                   9.8, 0.5]
-        return np.linalg.inv(MM(*_params)) @ FM(*_params), _outputs, _states
+        return np.linalg.inv(MM(*_params)) @ FM(*_params)
 
-    history, _, _ = odeint_jax(ode, (initial_positions, outputs, states), p['interval'], dt, gains, taus, biases, weights)
+    history = odeint_jax(ode, initial_positions, p['interval'], dt, outputs)
 
     results = _calculate_positions(history)
+    results['torques'] = outputs
 
     return results
 
@@ -215,7 +225,10 @@ def _calculate_positions(history):
         'positions': positions,
         'velocities': velocities,
         'accelerations': accelerations,
-        'end_position': end_position
+        'end_position': end_position,
+        'angles': history
     }
 
     return results
+
+

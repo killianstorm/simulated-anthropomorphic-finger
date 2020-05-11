@@ -5,59 +5,52 @@ import jax.numpy as np
 import matplotlib.pyplot as plt
 from tools import plots
 
+import numpy as num
+
 # Interval.
-tmax, dt = 10., 0.1
+tmax, dt = 5., 0.01
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
 
 init_params = {
     'interval': interval,
-    RNN_TAU1: 1.,
-    RNN_TAU2: 1.,
-    RNN_TAU3: 1.,
-    RNN_TAU4: 1.,
-    RNN_BIAS1: 1.,
-    RNN_BIAS2: 1.,
-    RNN_BIAS3: 1.,
-    RNN_BIAS4: 1.,
-
-    RNN_WEIGHTS: np.array([1., 1., 1., 1.,  # Weights
-                           1., 1., 1., 1.,
-                           1., 1., 1., 1.,
-                           1., 1., 1., 1.])
+    RNN_TAU: num.random.rand(RNN_SIZE),
+    RNN_BIAS: num.random.rand(RNN_SIZE),
+    RNN_STATES: num.random.rand(RNN_SIZE),
+    RNN_WEIGHTS: num.random.rand(RNN_SIZE * RNN_SIZE)
 }
 
 # cpg = ctrnn(interval, init_params, True)
 
 # Create reference.
-# reference = simulate_rnn_oscillator(init_params)
+reference = simulate_rnn_oscillator(init_params)
+
+plt.cla()
+plt.plot(interval, reference['torques'][:, 0])
+plt.plot(interval, reference['torques'][:, 1])
+plt.plot(interval, reference['torques'][:, 2])
+plt.plot(interval, reference['torques'][:, 3])
+plt.title("Reference torques")
+plt.show()
+
 # reference = simulate_sin(interval, 10., 4., 15., 20.)
-reference = simulate_constant(interval, 0., 0., 40., 40.)
-plots.animation(reference, dt, "tendons", tendons=True)
+# reference = simulate_constant(interval, 0., 0., 40., 40.)
+# plots.animation(reference, dt, "tendons", tendons=True)
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])
 plt.title("Reference")
 plt.show()
 
 # Params to take grad.
-grad_params = [RNN_TAU1, RNN_TAU2, RNN_TAU3, RNN_TAU4, RNN_BIAS1, RNN_BIAS2, RNN_BIAS3, RNN_BIAS4, RNN_WEIGHTS]
+grad_params = [RNN_TAU, RNN_BIAS, RNN_STATES, RNN_WEIGHTS]
 init_params = {
     'interval': interval,
     'reference': reference,
-    RNN_TAU1: 1.,
-    RNN_TAU2: 1.,
-    RNN_TAU3: 1.,
-    RNN_TAU4: 1.,
-    RNN_BIAS1: 1.,
-    RNN_BIAS2: 1.,
-    RNN_BIAS3: 1.,
-    RNN_BIAS4: 1.,
-
-    RNN_WEIGHTS: np.array([1., 1., 1., 1.,  # Weights
-                           1., 1., 1., 1.,
-                           1., 1., 1., 1.,
-                           1., 1., 1., 1.])
+    RNN_TAU: num.random.rand(RNN_SIZE),
+    RNN_BIAS: num.random.rand(RNN_SIZE),
+    RNN_STATES: num.random.rand(RNN_SIZE),
+    RNN_WEIGHTS: num.random.rand(RNN_SIZE * RNN_SIZE)
 }
 
 
