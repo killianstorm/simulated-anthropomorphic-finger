@@ -8,7 +8,7 @@ from tools import plots
 import numpy as num
 
 # Interval.
-tmax, dt = 1., 0.001
+tmax, dt = 1., 0.01
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
@@ -34,8 +34,8 @@ init_params = {
 # plt.title("Reference torques")
 # plt.show()
 
-reference = simulate_sin(interval, 10., 4., 15., 20.)
-# reference = simulate_constant(interval, 0., 0., 40., 40.)
+# reference = simulate_sin(interval, 10., 4., 15., 20.)
+reference = simulate_constant(25., 0., 0., 40., interval)
 # plots.animation(reference, dt, "tendons", tendons=True)
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])

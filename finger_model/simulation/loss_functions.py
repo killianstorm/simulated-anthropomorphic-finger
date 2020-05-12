@@ -24,4 +24,15 @@ def loss_positions(reference, simulated):
 # Loss function: SSE of accelerations.
 @jit
 def loss_accelerations(reference, simulated):
-    return np.sqrt(((reference['accelerations'] - simulated['accelerations']) ** 2).mean())
+    return np.sqrt(np.mean((reference['accelerations'] - simulated['accelerations']) ** 2))
+
+
+@jit
+def loss_end_position(reference, simulated):
+    return np.sqrt(np.mean((reference['end_position'] - simulated['end_position']) ** 2))
+
+
+@jit
+def loss_angles(reference, simulated):
+    return np.sqrt(np.mean((reference['angles'] - simulated['angles']) ** 2))
+

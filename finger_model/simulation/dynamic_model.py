@@ -13,9 +13,10 @@ masses = [.2, .1, .05]
 inertias = [masses[0] * (lengths[0] ** 2) * (1. / 12.),
             masses[1] * (lengths[1] ** 2) * (1. / 12.),
             masses[2] * (lengths[2] ** 2) * (1. / 12.)]
-initial_positions = np.array([0., 0., 0.,
+# initial_positions = np.array([0., 0., 0.,
+#                               0., 0., 0.])
+initial_positions = np.array([np.pi / 2, np.pi / 2, np.pi / 2,
                               0., 0., 0.])
-
 
 T_FS = 'fs'
 T_IO = 'io'

@@ -6,7 +6,7 @@ import jax
 import jax.ops
 import jax.lax
 
-steps = 50000
+steps = 50
 
 # MM, FM = finger_dynamic_model()
 
@@ -48,7 +48,7 @@ def simulate_sin(interval, a1, a2, a3, a4):
         return np.linalg.inv(MM(*_params)) @ FM(*_params)
 
     history = odeint_jax(ode, initial_positions, interval, a1, a2, a3, a4)
-    results = _calculate_positions(history)
+    results = _calculate_positions(history, interval[1] - interval[2])
     results['torques'] = np.array([np.abs(a1 * np.sin(w[0] * interval)),
                                    np.abs(a2 * np.sin(w[1] * interval)),
                                    np.abs(a3 * np.sin(w[2] * interval)),
@@ -100,7 +100,7 @@ def simulate_rnn_oscillator(p):
 
     history = odeint_jax(ode, initial_positions, p['interval'], dt, outputs)
 
-    results = _calculate_positions(history)
+    results = _calculate_positions(history, dt)
     results['torques'] = outputs
 
     return results
@@ -207,7 +207,7 @@ def simulate_constant(F_fs, F_io, F_fp, F_ed, interval):
         return np.linalg.inv(MM(*params)) @ FM(*params)
 
     history = odeint_jax(ode, initial_positions, interval, F_fs, F_io, F_fp, F_ed)
-    results = _calculate_positions(history)
+    results = _calculate_positions(history, interval[1] - interval[0])
 
     results['torques'] = np.array([np.zeros(interval.shape[0]) + F_fs,
                                    np.zeros(interval.shape[0]) + F_io,
@@ -217,7 +217,8 @@ def simulate_constant(F_fs, F_io, F_fp, F_ed, interval):
     return results
 
 
-def _calculate_positions(history):
+def _calculate_positions(history, dt):
+
 
     x_1 = lengths[0] * np.sin(history[:, 0])
     y_1 = - lengths[0] * np.cos(history[:, 0])
@@ -231,7 +232,13 @@ def _calculate_positions(history):
     end_effector = np.array([x_3, y_3])
     positions = np.array([np.zeros(len(x_1)), x_1, x_2, x_3, np.zeros(len(x_1)), y_1, y_2, y_3])
     velocities = np.array([history[:, 3], history[:, 4], history[:, 5]])
-    accelerations = np.array([np.gradient(velocities[0]), np.gradient(velocities[1]), np.gradient(velocities[2])])
+    accelerations = np.array([np.gradient(velocities[0], dt), np.gradient(velocities[1], dt), np.gradient(velocities[2], dt)])
+    # accelerations = np.array([np.array([np.roll(velocities[0], -1) - velocities[0]])[:-1] / dt,
+    #                           np.array([np.roll(velocities[1], -1) - velocities[1]])[:-1] / dt,
+    #                           np.array([np.roll(velocities[2], -1) - velocities[2]])[:-1] / dt,
+    #                           np.array([np.roll(velocities[3], -1) - velocities[3]])[:-1] / dt
+    #                           ])
+
     end_position = [0, x_1[-1], x_2[-1], x_3[-1], 0, y_1[-1], y_2[-1], y_3[-1]]
 
     results = {
