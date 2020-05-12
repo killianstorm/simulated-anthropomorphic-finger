@@ -52,7 +52,7 @@ def simulate_sin(interval, a1, a2, a3, a4):
     results['torques'] = np.array([np.abs(a1 * np.sin(w[0] * interval)),
                                    np.abs(a2 * np.sin(w[1] * interval)),
                                    np.abs(a3 * np.sin(w[2] * interval)),
-                                   np.abs(a4 * np.sin(w[3] * interval))])
+                                   np.abs(a4 * np.sin(w[3] * interval))]).transpose()
 
     return results
 

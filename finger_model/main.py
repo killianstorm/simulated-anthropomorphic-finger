@@ -8,7 +8,7 @@ from tools import plots
 import numpy as num
 
 # Interval.
-tmax, dt = 5., 0.01
+tmax, dt = 1., 0.001
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
@@ -24,17 +24,17 @@ init_params = {
 # cpg = ctrnn(interval, init_params, True)
 
 # Create reference.
-reference = simulate_rnn_oscillator(init_params)
+# reference = simulate_rnn_oscillator(init_params)
+#
+# plt.cla()
+# plt.plot(interval, reference['torques'][:, 0])
+# plt.plot(interval, reference['torques'][:, 1])
+# plt.plot(interval, reference['torques'][:, 2])
+# plt.plot(interval, reference['torques'][:, 3])
+# plt.title("Reference torques")
+# plt.show()
 
-plt.cla()
-plt.plot(interval, reference['torques'][:, 0])
-plt.plot(interval, reference['torques'][:, 1])
-plt.plot(interval, reference['torques'][:, 2])
-plt.plot(interval, reference['torques'][:, 3])
-plt.title("Reference torques")
-plt.show()
-
-# reference = simulate_sin(interval, 10., 4., 15., 20.)
+reference = simulate_sin(interval, 10., 4., 15., 20.)
 # reference = simulate_constant(interval, 0., 0., 40., 40.)
 # plots.animation(reference, dt, "tendons", tendons=True)
 
