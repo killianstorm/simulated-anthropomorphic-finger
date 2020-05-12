@@ -35,19 +35,26 @@ RADII = {
 @jit
 def simulate_sin(interval, a1, a2, a3, a4):
 
+    w = np.array([0.25, 0.5, 2., 0.1])
+
     @jit
     def ode(y, time, _f1, _f2, _f3, _f4):
         _params = [y,
                    lengths[0], masses[0], inertias[0],
                    lengths[1], masses[1], inertias[1],
                    lengths[2], masses[2], inertias[2],
-                   _f1 * np.sin(time), _f2 * np.sin(0.5 * time), _f3 * np.sin(2  * time), _f4 * np.sin(0.1 * time),
+                   np.abs(_f1 * np.sin(w[0] * time)), np.abs(_f2 * np.sin(w[1] * time)), np.abs(_f3 * np.sin(w[2] * time)), np.abs(_f4 * np.sin(w[3] * time)),
                    9.8, 0.5]
         return np.linalg.inv(MM(*_params)) @ FM(*_params)
 
     history = odeint_jax(ode, initial_positions, interval, a1, a2, a3, a4)
+    results = _calculate_positions(history)
+    results['torques'] = np.array([np.abs(a1 * np.sin(w[0] * interval)),
+                                   np.abs(a2 * np.sin(w[1] * interval)),
+                                   np.abs(a3 * np.sin(w[2] * interval)),
+                                   np.abs(a4 * np.sin(w[3] * interval))])
 
-    return _calculate_positions(history)
+    return results
 
 
 @jit
@@ -185,7 +192,7 @@ def rescale_torques(y, F_fs, F_io, F_fp, F_ed):
 
 
 @jit
-def simulate_constant(interval, F_fs, F_io, F_fp, F_ed):
+def simulate_constant(F_fs, F_io, F_fp, F_ed, interval):
     @jit
     def ode(y, time, _F_fs, _F_io, _F_fp, _F_ed):
 
@@ -200,7 +207,14 @@ def simulate_constant(interval, F_fs, F_io, F_fp, F_ed):
         return np.linalg.inv(MM(*params)) @ FM(*params)
 
     history = odeint_jax(ode, initial_positions, interval, F_fs, F_io, F_fp, F_ed)
-    return _calculate_positions(history)
+    results = _calculate_positions(history)
+
+    results['torques'] = np.array([np.zeros(interval.shape[0]) + F_fs,
+                                   np.zeros(interval.shape[0]) + F_io,
+                                   np.zeros(interval.shape[0]) + F_fp,
+                                   np.zeros(interval.shape[0]) + F_ed])
+
+    return results
 
 
 def _calculate_positions(history):
@@ -230,5 +244,4 @@ def _calculate_positions(history):
     }
 
     return results
-
 
