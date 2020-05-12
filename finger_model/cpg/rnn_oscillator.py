@@ -4,16 +4,11 @@ import matplotlib.pyplot as plt
 RNN_SIZE = 4
 step_size = 0.01
 
-RNN_TAU1 = 'rnn_tau1'
-RNN_TAU2 = 'rnn_tau2'
-RNN_TAU3 = 'rnn_tau3'
-RNN_TAU4 = 'rnn_tau4'
-RNN_BIAS1 = 'rnn_bias1'
-RNN_BIAS2 = 'rnn_bias2'
-RNN_BIAS3 = 'rnn_bias3'
-RNN_BIAS4 = 'rnn_bias4'
+RNN_TAU = 'rnn_tau'
+RNN_BIAS = 'rnn_bias'
+RNN_STATES = 'rnn_states'
 RNN_WEIGHTS = 'rnn_weights'
-RNN_PARAMS = [RNN_TAU1, RNN_TAU2, RNN_TAU3, RNN_TAU4, RNN_BIAS1, RNN_BIAS2, RNN_BIAS3, RNN_BIAS4]
+# RNN_PARAMS = [RNN_TAU1, RNN_TAU2, RNN_TAU3, RNN_TAU4, RNN_BIAS1, RNN_BIAS2, RNN_BIAS3, RNN_BIAS4]
 
 
 def ctrnn(interval, rnn_params, plot=False):
