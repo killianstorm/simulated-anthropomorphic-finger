@@ -135,7 +135,7 @@ def finger_dynamic_model():
     # DIP Moments caused by tendons FP and ED.
     M_FP_DIP = - F_fp * RADII[J_DIP][T_FP]
     M_ED_DIP = - F_ed * ((alpha2 - pi / 4) / (pi - pi / 4)) * lengths[2] * 0.1 # Lengths[2] because there is no pulley, only several attachments to the length of the dip
-    # M_ED_DIP = - F_ed * RADII[J_DIP][T_ED]
+    M_ED_DIP = - F_ed * RADII[J_DIP][T_ED]
 
     # PIP Moments caused by tendons FS, IO, FP and ED.
     M_FS_PIP = - F_fs * RADII[J_PIP][T_FS]
@@ -158,6 +158,10 @@ def finger_dynamic_model():
     FL = [(r_pp, tau1 * N.z),  # Tendon torques
           (r_mp, tau2 * N.z),
           (r_dp, tau3 * N.z),
+
+          # (r_pp,    (-c_fr * alpha1d) * N.z),  # Joints
+          # (j_pp_mp, (-c_fr * alpha2d) * N.z),
+          # (j_mp_dp, (-c_fr * alpha3d) * N.z)
 
           (r_pp,    (-c_fr * alpha1d - Heaviside(-tau1) * Heaviside(mcp_angle_bounds[0] - alpha1) * break_point * alpha1d - Heaviside(tau1) * Heaviside(alpha1 - mcp_angle_bounds[1]) * break_point * alpha1d) * N.z),  # Joints
           (j_pp_mp, (-c_fr * alpha2d - Heaviside(-tau2) * Heaviside(pip_angle_bounds[0] - alpha2) * break_point * alpha2d - Heaviside(tau2) * Heaviside(alpha2 - pip_angle_bounds[1]) * break_point * alpha2d) * N.z),

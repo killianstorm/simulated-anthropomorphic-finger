@@ -192,7 +192,11 @@ def rescale_torques(y, F_fs, F_io, F_fp, F_ed):
 
 
 @jit
-def simulate_constant(F_fs, F_io, F_fp, F_ed, interval):
+def simulate_constant(p):
+
+    F_fs, F_io, F_fp, F_ed, interval = p['F_fs'], p['F_io'], p['F_fp'], p['F_ed'], p['interval']
+
+
     @jit
     def ode(y, time, _F_fs, _F_io, _F_fp, _F_ed):
 

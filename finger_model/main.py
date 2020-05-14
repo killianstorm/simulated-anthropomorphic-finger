@@ -8,7 +8,7 @@ from tools import plots
 import numpy as num
 
 # Interval.
-tmax, dt = 1., 0.01
+tmax, dt = 1., 0.001
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
@@ -35,7 +35,14 @@ init_params = {
 # plt.show()
 
 # reference = simulate_sin(interval, 10., 4., 15., 20.)
-reference = simulate_constant(25., 0., 0., 40., interval)
+p_constant = {
+    'F_fs': 25.,
+    'F_io': 0.,
+    'F_fp': 0.,
+    'F_ed': 40.,
+    'interval': interval
+}
+reference = simulate_constant(p_constant)
 # plots.animation(reference, dt, "tendons", tendons=True)
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])
@@ -51,6 +58,16 @@ init_params = {
     RNN_BIAS: num.random.rand(RNN_SIZE),
     RNN_STATES: num.random.rand(RNN_SIZE),
     RNN_WEIGHTS: num.random.rand(RNN_SIZE * RNN_SIZE)
+}
+
+grad_params = ['F_fs']
+init_params = {
+    'interval': interval,
+    'reference': reference,
+    'F_fs': 1.,
+    'F_io': 0.,
+    'F_fp': 0.,
+    'F_ed': 40.,
 }
 
 
