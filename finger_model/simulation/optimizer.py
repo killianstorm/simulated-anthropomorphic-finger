@@ -14,7 +14,7 @@ def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
     def _loss_wrapper(p):
         _reference = p['reference']
         _interval = p['interval']
-        _simulated = simulate_constant(p)
+        _simulated = simulate_rnn_oscillator(p)
         return loss(_reference, _simulated)
 
     # Create list of grad functions for each parameter of the loss wrapper.
@@ -32,20 +32,6 @@ def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
         momentum[key] = 0.
 
     beta = 0.9
-
-    # init_fun, update_fun, get_params = jax.experimental.optimizers.momentum(learning_rate, beta)
-    #
-    # def step(i, opt_state):
-    #     params = get_params(opt_state)
-    #     grads = grad_functions(params, static_params)
-    #     return update_fun(i, grads, opt_state)
-    #
-    # opt_state = init_fun(grad_params)
-    #
-    # for i in range(iterations):
-    #     opt_state = step(i, opt_state)
-    #
-    # return {**get_params(opt_state), **static_params}
 
     # vals = []
     # grads = []

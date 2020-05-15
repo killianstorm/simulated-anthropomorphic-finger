@@ -99,15 +99,16 @@ def rotate(point, origin, angle):
 def animation(history, dt, name=None, history2=None, tendons=False):
     key_points = history['positions']
 
-
-    # print(key_points)
-
     fig = plt.figure(figsize=(8.3333, 6.25), dpi=72)
     ax = fig.add_subplot(111)
 
     images = []
     di = 1
     N = key_points.shape[1]
+
+    torques = history['torques']
+    angles = history['angles']
+
     for i in tqdm.tqdm(range(0, N, di)):
 
         plt.cla()
@@ -116,8 +117,6 @@ def animation(history, dt, name=None, history2=None, tendons=False):
         plt.scatter(history['end_effector'][0][:i], history['end_effector'][1][:i], s=0.1)
 
         if tendons:
-            torques = history['torques']
-            angles = history['angles']
 
             alpha1 = (num.pi / 2 + angles[i, 0])
             alpha2 = num.pi - (angles[i, 0] - angles[i, 1])
@@ -192,6 +191,11 @@ def animation(history, dt, name=None, history2=None, tendons=False):
             plt.plot([-0.2, -0.1, mcp_x, pip_x, dip_x], [RADII[J_MCP][T_ED], RADII[J_MCP][T_ED], mcp_y, pip_y, dip_y], color=ED_COLOR)
 
             plt.text(-0.25, -RADII[J_MCP][T_ED] + 0.025, 'ED: ' + str(round(torques[i, 3], 2)))
+        else:
+            xpos = -0.25
+            plt.text(xpos, 0.15, 'MCP: ' + str(round(torques[i, 0], 2)))
+            plt.text(xpos, 0.10, 'PIP: ' + str(round(torques[i, 1], 2)))
+            plt.text(xpos, 0.05, 'D IP: ' + str(round(torques[i, 2], 2)))
 
 
 
@@ -199,6 +203,10 @@ def animation(history, dt, name=None, history2=None, tendons=False):
             plt.plot(history2['positions'][:4, i], history2['positions'][4:, i], marker='.')
             plt.scatter(history2['end_effector'][0][:i], history2['end_effector'][1][:i], s=0.1)
 
+            xpos = -0.25
+            plt.text(xpos, -0.05, 'Pred. MCP: ' + str(round(torques[i, 0], 2)))
+            plt.text(xpos, -0.10, 'Pred. PIP: ' + str(round(torques[i, 1], 2)))
+            plt.text(xpos, -0.15, 'Pred. DIP: ' + str(round(torques[i, 2], 2)))
 
         plt.axhline(0)
         plt.axis('equal')

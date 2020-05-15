@@ -8,19 +8,20 @@ from tools import plots
 import numpy as num
 
 # Interval.
-tmax, dt = 1., 0.0001
+tmax, dt = 2., 0.0001
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
 
-init_params = {
-    'tendons': True,
-    'interval': interval,
-    RNN_TAUS: num.random.rand(RNN_SIZE_TENDONS),
-    RNN_BIAS: num.random.rand(RNN_SIZE_TENDONS),
-    RNN_STATES: num.random.rand(RNN_SIZE_TENDONS),
-    RNN_WEIGHTS: num.random.rand(RNN_SIZE_TENDONS * RNN_SIZE_TENDONS)
-}
+
+### CTRNN
+# init_params = {
+#     'interval': interval,
+#     RNN_TAU: num.random.rand(RNN_SIZE_TORQUES),
+#     RNN_BIAS: num.random.rand(RNN_SIZE_TORQUES),
+#     RNN_STATES: num.random.rand(RNN_SIZE_TORQUES),
+#     RNN_WEIGHTS: num.random.rand(RNN_SIZE_TORQUES * RNN_SIZE_TORQUES)
+# }
 
 # cpg = ctrnn(interval, init_params, True)
 
@@ -35,17 +36,25 @@ init_params = {
 # plt.title("Reference torques")
 # plt.show()
 
-# reference = simulate_sin(interval, 10., 4., 15., 20.)
-p_constant = {
-    'F_fs': 25.,
-    'F_io': 0.,
-    'F_fp': 0.,
-    'F_ed': 40.,
+### SINE
+p_sine = {
+    'amplitudes': np.array([1., -1., -.5]),
+    'phases': np.array([2.5, 5., 5.]),
     'interval': interval
 }
-reference = simulate_constant(p_constant)
-# print(reference['torques'])
-# plots.animation(reference, dt, "tendons", tendons=True)
+reference = simulate_sin(p_sine)
+
+### CONSTANT
+# p_constant = {
+#     'tau1': 2.,
+#     'tau2': -1.,
+#     'tau3': -.5,
+#     'interval': interval
+# }
+# reference = simulate_constant(p_constant)
+
+
+# plots.animation(reference, dt, "sine")
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])
 plt.title("Reference")
@@ -56,23 +65,22 @@ grad_params = [RNN_TAUS, RNN_BIAS, RNN_STATES, RNN_WEIGHTS]
 init_params = {
     'interval': interval,
     'reference': reference,
-    RNN_TAUS: num.random.rand(RNN_SIZE_TENDONS),
-    RNN_BIAS: num.random.rand(RNN_SIZE_TENDONS),
-    RNN_STATES: num.random.rand(RNN_SIZE_TENDONS),
-    RNN_WEIGHTS: num.random.rand(RNN_SIZE_TENDONS * RNN_SIZE_TENDONS)
+    RNN_TAUS: num.random.rand(RNN_SIZE_TORQUES),
+    RNN_BIAS: num.random.rand(RNN_SIZE_TORQUES),
+    RNN_STATES: num.random.rand(RNN_SIZE_TORQUES),
+    RNN_WEIGHTS: num.random.rand(RNN_SIZE_TORQUES * RNN_SIZE_TORQUES)
 }
 
-grad_params = ['F_fs']
-init_params = {
-    'interval': interval,
-    'reference': reference,
-    'F_fs': 1.,
-    'F_io': 0.,
-    'F_fp': 0.,
-    'F_ed': 40.,
-}
+# grad_params = ['tau1', 'tau2', 'tau3']
+# init_params = {
+#     'interval': interval,
+#     'reference': reference,
+#     'tau1': .5,
+#     'tau2': .5,
+#     'tau3': .5,
+# }
 
-iterations = 10000
+iterations = 2000
 learning_rate = 0.1
 print("GOGOGO")
 gradbest = grad_oscillator(loss_end_effector, iterations, learning_rate, grad_params, init_params)

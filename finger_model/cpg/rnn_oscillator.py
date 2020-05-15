@@ -1,10 +1,11 @@
 import jax.numpy as np
 import matplotlib.pyplot as plt
 
-RNN_SIZE = 4
 step_size = 0.01
 
-RNN_TAU = 'rnn_tau'
+RNN_SIZE_TENDONS = 4
+RNN_SIZE_TORQUES = 3
+RNN_TAUS = 'rnn_tau'
 RNN_BIAS = 'rnn_bias'
 RNN_STATES = 'rnn_states'
 RNN_WEIGHTS = 'rnn_weights'

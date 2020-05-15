@@ -8,13 +8,17 @@ config.update("jax_enable_x64", True)
 
 init_printing()
 
+MAX_FORCE_TENDONS = 40.
+MAX_TORQUE = 2.
+
+ENABLE_TENDONS = False
+ENABLE_LIGAMENTS = False
+
 lengths = [0.100, 0.065, 0.035]
 masses = [.2, .1, .05]
 inertias = [masses[0] * (lengths[0] ** 2) * (1. / 12.),
             masses[1] * (lengths[1] ** 2) * (1. / 12.),
             masses[2] * (lengths[2] ** 2) * (1. / 12.)]
-# initial_positions = np.array([0., 0., 0.,
-#                               0., 0., 0.])
 initial_positions = np.array([np.pi / 2, np.pi / 2, np.pi / 2,
                               0., 0., 0.])
 
@@ -47,7 +51,7 @@ RADII = {
 }
 
 
-def finger_dynamic_model():
+def finger_dynamic_model(tendons=True, ligaments=True):
 
     theta1 = dynamicsymbols('theta1')
     theta2 = dynamicsymbols('theta2')
@@ -59,8 +63,13 @@ def finger_dynamic_model():
 
     t = symbols('t')
 
-    l1, m1, I1, l2, m2, I2, l3, m3, I3, g, c_fr, F_fs, F_io, F_fp, F_ed = symbols(
-        'l1, m1, I1, l2, m2, I2, l3, m3, I3, g, c_fr, F_fs, F_io, F_fp, F_ed')
+    if tendons:
+        l1, m1, I1, l2, m2, I2, l3, m3, I3, g, c_fr, F_fs, F_io, F_fp, F_ed = symbols(
+            'l1, m1, I1, l2, m2, I2, l3, m3, I3, g, c_fr, F_fs, F_io, F_fp, F_ed')
+    else:
+        l1, m1, I1, l2, m2, I2, l3, m3, I3, g, c_fr, tau1, tau2, tau3 = symbols(
+            'l1, m1, I1, l2, m2, I2, l3, m3, I3, g, c_fr, tau1, tau2, tau3')
+
     x1 = l1 * sin(theta1)
     y1 = -l1 * cos(theta1)
 
@@ -132,41 +141,47 @@ def finger_dynamic_model():
     pip_angle_bounds = (pi / 4, pi)
     mcp_angle_bounds = (pi / 2 + 0.1745, pi + pi / 4)
 
-    # DIP Moments caused by tendons FP and ED.
-    M_FP_DIP = - F_fp * RADII[J_DIP][T_FP]
-    M_ED_DIP = - F_ed * ((alpha2 - pi / 4) / (pi - pi / 4)) * lengths[2] * 0.1 # Lengths[2] because there is no pulley, only several attachments to the length of the dip
-    M_ED_DIP = - F_ed * RADII[J_DIP][T_ED]
+    if tendons:
+        # DIP Moments caused by tendons FP and ED.
+        M_FP_DIP = - F_fp * RADII[J_DIP][T_FP]
+        M_ED_DIP = - F_ed * ((alpha2 - pi / 4) / (pi - pi / 4)) * lengths[2] * 0.1 # Lengths[2] because there is no pulley, only several attachments to the length of the dip
+        M_ED_DIP = - F_ed * RADII[J_DIP][T_ED]
 
-    # PIP Moments caused by tendons FS, IO, FP and ED.
-    M_FS_PIP = - F_fs * RADII[J_PIP][T_FS]
-    M_IO_PIP = - F_io * RADII[J_PIP][T_IO]
-    M_FP_PIP = - F_fp * RADII[J_PIP][T_FP]
-    M_ED_PIP = - F_ed * RADII[J_PIP][T_ED]
+        # PIP Moments caused by tendons FS, IO, FP and ED.
+        M_FS_PIP = - F_fs * RADII[J_PIP][T_FS]
+        M_IO_PIP = - F_io * RADII[J_PIP][T_IO]
+        M_FP_PIP = - F_fp * RADII[J_PIP][T_FP]
+        M_ED_PIP = - F_ed * RADII[J_PIP][T_ED]
 
-    # MCP Moments caused by tendons FS, IO, FP and ED
-    M_FS_MCP = - F_fs * RADII[J_MCP][T_FS]
-    M_IO_MCP = - F_io * RADII[J_MCP][T_IO]
-    M_FP_MCP = - F_fp * RADII[J_MCP][T_FP]
-    M_ED_MCP = - F_ed * RADII[J_MCP][T_ED]
+        # MCP Moments caused by tendons FS, IO, FP and ED
+        M_FS_MCP = - F_fs * RADII[J_MCP][T_FS]
+        M_IO_MCP = - F_io * RADII[J_MCP][T_IO]
+        M_FP_MCP = - F_fp * RADII[J_MCP][T_FP]
+        M_ED_MCP = - F_ed * RADII[J_MCP][T_ED]
 
-    tau3 = M_FP_DIP - M_ED_DIP
-    tau2 = M_FS_PIP - M_IO_PIP + M_FP_PIP - M_ED_PIP
-    tau1 = M_FS_MCP + M_IO_MCP + M_FP_MCP - M_ED_MCP
+        tau3 = M_FP_DIP - M_ED_DIP
+        tau2 = M_FS_PIP - M_IO_PIP + M_FP_PIP - M_ED_PIP
+        tau1 = M_FS_MCP + M_IO_MCP + M_FP_MCP - M_ED_MCP
 
-    break_point = 25
+    if ligaments:
+        break_point = 25
 
-    FL = [(r_pp, tau1 * N.z),  # Tendon torques
-          (r_mp, tau2 * N.z),
-          (r_dp, tau3 * N.z),
+        FL = [(r_pp, tau1 * N.z),  # Tendon torques
+              (r_mp, tau2 * N.z),
+              (r_dp, tau3 * N.z),
 
-          # (r_pp,    (-c_fr * alpha1d) * N.z),  # Joints
-          # (j_pp_mp, (-c_fr * alpha2d) * N.z),
-          # (j_mp_dp, (-c_fr * alpha3d) * N.z)
+              (r_pp,    (-c_fr * alpha1d - Heaviside(-tau1) * Heaviside(mcp_angle_bounds[0] - alpha1) * break_point * alpha1d - Heaviside(tau1) * Heaviside(alpha1 - mcp_angle_bounds[1]) * break_point * alpha1d) * N.z),  # Joints
+              (j_pp_mp, (-c_fr * alpha2d - Heaviside(-tau2) * Heaviside(pip_angle_bounds[0] - alpha2) * break_point * alpha2d - Heaviside(tau2) * Heaviside(alpha2 - pip_angle_bounds[1]) * break_point * alpha2d) * N.z),
+              (j_mp_dp, (-c_fr * alpha3d - Heaviside(-tau3) * Heaviside(dip_angle_bounds[0] - alpha3) * break_point * alpha3d - Heaviside(tau3) * Heaviside(alpha3 - dip_angle_bounds[1]) * break_point * alpha3d) * N.z)
+              ]
+    else:
+        FL = [(r_pp, tau1 * N.z),  # Tendon torques
+              (r_mp, tau2 * N.z),
+              (r_dp, tau3 * N.z),
 
-          (r_pp,    (-c_fr * alpha1d - Heaviside(-tau1) * Heaviside(mcp_angle_bounds[0] - alpha1) * break_point * alpha1d - Heaviside(tau1) * Heaviside(alpha1 - mcp_angle_bounds[1]) * break_point * alpha1d) * N.z),  # Joints
-          (j_pp_mp, (-c_fr * alpha2d - Heaviside(-tau2) * Heaviside(pip_angle_bounds[0] - alpha2) * break_point * alpha2d - Heaviside(tau2) * Heaviside(alpha2 - pip_angle_bounds[1]) * break_point * alpha2d) * N.z),
-          (j_mp_dp, (-c_fr * alpha3d - Heaviside(-tau3) * Heaviside(dip_angle_bounds[0] - alpha3) * break_point * alpha3d - Heaviside(tau3) * Heaviside(alpha3 - dip_angle_bounds[1]) * break_point * alpha3d) * N.z)
-          ]
+              (r_pp,    (-c_fr * alpha1d) * N.z),  # Joints
+              (j_pp_mp, (-c_fr * alpha2d) * N.z),
+              (j_mp_dp, (-c_fr * alpha3d) * N.z)]
 
     LM = LagrangesMethod(L, [theta1, theta2, theta3], forcelist=FL, frame=N)
     equations = LM.form_lagranges_equations()
@@ -174,14 +189,22 @@ def finger_dynamic_model():
     y = [theta1, theta2, theta3,
          thetad1, thetad2, thetad3]
 
-    parameters = [
-                l1, m1, I1,
-                l2, m2, I2,
-                l3, m3, I3,
-                F_fs, F_io, F_fp, F_ed,
-                g, c_fr]
+    if tendons:
+        parameters = [
+                    l1, m1, I1,
+                    l2, m2, I2,
+                    l3, m3, I3,
+                    F_fs, F_io, F_fp, F_ed,
+                    g, c_fr]
+    else:
+        parameters = [
+                    l1, m1, I1,
+                    l2, m2, I2,
+                    l3, m3, I3,
+                    tau1, tau2, tau3,
+                    g, c_fr]
 
-    unknowns = [Dummy() for i in y]
+    unknowns = [Dummy() for _ in y]
     unknown_dict = dict(zip(y, unknowns))
 
     mm = LM.mass_matrix_full.subs(unknown_dict)
@@ -209,5 +232,4 @@ def finger_dynamic_model():
     return mass_matrix, forcing_matrix
 
 
-MM, FM = finger_dynamic_model()
-
+MM, FM = finger_dynamic_model(tendons=ENABLE_TENDONS, ligaments=ENABLE_LIGAMENTS)
