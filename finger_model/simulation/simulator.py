@@ -38,7 +38,7 @@ def simulate_sin(p):
 
     @jit
     def ode(y, time, _amplitudes, _phases):
-        _inputs = [_a * np.sin(_p * time) for _a, _p in zip(_amplitudes, _phases)]
+        _inputs = np.array([_a * np.sin(_p * time) for _a, _p in zip(_amplitudes, _phases)])
 
         if ENABLE_TENDONS:
             _inputs = np.abs(_inputs)
@@ -74,7 +74,7 @@ def simulate_rnn_oscillator(p):
     biases = p[RNN_BIAS]
     weights = np.array(p[RNN_WEIGHTS]).reshape(size, size)
     states = p[RNN_STATES]
-    gains = np.ones(size)
+    gains = p[RNN_GAINS]
     out = jax.nn.sigmoid(states)
 
     def step(current_state, index):
@@ -86,7 +86,12 @@ def simulate_rnn_oscillator(p):
         return (_out, _state), _out
 
     _, outputs = jax.lax.scan(step, (out, states), p['interval'])
-    outputs = np.multiply(max_val, outputs)
+
+    if ENABLE_TENDONS:
+        outputs = np.multiply(max_val, outputs)
+    else:
+        outputs = np.multiply(max_val, outputs) - max_val / 2
+
 
     @jit
     def ode(y, time, _dt, _torques):

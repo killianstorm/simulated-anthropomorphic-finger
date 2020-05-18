@@ -99,7 +99,7 @@ def rotate(point, origin, angle):
 def animation(history, dt, name=None, history2=None, tendons=False):
     key_points = history['positions']
 
-    fig = plt.figure(figsize=(8.3333, 6.25), dpi=72)
+    fig = plt.figure(figsize=(8.3333, 6.25), dpi=288)
     ax = fig.add_subplot(111)
 
     images = []

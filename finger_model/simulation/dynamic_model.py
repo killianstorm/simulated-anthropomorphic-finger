@@ -11,8 +11,8 @@ init_printing()
 MAX_FORCE_TENDONS = 40.
 MAX_TORQUE = 2.
 
-ENABLE_TENDONS = False
-ENABLE_LIGAMENTS = False
+ENABLE_TENDONS = True
+ENABLE_LIGAMENTS = True
 
 lengths = [0.100, 0.065, 0.035]
 masses = [.2, .1, .05]
@@ -145,7 +145,7 @@ def finger_dynamic_model(tendons=True, ligaments=True):
         # DIP Moments caused by tendons FP and ED.
         M_FP_DIP = - F_fp * RADII[J_DIP][T_FP]
         M_ED_DIP = - F_ed * ((alpha2 - pi / 4) / (pi - pi / 4)) * lengths[2] * 0.1 # Lengths[2] because there is no pulley, only several attachments to the length of the dip
-        M_ED_DIP = - F_ed * RADII[J_DIP][T_ED]
+        # M_ED_DIP = - F_ed * RADII[J_DIP][T_ED]
 
         # PIP Moments caused by tendons FS, IO, FP and ED.
         M_FS_PIP = - F_fs * RADII[J_PIP][T_FS]

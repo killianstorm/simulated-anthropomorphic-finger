@@ -61,13 +61,14 @@ plt.title("Reference")
 plt.show()
 
 # Params to take grad.
-grad_params = [RNN_TAUS, RNN_BIAS, RNN_STATES, RNN_WEIGHTS]
+grad_params = [RNN_TAUS, RNN_BIAS, RNN_STATES, RNN_GAINS, RNN_WEIGHTS]
 init_params = {
     'interval': interval,
     'reference': reference,
     RNN_TAUS: num.random.rand(RNN_SIZE_TORQUES),
     RNN_BIAS: num.random.rand(RNN_SIZE_TORQUES),
     RNN_STATES: num.random.rand(RNN_SIZE_TORQUES),
+    RNN_GAINS: num.random.rand(RNN_SIZE_TORQUES),
     RNN_WEIGHTS: num.random.rand(RNN_SIZE_TORQUES * RNN_SIZE_TORQUES)
 }
 

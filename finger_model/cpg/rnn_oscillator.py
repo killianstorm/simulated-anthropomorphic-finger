@@ -8,6 +8,7 @@ RNN_SIZE_TORQUES = 3
 RNN_TAUS = 'rnn_tau'
 RNN_BIAS = 'rnn_bias'
 RNN_STATES = 'rnn_states'
+RNN_GAINS = 'rnn_gians'
 RNN_WEIGHTS = 'rnn_weights'
 # RNN_PARAMS = [RNN_TAU1, RNN_TAU2, RNN_TAU3, RNN_TAU4, RNN_BIAS1, RNN_BIAS2, RNN_BIAS3, RNN_BIAS4]
 

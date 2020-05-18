@@ -8,13 +8,12 @@ from tools import plots
 import numpy as num
 
 # Interval.
-tmax, dt = 1., 0.0001
+tmax, dt = 15., 0.04
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
 
 init_params = {
-    'tendons': True,
     'interval': interval,
     RNN_TAUS: num.random.rand(RNN_SIZE_TENDONS),
     RNN_BIAS: num.random.rand(RNN_SIZE_TENDONS),
@@ -35,17 +34,24 @@ init_params = {
 # plt.title("Reference torques")
 # plt.show()
 
-# reference = simulate_sin(interval, 10., 4., 15., 20.)
-p_constant = {
-    'F_fs': 25.,
-    'F_io': 0.,
-    'F_fp': 0.,
-    'F_ed': 40.,
-    'interval': interval
+p_sine = {
+    'interval': interval,
+    'amplitudes': np.array([0., 0., 40., 23.]),
+    'phases': np.array([1., 1., .21, 1.])
 }
-reference = simulate_constant(p_constant)
+
+reference = simulate_sin(p_sine)
+# p_constant = {
+#     'F_fs': 25.,
+#     'F_io': 0.,
+#     'F_fp': 0.,
+#     'F_ed': 40.,
+#     'interval': interval
+# }
+# reference = simulate_constant(p_constant)
 # print(reference['torques'])
-# plots.animation(reference, dt, "tendons", tendons=True)
+
+plots.animation(reference, dt, "tendons", tendons=True)
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])
 plt.title("Reference")
