@@ -8,11 +8,10 @@ from tools import plots
 import numpy as num
 
 # Interval.
-tmax, dt = 2., 0.0001
+tmax, dt = 1., 0.0001
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
-
 
 ### CTRNN
 # init_params = {
@@ -43,6 +42,16 @@ p_sine = {
     'interval': interval
 }
 reference = simulate_sin(p_sine)
+
+plt.cla()
+plt.plot(interval, reference['torques'][:, 0], label="MCP")
+plt.plot(interval, reference['torques'][:, 1], label="PIP")
+plt.plot(interval, reference['torques'][:, 2], label="DIP")
+plt.title("Reference torques")
+plt.xlabel("Time [s]")
+plt.ylabel("Torque [Nm]")
+plt.legend(loc="upper left")
+plt.show()
 
 ### CONSTANT
 # p_constant = {
@@ -81,15 +90,35 @@ init_params = {
 #     'tau3': .5,
 # }
 
-iterations = 2000
+iterations = 100000
 learning_rate = 0.1
 print("GOGOGO")
-gradbest = grad_oscillator(loss_end_effector, iterations, learning_rate, grad_params, init_params)
+gradbest = grad_oscillator(loss_angles, iterations, learning_rate, grad_params, init_params)
+# gradbest = {
+#     'interval': interval,
+#     RNN_TAUS: np.array([0.09893328, 0.64548118, 1.93432572]),
+#     RNN_BIAS: np.array([-0.95394665, -0.35918627, -2.96284246]),
+#     RNN_STATES: np.array([-1.04861539, -0.23063669,  5.4683151 ]),
+#     RNN_GAINS: np.array([-1.76394312, -0.5693699 , -3.07278049]),
+#     RNN_WEIGHTS: np.array([ 1.20546856,  0.15172386, -1.95157362,  0.20661285, 0.29229113, -1.86179027, -3.37062968, -3.42195594, -2.24576479])
+# }
+# reference = simulate_rnn_oscillator(test_params)
+
 print(gradbest)
 
 approximation = simulate_rnn_oscillator(gradbest)
 
+plt.cla()
+plt.plot(interval, approximation['torques'][:, 0], label="MCP")
+plt.plot(interval, approximation['torques'][:, 1], label="PIP")
+plt.plot(interval, approximation['torques'][:, 2], label="DIP")
+plt.xlabel("Time [s]")
+plt.ylabel("Torque [Nm]")
+plt.title("Predicted torques")
+plt.legend(loc="upper left")
+plt.show()
+
 loss = loss_end_effector(reference, approximation)
 print("LOSS: ", loss)
 # plots.animation(approximation, dt, "opt1_approx")
-plots.animation(reference, dt, "opt1_approx_both", approximation)
+# plots.animation(reference, dt, "predicted_both", approximation)

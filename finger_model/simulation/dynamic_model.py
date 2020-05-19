@@ -11,8 +11,8 @@ init_printing()
 MAX_FORCE_TENDONS = 40.
 MAX_TORQUE = 2.
 
-ENABLE_TENDONS = True
-ENABLE_LIGAMENTS = True
+ENABLE_TENDONS = False
+ENABLE_LIGAMENTS = False
 
 lengths = [0.100, 0.065, 0.035]
 masses = [.2, .1, .05]

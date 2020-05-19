@@ -53,7 +53,11 @@ def simulate_sin(p):
 
     history = odeint_jax(ode, initial_positions, interval, amplitudes, phases)
     results = _calculate_positions(history, interval[1] - interval[2])
-    results['torques'] = np.array([np.abs(_a * np.sin(_p * interval)) for _a, _p in zip(amplitudes, phases)]).transpose()
+
+    results['torques'] = np.array([_a * np.sin(_p * interval) for _a, _p in zip(amplitudes, phases)]).transpose()
+
+    if ENABLE_TENDONS:
+        results['torques'] = np.abs(results['torques'])
 
     return results
 

@@ -33,36 +33,21 @@ def grad_oscillator(loss, iterations, learning_rate, grad_params_names, init):
 
     beta = 0.9
 
-    # vals = []
-    # grads = []
-    # r = np.arange(0, 40, 0.5)
-    # for i in r:
-    #     print(i)
-    #     grad_params['F_fs'] = float(i)
-    #     val = _loss_wrapper({**grad_params, **static_params})
-    #     vals.append(val)
-    #
-    # print(vals)
-    # print(grads)
-    # plt.plot(r, vals)
-    # plt.title("LOSS")
-    # plt.show()
-
-
     for i in range(iterations):
         vals, grads = grad_functions(grad_params, static_params)
 
-        if i % 100 == 0:
-            print(grad_params)
-        # grads = tree_multimap(lambda g: -np.clip(g, - max_val, max_val), grads)
+        print("ITERATION ", i, " LOSS: ", vals)
 
         if i % 10 == 0:
-            print("ITERATION ", i, " LOSS: ", vals, " grads: ", grads, " momentum: ", momentum)
+            print("GRADS: ", grads, " MOMENTUM: ", momentum)
+
+            print("## PARAMS")
+            print(grad_params)
+            print("##")
 
         for key in grads:
             momentum[key] = beta * momentum[key] + (1 - beta) * grads[key]
             grad_params[key] -= learning_rate * momentum[key]
-            # grad_params[key] -= learning_rate * grads[key]
 
     return {**grad_params, **static_params}
 
