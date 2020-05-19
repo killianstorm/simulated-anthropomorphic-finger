@@ -8,7 +8,7 @@ from tools import plots
 import numpy as num
 
 # Interval.
-tmax, dt = 1., 0.1
+tmax, dt = 1., 0.000001
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
@@ -41,7 +41,12 @@ p_sine = {
     'phases': np.array([2.5, 5., 5.]),
     'interval': interval
 }
+
 reference = simulate_sin_RK4(p_sine)
+
+plt.plot(reference['end_effector'][0], reference['end_effector'][1])
+plt.title("Reference")
+plt.show()
 
 plt.cla()
 plt.plot(interval, reference['torques'][:, 0], label="MCP")
@@ -63,11 +68,7 @@ plt.show()
 # reference = simulate_constant(p_constant)
 
 
-# plots.animation(reference, dt, "sine")
-
-plt.plot(reference['end_effector'][0], reference['end_effector'][1])
-plt.title("Reference")
-plt.show()
+# plots.animation(reference, dt, "sineRK4")
 
 # Params to take grad.
 grad_params = [RNN_TAUS, RNN_BIAS, RNN_STATES, RNN_GAINS, RNN_WEIGHTS]

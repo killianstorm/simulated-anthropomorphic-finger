@@ -82,17 +82,17 @@ def simulate_sin_RK4(p):
         return np.linalg.inv(MM(*_params)) @ FM(*_params)
 
     dt = interval[1] - interval[0]
-    X = np.zeros([interval.shape[0], initial_positions.shape[0]])
-    X = jax.ops.index_update(X, 0, initial_positions)
-    for i in range(interval.shape[0]):
-        # i = t.astype(int)
-        k1 = ode(X[i], i, amplitudes, phases)
-        k2 = ode(X[i] + dt / 2. * k1, i + dt / 2., amplitudes, phases)
-        k3 = ode(X[i] + dt / 2. * k2, i + dt / 2., amplitudes, phases)
-        k4 = ode(X[i] + dt * k3, i + dt, amplitudes, phases)
-        X[i + 1] = X[i] + dt / 6. * (k1 + 2. * k2 + 2. * k3 + k4)
 
-    history = X
+    def step(current_state, index):
+        _amplitudes, _phases, _xi = current_state
+        k1 = dt * ode(_xi, index, amplitudes, phases).flatten()
+        k2 = dt * ode(_xi + .5 * k1, index + .5 * dt, amplitudes, phases).flatten()
+        k3 = dt * ode(_xi + .5 * k2, index + .5 * dt, amplitudes, phases).flatten()
+        k4 = dt * ode(_xi + k3, index + dt, amplitudes, phases).flatten()
+        _out = _xi + (1. / 6.) * (k1 + 2. * k2 + 2. * k3 + k4)
+        return (_amplitudes, _phases, _out), _out
+
+    _, history = jax.lax.scan(step, (amplitudes, phases, initial_positions), p['interval'])
 
     # history = odeint_jax(ode, initial_positions, interval, amplitudes, phases)
     results = _calculate_positions(history, interval[1] - interval[2])

@@ -11,14 +11,14 @@ init_printing()
 MAX_FORCE_TENDONS = 40.
 MAX_TORQUE = 2.
 
-ENABLE_TENDONS = True
-ENABLE_LIGAMENTS = True
+ENABLE_TENDONS = False
+ENABLE_LIGAMENTS = False
 
-lengths = [0.100, 0.065, 0.035]
-masses = [.2, .1, .05]
-inertias = [masses[0] * (lengths[0] ** 2) * (1. / 12.),
+lengths = np.array([0.100, 0.065, 0.035])
+masses = np.array([.2, .1, .05])
+inertias = np.array([masses[0] * (lengths[0] ** 2) * (1. / 12.),
             masses[1] * (lengths[1] ** 2) * (1. / 12.),
-            masses[2] * (lengths[2] ** 2) * (1. / 12.)]
+            masses[2] * (lengths[2] ** 2) * (1. / 12.)])
 initial_positions = np.array([np.pi / 2, np.pi / 2, np.pi / 2,
                               0., 0., 0.])
 
