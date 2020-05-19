@@ -13,12 +13,16 @@ tmax, dt = 1., 0.0001
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
 
-p_sine = {
+p_keystroke = {
     'interval': interval,
-    'amplitudes': np.array([0., 0., 40., 23.]),
-    'phases': np.array([1., 1., .21, 1.])
+    'F_fs': np.zeros(interval.shape[0]),
+    'F_io': np.zeros(interval.shape[0]),
+    'F_fp': np.array([17. if i < interval[-1] / 2 else 0. for i in interval]),
+    'F_ed': np.array([0. if i < interval[-1] / 2 else 30. for i in interval])
 }
-reference = simulate_sin(p_sine)
+reference = simulate_predefined(p_keystroke)
+
+# plots.animation(reference, dt, "keystroke", tendons=True)
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])
 plt.title("Reference")
