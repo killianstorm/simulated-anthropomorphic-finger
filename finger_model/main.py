@@ -8,7 +8,7 @@ from tools import plots
 import numpy as num
 
 # Interval.
-tmax, dt = 15., 0.04
+tmax, dt = 2., 0.1
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
@@ -51,11 +51,27 @@ reference = simulate_sin(p_sine)
 # reference = simulate_constant(p_constant)
 # print(reference['torques'])
 
-plots.animation(reference, dt, "tendons", tendons=True)
+# plots.animation(reference, dt, "tendons", tendons=True)
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])
 plt.title("Reference")
 plt.show()
+
+p_predefined = {
+    'interval': interval,
+    'F_fs': reference['torques'][:, 0],
+    'F_io': reference['torques'][:, 1],
+    'F_fp': reference['torques'][:, 2],
+    'F_ed': reference['torques'][:, 3],
+}
+
+reference = simulate_predefined(p_predefined)
+plots.animation(reference, dt, "predefined", tendons=True)
+
+plt.plot(reference['end_effector'][0], reference['end_effector'][1])
+plt.title("Reference")
+plt.show()
+
 
 # Params to take grad.
 grad_params = [RNN_TAUS, RNN_BIAS, RNN_STATES, RNN_WEIGHTS]

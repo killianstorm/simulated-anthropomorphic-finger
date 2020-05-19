@@ -103,7 +103,7 @@ def animation(history, dt, name=None, history2=None, tendons=False):
     ax = fig.add_subplot(111)
 
     images = []
-    di = 100
+    di = 1
     N = key_points.shape[1]
 
     torques = history['torques']

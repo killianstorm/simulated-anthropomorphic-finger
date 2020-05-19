@@ -63,6 +63,50 @@ def simulate_sin(p):
 
 
 @jit
+def simulate_sin_RK4(p):
+    amplitudes, phases, interval = p['amplitudes'], p['phases'], p['interval']
+
+    @jit
+    def ode(y, time, _amplitudes, _phases):
+        _inputs = np.array([_a * np.sin(_p * time) for _a, _p in zip(_amplitudes, _phases)])
+
+        if ENABLE_TENDONS:
+            _inputs = np.abs(_inputs)
+
+        _params = [y,
+                   lengths[0], masses[0], inertias[0],
+                   lengths[1], masses[1], inertias[1],
+                   lengths[2], masses[2], inertias[2],
+                   *_inputs,
+                   9.8, 0.5]
+        return np.linalg.inv(MM(*_params)) @ FM(*_params)
+
+    dt = interval[1] - interval[0]
+    X = np.zeros([interval.shape[0], initial_positions.shape[0]])
+    X = jax.ops.index_update(X, 0, initial_positions)
+    for i in range(interval.shape[0]):
+        # i = t.astype(int)
+        k1 = ode(X[i], i, amplitudes, phases)
+        k2 = ode(X[i] + dt / 2. * k1, i + dt / 2., amplitudes, phases)
+        k3 = ode(X[i] + dt / 2. * k2, i + dt / 2., amplitudes, phases)
+        k4 = ode(X[i] + dt * k3, i + dt, amplitudes, phases)
+        X[i + 1] = X[i] + dt / 6. * (k1 + 2. * k2 + 2. * k3 + k4)
+
+    history = X
+
+    # history = odeint_jax(ode, initial_positions, interval, amplitudes, phases)
+    results = _calculate_positions(history, interval[1] - interval[2])
+
+    results['torques'] = np.array([_a * np.sin(_p * interval) for _a, _p in zip(amplitudes, phases)]).transpose()
+
+    if ENABLE_TENDONS:
+        results['torques'] = np.abs(results['torques'])
+
+    return results
+
+
+
+@jit
 def simulate_rnn_oscillator(p):
     if ENABLE_TENDONS:
         size = RNN_SIZE_TENDONS
@@ -143,6 +187,38 @@ def simulate_constant(p):
     results = _calculate_positions(history, interval[1] - interval[0])
 
     results['torques'] = np.array([interval.shape[0] * [i] for i in inputs]).transpose()
+
+    return results
+
+
+@jit
+def simulate_predefined(p):
+    if ENABLE_TENDONS:
+        inputs, interval = (p['F_fs'], p['F_io'], p['F_fp'], p['F_ed']), p['interval']
+    else:
+        inputs, interval = (p['tau1'], p['tau2'], p['tau3']), p['interval']
+
+    inputs = np.array([*inputs]).transpose()
+
+    dt = interval[1] - interval[0]
+
+    @jit
+    def ode(y, time, _dt, _torques):
+
+        _index = time / _dt
+        _out = _torques[_index.astype(int)]
+
+        _params = [y,
+                   lengths[0], masses[0], inertias[0],
+                   lengths[1], masses[1], inertias[1],
+                   lengths[2], masses[2], inertias[2],
+                   *_out,
+                   9.8, 0.5]
+        return np.linalg.inv(MM(*_params)) @ FM(*_params)
+
+    history = odeint_jax(ode, initial_positions, interval, dt, inputs)
+    results = _calculate_positions(history, interval[1] - interval[0])
+    results['torques'] = inputs
 
     return results
 

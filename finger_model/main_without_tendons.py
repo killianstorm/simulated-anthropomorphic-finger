@@ -8,7 +8,7 @@ from tools import plots
 import numpy as num
 
 # Interval.
-tmax, dt = 1., 0.0001
+tmax, dt = 1., 0.1
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
@@ -41,7 +41,7 @@ p_sine = {
     'phases': np.array([2.5, 5., 5.]),
     'interval': interval
 }
-reference = simulate_sin(p_sine)
+reference = simulate_sin_RK4(p_sine)
 
 plt.cla()
 plt.plot(interval, reference['torques'][:, 0], label="MCP")
