@@ -8,7 +8,7 @@ from tools import plots
 import numpy as num
 
 # Interval.
-tmax, dt = 1., 0.000001
+tmax, dt = 1., 0.01
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
@@ -42,21 +42,38 @@ p_sine = {
     'interval': interval
 }
 
-reference = simulate_sin_RK4(p_sine)
+# reference = simulate_sin_RK4(p_sine)
+#
+# plt.plot(reference['end_effector'][0], reference['end_effector'][1])
+# plt.title("Reference")
+# plt.show()
+#
+# plt.cla()
+# plt.plot(interval, reference['torques'][:, 0], label="MCP")
+# plt.plot(interval, reference['torques'][:, 1], label="PIP")
+# plt.plot(interval, reference['torques'][:, 2], label="DIP")
+# plt.title("Reference torques")
+# plt.xlabel("Time [s]")
+# plt.ylabel("Torque [Nm]")
+# plt.legend(loc="upper left")
+# plt.show()
 
-plt.plot(reference['end_effector'][0], reference['end_effector'][1])
-plt.title("Reference")
-plt.show()
+gradbest = {
+    'interval': interval,
+    RNN_TAUS: np.array([0.09893328, 0.64548118, 1.93432572]),
+    RNN_BIAS: np.array([-0.95394665, -0.35918627, -2.96284246]),
+    RNN_STATES: np.array([-1.04861539, -0.23063669,  5.4683151 ]),
+    RNN_GAINS: np.array([-1.76394312, -0.5693699 , -3.07278049]),
+    RNN_WEIGHTS: np.array([ 1.20546856,  0.15172386, -1.95157362,  0.20661285, 0.29229113, -1.86179027, -3.37062968, -3.42195594, -2.24576479])
+}
+
+tryout = simulate_rnn_oscillator(gradbest)
 
 plt.cla()
-plt.plot(interval, reference['torques'][:, 0], label="MCP")
-plt.plot(interval, reference['torques'][:, 1], label="PIP")
-plt.plot(interval, reference['torques'][:, 2], label="DIP")
-plt.title("Reference torques")
-plt.xlabel("Time [s]")
-plt.ylabel("Torque [Nm]")
-plt.legend(loc="upper left")
+plt.plot(tryout['end_effector'][0], tryout['end_effector'][1])
+plt.title("TRYOUT")
 plt.show()
+
 
 ### CONSTANT
 # p_constant = {

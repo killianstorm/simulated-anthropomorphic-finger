@@ -73,6 +73,8 @@ plt.title("Reference")
 plt.show()
 
 
+
+
 # Params to take grad.
 grad_params = [RNN_TAUS, RNN_BIAS, RNN_STATES, RNN_WEIGHTS]
 init_params = {
