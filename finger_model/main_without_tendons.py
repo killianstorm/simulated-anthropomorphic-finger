@@ -42,7 +42,7 @@ p_sine = {
     'interval': interval
 }
 
-# reference = simulate_sin_RK4(p_sine)
+reference = simulate_sine(p_sine)
 #
 # plt.plot(reference['end_effector'][0], reference['end_effector'][1])
 # plt.title("Reference")
@@ -58,21 +58,21 @@ p_sine = {
 # plt.legend(loc="upper left")
 # plt.show()
 
-gradbest = {
-    'interval': interval,
-    RNN_TAUS: np.array([0.09893328, 0.64548118, 1.93432572]),
-    RNN_BIAS: np.array([-0.95394665, -0.35918627, -2.96284246]),
-    RNN_STATES: np.array([-1.04861539, -0.23063669,  5.4683151 ]),
-    RNN_GAINS: np.array([-1.76394312, -0.5693699 , -3.07278049]),
-    RNN_WEIGHTS: np.array([ 1.20546856,  0.15172386, -1.95157362,  0.20661285, 0.29229113, -1.86179027, -3.37062968, -3.42195594, -2.24576479])
-}
-
-tryout = simulate_rnn_oscillator(gradbest)
-
-plt.cla()
-plt.plot(tryout['end_effector'][0], tryout['end_effector'][1])
-plt.title("TRYOUT")
-plt.show()
+# gradbest = {
+#     'interval': interval,
+#     RNN_TAUS: np.array([0.09893328, 0.64548118, 1.93432572]),
+#     RNN_BIASES: np.array([-0.95394665, -0.35918627, -2.96284246]),
+#     RNN_STATES: np.array([-1.04861539, -0.23063669,  5.4683151 ]),
+#     RNN_GAINS: np.array([-1.76394312, -0.5693699 , -3.07278049]),
+#     RNN_WEIGHTS: np.array([ 1.20546856,  0.15172386, -1.95157362,  0.20661285, 0.29229113, -1.86179027, -3.37062968, -3.42195594, -2.24576479])
+# }
+#
+# tryout = simulate_rnn_oscillator(gradbest)
+#
+# plt.cla()
+# plt.plot(tryout['end_effector'][0], tryout['end_effector'][1])
+# plt.title("TRYOUT")
+# plt.show()
 
 
 ### CONSTANT
@@ -88,12 +88,12 @@ plt.show()
 # plots.animation(reference, dt, "sineRK4")
 
 # Params to take grad.
-grad_params = [RNN_TAUS, RNN_BIAS, RNN_STATES, RNN_GAINS, RNN_WEIGHTS]
+grad_params = [RNN_TAUS, RNN_BIASES, RNN_STATES, RNN_GAINS, RNN_WEIGHTS]
 init_params = {
     'interval': interval,
     'reference': reference,
     RNN_TAUS: num.random.rand(RNN_SIZE_TORQUES),
-    RNN_BIAS: num.random.rand(RNN_SIZE_TORQUES),
+    RNN_BIASES: num.random.rand(RNN_SIZE_TORQUES),
     RNN_STATES: num.random.rand(RNN_SIZE_TORQUES),
     RNN_GAINS: num.random.rand(RNN_SIZE_TORQUES),
     RNN_WEIGHTS: num.random.rand(RNN_SIZE_TORQUES * RNN_SIZE_TORQUES)

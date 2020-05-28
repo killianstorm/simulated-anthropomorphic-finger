@@ -63,29 +63,28 @@ def rotate(point, origin, angle):
     return qx, qy
 
 
-def animation(history, dt, name=None, history2=None, tendons=False):
+def animate(reference, dt, name=None, predicted=None, tendons=False, di=1):
     """
     Creates an animation of a simulated trajectory. It also allows a second trajectory to be plotted for comparison.
     """
 
-    key_points = history['positions']
+    key_points = reference['positions']
 
     fig = plt.figure(figsize=(8.3333, 6.25), dpi=288)
     ax = fig.add_subplot(111)
 
     images = []
-    di = 1
     N = key_points.shape[1]
 
-    torques = history['torques']
-    angles = history['angles']
+    torques = reference['torques']
+    angles = reference['angles']
 
     for i in tqdm.tqdm(range(0, N, di)):
 
         plt.cla()
 
-        plt.plot(key_points[:4, i], key_points[4:, i], marker='.', linewidth=5, markersize=5)
-        plt.scatter(history['end_effector'][0][:i], history['end_effector'][1][:i], s=0.1)
+        plt.plot(key_points[:4, i], key_points[4:, i], marker='.', linewidth=5, markersize=5, label="reference")
+        plt.scatter(reference['end_effector'][0][:i], reference['end_effector'][1][:i], s=0.1, label="reference")
 
         if tendons:
 
@@ -168,9 +167,10 @@ def animation(history, dt, name=None, history2=None, tendons=False):
             plt.text(xpos, 0.10, 'PIP: ' + str(round(torques[i, 1], 2)))
             plt.text(xpos, 0.05, 'D IP: ' + str(round(torques[i, 2], 2)))
 
-        if history2 is not None:
-            plt.plot(history2['positions'][:4, i], history2['positions'][4:, i], marker='.')
-            plt.scatter(history2['end_effector'][0][:i], history2['end_effector'][1][:i], s=0.1)
+        if predicted is not None:
+            plt.plot(predicted['positions'][:4, i], predicted['positions'][4:, i], marker='.', label="predicted")
+            plt.scatter(predicted['end_effector'][0][:i], predicted['end_effector'][1][:i], s=0.1, label="predicted")
+            plt.legend()
 
             xpos = -0.25
             plt.text(xpos, -0.05, 'Pred. MCP: ' + str(round(torques[i, 0], 2)))

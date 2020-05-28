@@ -16,7 +16,7 @@ interval = num.arange(0, tmax + dt, dt)
 init_params = {
     'interval': interval,
     RNN_TAUS: num.random.rand(RNN_SIZE_TENDONS),
-    RNN_BIAS: num.random.rand(RNN_SIZE_TENDONS),
+    RNN_BIASES: num.random.rand(RNN_SIZE_TENDONS),
     RNN_STATES: num.random.rand(RNN_SIZE_TENDONS),
     RNN_WEIGHTS: num.random.rand(RNN_SIZE_TENDONS * RNN_SIZE_TENDONS)
 }
@@ -88,7 +88,7 @@ p_predefined = {
 }
 
 reference = simulate_predefined(p_predefined)
-plots.animation(reference, dt, "predefined", tendons=True)
+plots.animate(reference, dt, "predefined", tendons=True)
 
 plt.plot(reference['end_effector'][0], reference['end_effector'][1])
 plt.title("Reference")
@@ -98,12 +98,12 @@ plt.show()
 
 
 # Params to take grad.
-grad_params = [RNN_TAUS, RNN_BIAS, RNN_STATES, RNN_WEIGHTS]
+grad_params = [RNN_TAUS, RNN_BIASES, RNN_STATES, RNN_WEIGHTS]
 init_params = {
     'interval': interval,
     'reference': reference,
     RNN_TAUS: num.random.rand(RNN_SIZE_TENDONS),
-    RNN_BIAS: num.random.rand(RNN_SIZE_TENDONS),
+    RNN_BIASES: num.random.rand(RNN_SIZE_TENDONS),
     RNN_STATES: num.random.rand(RNN_SIZE_TENDONS),
     RNN_WEIGHTS: num.random.rand(RNN_SIZE_TENDONS * RNN_SIZE_TENDONS)
 }
@@ -129,4 +129,4 @@ approximation = simulate_rnn_oscillator(gradbest)
 loss = loss_end_effector(reference, approximation)
 print("LOSS: ", loss)
 # plots.animation(approximation, dt, "opt1_approx")
-plots.animation(reference, dt, "opt1_approx_both", approximation)
+plots.animate(reference, dt, "opt1_approx_both", approximation)

@@ -1,10 +1,12 @@
-from cpg.hopf import *
-from cpg.rnn_oscillator import *
 from simulation.dynamic_model import *
 from jax import jit
 import jax
 import jax.ops
 import jax.lax
+
+from jax.experimental.ode import odeint as odeint_jax
+from jax.config import config
+config.update("jax_enable_x64", True)
 
 
 @jit
@@ -121,7 +123,7 @@ def simulate_rnn_oscillator(p):
 
     # Set up network.
     taus = p[RNN_TAUS]
-    biases = p[RNN_BIAS]
+    biases = p[RNN_BIASES]
     weights = np.array(p[RNN_WEIGHTS]).reshape(size, size)
     states = p[RNN_STATES]
     gains = p[RNN_GAINS]
@@ -132,7 +134,7 @@ def simulate_rnn_oscillator(p):
         _output, _state = current_state
         external_inputs = np.zeros(size)  # No external inputs.
         total_inputs = external_inputs + np.dot(weights, _output)
-        _state += dt * (1 / taus) * (total_inputs - _state)
+        _state += dt * (1. / taus) * (total_inputs - _state)
         _out = jax.nn.sigmoid(gains * (_state + biases))
         return (_out, _state), _out
 

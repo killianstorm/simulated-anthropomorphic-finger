@@ -13,8 +13,6 @@ def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
         init: dict containing initial values for the parameters to optimise
     """
 
-    print("START GRAD")
-
     @jit
     def _loss_wrapper(p):
         """

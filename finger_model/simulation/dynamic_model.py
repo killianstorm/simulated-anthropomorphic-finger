@@ -1,15 +1,84 @@
 from sympy import *
 from sympy.physics.mechanics import *
-from jax.config import config
 
 import jax.numpy as np
 
-from finger_model.simulation.parameters import *
 
+from jax.config import config
 config.update("jax_enable_x64", True)
 
 init_printing()
 
+
+##################################
+# Variables defining the finger. #
+##################################
+
+# Max force when using tendons.
+MAX_FORCE_TENDONS = 40.
+
+# Max torque when using torques.
+MAX_TORQUE = 2.
+
+# True if using tendons, False if using torques
+ENABLE_TENDONS = False
+
+# True if using ligaments, False if not.
+ENABLE_LIGAMENTS = False
+
+# Lengths of each phalanx.
+lengths = np.array([0.09955, 0.06687, 0.04291])
+
+# Mass of each phalanx.
+masses = np.array([.150, 0.060, .025])
+
+# Inertia of each phalanx
+inertias = np.array([masses[0] * (lengths[0] ** 2) * (1. / 12.),
+                     masses[1] * (lengths[1] ** 2) * (1. / 12.),
+                     masses[2] * (lengths[2] ** 2) * (1. / 12.)])
+
+# The intitial positions of the finger.
+initial_positions = np.array([np.pi / 2, np.pi / 2, np.pi / 2,    # Angles
+                                     0.,        0.,         0.])  # Angle velocities
+
+# Keys for dictionaries.
+T_FS = 'fs'
+T_IO = 'io'
+T_FP = 'fp'
+T_ED = 'ed'
+
+J_DIP = 'dip'
+J_PIP = 'pip'
+J_MCP = 'mcp'
+
+# Moment arms of each joint for each tendon.
+RADII = {
+    J_DIP: {
+        T_FP: 0.024 / 2.,
+        T_ED: 0.010 / 2.
+    },
+    J_PIP: {
+        T_FS: 0.034 / 2.,
+        T_IO: 0.020 / 2.,
+        T_FP: 0.042 / 2.,
+        T_ED: 0.020 / 2.
+    },
+    J_MCP: {
+        T_FS: 0.052 / 2.,
+        T_IO: 0.024 / 2.,
+        T_FP: 0.044 / 2.,
+        T_ED: 0.036 / 2.
+    }
+}
+
+# CTRNN keys
+RNN_SIZE_TENDONS = 4
+RNN_SIZE_TORQUES = 3
+RNN_TAUS = 'rnn_tau'
+RNN_BIASES = 'rnn_bias'
+RNN_STATES = 'rnn_states'
+RNN_GAINS = 'rnn_gians'
+RNN_WEIGHTS = 'rnn_weights'
 
 def equations_of_motion():
     """
@@ -128,8 +197,7 @@ def equations_of_motion():
     pip_angle_bounds = (d2r(60), d2r(220))
     dip_angle_bounds = (d2r(80), d2r(185))
 
-
-    if tendons:
+    if ENABLE_TENDONS:
         # DIP moment caused by FP.
         M_FP_DIP = - F_fp * RADII[J_DIP][T_FP]
 
@@ -174,7 +242,7 @@ def equations_of_motion():
     else:
         # If not using ligaments.
         # Force list with disabled ligaments.
-        FL = [(r_pp, tau1 * N.zt),  # Tendon torques
+        FL = [(r_pp, tau1 * N.z),  # Tendon torques
               (r_mp, tau2 * N.z),
               (r_dp, tau3 * N.z),
 
