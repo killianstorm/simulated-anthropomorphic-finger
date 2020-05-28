@@ -111,7 +111,7 @@ init_params = {
 iterations = 100000
 learning_rate = 0.1
 print("GOGOGO")
-gradbest = grad_oscillator(loss_angles, iterations, learning_rate, grad_params, init_params)
+gradbest = gradient_descent(loss_angles, iterations, learning_rate, grad_params, init_params)
 # gradbest = {
 #     'interval': interval,
 #     RNN_TAUS: np.array([0.09893328, 0.64548118, 1.93432572]),

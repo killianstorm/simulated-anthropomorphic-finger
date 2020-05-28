@@ -8,7 +8,7 @@ from tools import plots
 import numpy as num
 
 # Interval.
-tmax, dt = 2., 0.1
+tmax, dt = 3., 0.04
 
 refresh_rate = tmax/dt
 interval = num.arange(0, tmax + dt, dt)
@@ -34,13 +34,13 @@ init_params = {
 # plt.title("Reference torques")
 # plt.show()
 
-p_sine = {
-    'interval': interval,
-    'amplitudes': np.array([0., 0., 40., 23.]),
-    'phases': np.array([1., 1., .21, 1.])
-}
-
-reference = simulate_sin(p_sine)
+# p_sine = {
+#     'interval': interval,
+#     'amplitudes': np.array([0., 0., 40., 23.]),
+#     'phases': np.array([1., 1., .21, 1.])
+# }
+#
+# reference = simulate_sin(p_sine)
 # p_constant = {
 #     'F_fs': 25.,
 #     'F_io': 0.,
@@ -53,16 +53,38 @@ reference = simulate_sin(p_sine)
 
 # plots.animation(reference, dt, "tendons", tendons=True)
 
-plt.plot(reference['end_effector'][0], reference['end_effector'][1])
-plt.title("Reference")
-plt.show()
+# plt.plot(reference['end_effector'][0], reference['end_effector'][1])
+# plt.title("Reference")
+# plt.show()
+
+# p_predefined = {
+#     'interval': interval,
+#     'F_fs': reference['torques'][:, 0],
+#     'F_io': reference['torques'][:, 1],
+#     'F_fp': reference['torques'][:, 2],
+#     'F_ed': reference['torques'][:, 3],
+# }
+
+ed, fp = [], []
+which = False
+period = 8 * dt
+for i in interval:
+    if i % period == 0:
+        which = not which
+
+    if which:
+        fp.append(3.)
+        ed.append(0.)
+    else:
+        ed.append(3.)
+        fp.append(0.)
 
 p_predefined = {
     'interval': interval,
-    'F_fs': reference['torques'][:, 0],
-    'F_io': reference['torques'][:, 1],
-    'F_fp': reference['torques'][:, 2],
-    'F_ed': reference['torques'][:, 3],
+    'F_fs': np.zeros(interval.shape[0]),
+    'F_io': np.zeros(interval.shape[0]),
+    'F_fp': np.array(fp),
+    'F_ed': np.array(ed),
 }
 
 reference = simulate_predefined(p_predefined)
@@ -99,7 +121,7 @@ init_params = {
 iterations = 10000
 learning_rate = 0.1
 print("GOGOGO")
-gradbest = grad_oscillator(loss_end_effector, iterations, learning_rate, grad_params, init_params)
+gradbest = gradient_descent(loss_end_effector, iterations, learning_rate, grad_params, init_params)
 print(gradbest)
 
 approximation = simulate_rnn_oscillator(gradbest)

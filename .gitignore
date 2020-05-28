@@ -1,6 +1,13 @@
+*.mp4
+__pycache__
+finger_model/simulation/__pycache__
+.DS_store
+.ipynb_checkpoints
+
+
 jax/
 trash/
-finger_model2/outcmaes
+
 # Created by https://www.gitignore.io/api/venv,pycharm
 # Edit at https://www.gitignore.io/?templates=venv,pycharm
 

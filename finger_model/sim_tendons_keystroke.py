@@ -43,7 +43,7 @@ init_params = {
 iterations = 100000
 learning_rate = 1.
 print("GOGOGO")
-gradbest = grad_oscillator(loss_angles, iterations, learning_rate, grad_params, init_params)
+gradbest = gradient_descent(loss_angles, iterations, learning_rate, grad_params, init_params)
 print(gradbest)
 
 approximation = simulate_rnn_oscillator(gradbest)

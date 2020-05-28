@@ -41,7 +41,7 @@ p_sine = {
     'phases': np.array([2.5, 5., 5.]),
     'interval': interval
 }
-reference = simulate_sin(p_sine)
+reference = simulate_sine(p_sine)
 
 plt.cla()
 plt.plot(interval, reference['torques'][:, 0], label="MCP")

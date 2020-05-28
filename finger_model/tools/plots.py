@@ -51,42 +51,9 @@ def fig2image(fig):
     return image
 
 
-def oscillator_loss_function(loss, interval, params, tau2, tau3):
-    # Create reference.
-
-    reference = simulate_hopf(interval, *params)
-    # animation(reference, "reference")
-
-    init_params = params
-
-    vals = num.zeros((tau2.shape[0], tau3.shape[0]))
-    for i in range(tau2.shape[0]):
-        for j in range(tau3.shape[0]):
-            # print(i, j)
-            init_params[SCALE1] = tau2[i]
-            init_params[SCALE2] = tau3[j]
-            temp = simulate_hopf(interval, *init_params)
-            vals[i, j] = loss(reference, temp)
-
-    TAU2, TAU3 = np.meshgrid(tau2, tau3)
-
-    fig = plt.figure()
-    ax = Axes3D(fig)
-    ax.plot_surface(TAU2, TAU3, vals)
-    plt.xlabel('tau2')
-    plt.ylabel('tau3')
-    plt.show()
-
-    # Learn parameters to reproduce reference.
-    # CMA_ES_oscillator(reference)
-    # grad_oscillator(reference, loss_end_effector, 50, 0.1, *params)
-
-
 def rotate(point, origin, angle):
     """
-    Rotate a point counterclockwise by a given angle around a given origin.
-
-    The angle should be given in radians.
+    Rotate a point counterclockwise by a given angle around a given origin. The angle should be given in radians.
     """
     ox, oy = origin
     px, py = point
@@ -97,6 +64,10 @@ def rotate(point, origin, angle):
 
 
 def animation(history, dt, name=None, history2=None, tendons=False):
+    """
+    Creates an animation of a simulated trajectory. It also allows a second trajectory to be plotted for comparison.
+    """
+
     key_points = history['positions']
 
     fig = plt.figure(figsize=(8.3333, 6.25), dpi=288)
@@ -196,8 +167,6 @@ def animation(history, dt, name=None, history2=None, tendons=False):
             plt.text(xpos, 0.15, 'MCP: ' + str(round(torques[i, 0], 2)))
             plt.text(xpos, 0.10, 'PIP: ' + str(round(torques[i, 1], 2)))
             plt.text(xpos, 0.05, 'D IP: ' + str(round(torques[i, 2], 2)))
-
-
 
         if history2 is not None:
             plt.plot(history2['positions'][:4, i], history2['positions'][4:, i], marker='.')
