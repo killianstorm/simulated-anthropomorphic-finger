@@ -1,6 +1,6 @@
 from jax import value_and_grad
 from simulation.simulator import *
-
+from datetime import datetime
 
 def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
     """
@@ -12,6 +12,9 @@ def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
         grad_params_names: the names of the params of which to optimise
         init: dict containing initial values for the parameters to optimise
     """
+
+    starttime = datetime.now()
+    print("Current time is " + str(starttime.strftime("_%d-%b-%Y_(%H:%M:%S.%f)")))
 
     @jit
     def _loss_wrapper(p):
@@ -52,10 +55,10 @@ def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
         # Take grad and get value.
         vals, grads = grad_function(grad_params, static_params)
 
-        print("ITERATION ", i, " LOSS: ", vals)
+        print("########### ITERATION ", i, " LOSS: ", vals)
 
-        # Every 10th iteration, print current grads, momentum and optimised parameters.
-        if i % 10 == 0:
+        # Every 5th iteration, print current grads, momentum and optimised parameters.
+        if i % 5 == 0:
             print("GRADS: ", grads, " MOMENTUM: ", momentum)
 
             print("## Current optimal parameters")
@@ -66,5 +69,17 @@ def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
         for key in grads:
             momentum[key] = beta * momentum[key] + (1 - beta) * grads[key]
             grad_params[key] -= learning_rate * momentum[key]
+
+        nexttime = datetime.now()
+
+        if i == 0:
+            print("Compiling took (in seconds): " + str(nexttime.timestamp() - starttime.timestamp()))
+            starttime = datetime.now()
+        else:
+            print("Current time: " + str(nexttime.strftime("_%d-%b-%Y_(%H:%M:%S.%f)")))
+            print("Time passed: " + str(nexttime - starttime))
+            print("Average seconds per iteration: " + str((nexttime.timestamp() - starttime.timestamp()) / i))
+
+        print ("###########\n")
 
     return {**grad_params, **static_params}

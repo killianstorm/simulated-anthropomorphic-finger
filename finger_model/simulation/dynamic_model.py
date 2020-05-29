@@ -21,10 +21,10 @@ MAX_FORCE_TENDONS = 40.
 MAX_TORQUE = 2.
 
 # True if using tendons, False if using torques
-ENABLE_TENDONS = False
+ENABLE_TENDONS = True
 
 # True if using ligaments, False if not.
-ENABLE_LIGAMENTS = False
+ENABLE_LIGAMENTS = True
 
 # Lengths of each phalanx.
 lengths = np.array([0.09955, 0.06687, 0.04291])
@@ -37,7 +37,7 @@ inertias = np.array([masses[0] * (lengths[0] ** 2) * (1. / 12.),
                      masses[1] * (lengths[1] ** 2) * (1. / 12.),
                      masses[2] * (lengths[2] ** 2) * (1. / 12.)])
 
-# The intitial positions of the finger.
+# The initial positions of the finger.
 initial_positions = np.array([np.pi / 2, np.pi / 2, np.pi / 2,    # Angles
                                      0.,        0.,         0.])  # Angle velocities
 
@@ -77,7 +77,7 @@ RNN_SIZE_TORQUES = 3
 RNN_TAUS = 'rnn_tau'
 RNN_BIASES = 'rnn_bias'
 RNN_STATES = 'rnn_states'
-RNN_GAINS = 'rnn_gians'
+RNN_GAINS = 'rnn_gains'
 RNN_WEIGHTS = 'rnn_weights'
 
 def equations_of_motion():

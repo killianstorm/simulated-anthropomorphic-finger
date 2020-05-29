@@ -1,4 +1,5 @@
 *.mp4
+*.png
 __pycache__
 finger_model/simulation/__pycache__
 .DS_store

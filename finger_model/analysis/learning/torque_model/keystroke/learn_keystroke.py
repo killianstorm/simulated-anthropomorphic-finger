@@ -14,5 +14,8 @@ p_sine = {
 reference = simulate_sine(p_sine)
 plots.animate(reference, dt, "keystroke", tendons=True, di=100)
 
+
+
+
 # Learn to reproduce trajectory using gradient descent.
-learn_gradient_descent(reference, interval, 10, 1., loss_function=loss_angles, tendons=False, name="keystroke")
+learn_gradient_descent(reference, interval, 3, .1, loss_function=loss_angles, tendons=False, name="keystroke")

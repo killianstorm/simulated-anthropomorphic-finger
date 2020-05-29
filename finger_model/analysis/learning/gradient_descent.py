@@ -5,6 +5,8 @@ import numpy as num
 import matplotlib.pyplot as plt
 from tools import plots
 
+from datetime import datetime
+
 
 def plot_torques_or_forces(torques, interval, title, tendons=False):
 
@@ -24,6 +26,7 @@ def plot_torques_or_forces(torques, interval, title, tendons=False):
     plt.title(title)
     plt.legend(loc="upper left")
     plt.xlabel("Time [s]")
+    plt.savefig(title + ".png", dpi=244)
     plt.show()
 
 
@@ -51,7 +54,9 @@ def simulate_ctrnn_params_and_animate(params, name, tendons=False):
 
     plt.plot(reference['end_effector'][0], reference['end_effector'][1], label="reference")
     plt.plot(approximation['end_effector'][0], approximation['end_effector'][1], label="approximated")
-    plt.title("Comparison reference and approximated for " + name)
+    ti = "Comparison reference and approximated for " + name
+    plt.title(ti)
+    plt.savefig(ti + ".png", dpi=244)
     plt.show()
 
     print("Plotting the used forces/torques")
@@ -81,8 +86,11 @@ def learn_gradient_descent(reference, interval, iterations, learning_rate, name,
     name = str(name)
 
     # Plot reference trajectory.
+    plt.cla()
     plt.plot(reference['end_effector'][0], reference['end_effector'][1])
-    plt.title("Reference trajectory " + name)
+    ti = "Reference trajectory " + name
+    plt.title(ti)
+    plt.savefig(ti + ".png", dpi=244)
     plt.show()
 
     size = RNN_SIZE_TENDONS if tendons else RNN_SIZE_TORQUES
