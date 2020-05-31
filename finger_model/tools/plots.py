@@ -68,7 +68,17 @@ def animate(reference, dt, name=None, predicted=None, tendons=False, di=1):
     Creates an animation of a simulated trajectory. It also allows a second trajectory to be plotted for comparison.
     """
 
-    key_points = reference['positions']
+    # Only to be used if no data about other phalanges.
+    draw_end_effector_trajectory = False
+
+    if predicted is None:
+        key_points = reference['positions']
+        torques = reference['torques']
+        angles = reference['angles']
+    else:
+        key_points = predicted['positions']
+        torques = predicted['torques']
+        angles = predicted['angles']
 
     fig = plt.figure(figsize=(8.3333, 6.25), dpi=288)
     ax = fig.add_subplot(111)
@@ -76,21 +86,28 @@ def animate(reference, dt, name=None, predicted=None, tendons=False, di=1):
     images = []
     N = key_points.shape[1]
 
-    torques = reference['torques']
-    angles = reference['angles']
 
     for i in tqdm.tqdm(range(0, N, di)):
 
         plt.cla()
 
-        plt.plot(key_points[:4, i], key_points[4:, i], marker='.', linewidth=5, markersize=5, label="reference")
-        plt.scatter(reference['end_effector'][0][:i], reference['end_effector'][1][:i], s=0.1, label="reference")
+        # Plot reference or approximated finger movement.
+        if predicted is None:
+            plt.plot(key_points[:4, i], key_points[4:, i], marker='.', linewidth=5, markersize=5, label="ref. finger")
+            plt.scatter(reference['end_effector'][0][:i], reference['end_effector'][1][:i], s=0.1, label="ref. trajectory")
+        else:
+            plt.plot(key_points[:4, i], key_points[4:, i], marker='.', linewidth=5, markersize=5, label="approx. finger")
+            plt.scatter(predicted['end_effector'][0][:i], predicted['end_effector'][1][:i], s=0.1, label="approx. trajectory")
+
+            if 'positions' in reference:
+                plt.plot(reference['positions'][:4, i], reference['positions'][4:, i], marker='.', label="ref. finger")
+            plt.scatter(reference['end_effector'][0][:i], reference['end_effector'][1][:i], s=0.1, label="ref. trajectory")
+
+            plt.legend()
+
+        # Plot reference trajectory.
 
         if tendons:
-
-            alpha1 = (num.pi / 2 + angles[i, 0])
-            alpha2 = num.pi - (angles[i, 0] - angles[i, 1])
-            alpha3 = num.pi - (angles[i, 1] - angles[i, 2])
 
             ### FS tendon ###
             # MCP
@@ -163,19 +180,9 @@ def animate(reference, dt, name=None, predicted=None, tendons=False, di=1):
             plt.text(-0.25, -RADII[J_MCP][T_ED] + 0.025, 'ED: ' + str(round(torques[i, 3], 2)))
         else:
             xpos = -0.25
-            plt.text(xpos, 0.15, 'MCP: ' + str(round(torques[i, 0], 2)))
-            plt.text(xpos, 0.10, 'PIP: ' + str(round(torques[i, 1], 2)))
-            plt.text(xpos, 0.05, 'D IP: ' + str(round(torques[i, 2], 2)))
-
-        if predicted is not None:
-            plt.plot(predicted['positions'][:4, i], predicted['positions'][4:, i], marker='.', label="predicted")
-            plt.scatter(predicted['end_effector'][0][:i], predicted['end_effector'][1][:i], s=0.1, label="predicted")
-            plt.legend()
-
-            xpos = -0.25
-            plt.text(xpos, -0.05, 'Pred. MCP: ' + str(round(torques[i, 0], 2)))
-            plt.text(xpos, -0.10, 'Pred. PIP: ' + str(round(torques[i, 1], 2)))
-            plt.text(xpos, -0.15, 'Pred. DIP: ' + str(round(torques[i, 2], 2)))
+            plt.text(xpos, 0.15, 'Approx. MCP: ' + str(round(torques[i, 0], 2)))
+            plt.text(xpos, 0.10, 'Approx. PIP: ' + str(round(torques[i, 1], 2)))
+            plt.text(xpos, 0.05, 'Approx. DIP: ' + str(round(torques[i, 2], 2)))
 
         plt.axhline(0)
         plt.axis('equal')

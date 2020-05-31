@@ -21,7 +21,7 @@ MAX_FORCE_TENDONS = 40.
 MAX_TORQUE = 2.
 
 # True if using tendons, False if using torques
-ENABLE_TENDONS = False
+ENABLE_TENDONS = True
 
 # True if using ligaments, False if not.
 ENABLE_LIGAMENTS = False

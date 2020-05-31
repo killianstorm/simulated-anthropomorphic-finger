@@ -27,4 +27,4 @@ reference = {
 }
 
 # Learn to reproduce trajectory using gradient descent.
-learn_gradient_descent(reference, interval, 3, .1, loss_function=loss_end_effector, tendons=False, name="circle")
+learn_gradient_descent(reference, interval, 2, .1, loss_function=loss_end_effector, tendons=False, name="circle")
