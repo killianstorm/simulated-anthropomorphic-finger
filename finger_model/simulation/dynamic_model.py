@@ -21,10 +21,10 @@ MAX_FORCE_TENDONS = 40.
 MAX_TORQUE = 2.
 
 # True if using tendons, False if using torques
-ENABLE_TENDONS = True
+ENABLE_TENDONS = False
 
 # True if using ligaments, False if not.
-ENABLE_LIGAMENTS = True
+ENABLE_LIGAMENTS = False
 
 # Lengths of each phalanx.
 lengths = np.array([0.09955, 0.06687, 0.04291])
@@ -216,15 +216,43 @@ def equations_of_motion():
         M_FP_MCP = - F_fp * RADII[J_MCP][T_FP]
         M_ED_MCP = - F_ed * RADII[J_MCP][T_ED]
 
+        def spring(val, bounds, negative=False):
+            k = 0.01
+            s = (val - bounds[0]) / (bounds[1] - bounds[0]) * k
+
+            return 1 + (k - s) if negative else 1 + s
+
         # Moments are added to become torques for each joint.
-        tau3 = M_FP_DIP - M_ED_DIP
-        tau2 = M_FS_PIP - M_IO_PIP + M_FP_PIP - M_ED_PIP
-        tau1 = M_FS_MCP + M_IO_MCP + M_FP_MCP - M_ED_MCP
+        # tau3 =   M_FP_DIP * spring(alpha3, dip_angle_bounds) \
+        #        - M_ED_DIP * spring(alpha3, dip_angle_bounds, True)
+        #
+        # tau2 =   M_FS_PIP * spring(alpha2, pip_angle_bounds) \
+        #        - M_IO_PIP * spring(alpha2, pip_angle_bounds, True) \
+        #        + M_FP_PIP * spring(alpha2, pip_angle_bounds) \
+        #        - M_ED_PIP * spring(alpha2, pip_angle_bounds, True)
+        #
+        # tau1 =   M_FS_MCP * spring(alpha1, mcp_angle_bounds) \
+        #        + M_IO_MCP * spring(alpha1, mcp_angle_bounds) \
+        #        + M_FP_MCP * spring(alpha1, mcp_angle_bounds) \
+        #        - M_ED_MCP * spring(alpha1, mcp_angle_bounds, True)
+
+        tau3 =   M_FP_DIP \
+               - M_ED_DIP
+
+        tau2 =   M_FS_PIP \
+               - M_IO_PIP \
+               + M_FP_PIP \
+               - M_ED_PIP
+
+        tau1 =   M_FS_MCP \
+               + M_IO_MCP \
+               + M_FP_MCP \
+               - M_ED_MCP
 
     # Friction coefficients.
     c_fr_mcp = 0.1
     c_fr_pip = 0.1
-    c_fr_dip = 0.1
+    c_fr_dip = 0.05
 
     if ENABLE_LIGAMENTS:
         # If using ligaments.

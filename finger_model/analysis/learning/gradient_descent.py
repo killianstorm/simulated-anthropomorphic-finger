@@ -62,7 +62,8 @@ def simulate_ctrnn_params_and_animate(params, name, tendons=False):
     print("Plotting the used forces/torques")
 
     title = "Forces" if tendons else "Torques"
-    plot_torques_or_forces(reference['torques'], params['interval'], title + " for reference trajectory " + name, tendons)
+    if 'torques' in reference:
+        plot_torques_or_forces(reference['torques'], params['interval'], title + " for reference trajectory " + name, tendons)
     plot_torques_or_forces(approximation['torques'], params['interval'], title + " for approximated trajectory " + name, tendons)
 
     print("Animating the comparison between the reference and the approximation.")

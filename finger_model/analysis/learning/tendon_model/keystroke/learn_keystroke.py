@@ -7,17 +7,19 @@ interval = num.arange(0, tmax + dt, dt)
 
 ed, fp = [], []
 which = False
-period = 8 * dt
+period = 5000 * dt
 for i in interval:
     if i % period == 0:
         which = not which
 
     if which:
-        fp.append(3.)
+        fp.append(10.)
         ed.append(0.)
     else:
-        ed.append(3.)
+        ed.append(10.)
         fp.append(0.)
+
+
 
 p_predefined = {
     'interval': interval,
@@ -27,8 +29,11 @@ p_predefined = {
     'F_ed': np.array(ed),
 }
 
+import time
+t1 = time.time()
 reference = simulate_predefined(p_predefined)
-plots.animate(reference, dt, "keystroke", tendons=True, di=100)
+print("Time passed: ", time.time() - t1)
+# plots.animate(reference, dt, "keystroke", tendons=True, di=100)
 
 # Learn to reproduce trajectory using gradient descent.
-learn_gradient_descent(reference, interval, 3, .1, loss_function=loss_angles, tendons=False, name="keystroke")
+learn_gradient_descent(reference, interval, 100, .01, loss_function=loss_angles, tendons=True, name="keystroke")

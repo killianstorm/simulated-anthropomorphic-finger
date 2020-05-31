@@ -79,8 +79,27 @@ def compare_sim_to_phys(method, title):
     plt.show()
 
     # Create animation
-    # plots.animation(simulated_trajectory, dt, "comparison_" + str(method), tendons=True)
+    # plots.animate(simulated_trajectory, dt, "comparison_" + str(method), tendons=True)
 
+    # # Read csv.
+    # def read_csv(file, keys):
+    #     mydict = {}
+    #     with open(file, mode='r') as infile:
+    #         reader = csv.reader(infile)
+    #         mydict['time'] = []
+    #         mydict['F'] = []
+    #         for rows in reader:
+    #             mydict['time'].append(num.float64(rows[0]))
+    #             mydict['F'].append(num.float64(rows[1]))
+    #
+    #         mydict[keys[0]] = np.array(mydict['time'], dtype="float64")
+    #         mydict[keys[1]] = np.array(mydict['F'], dtype="float64")
+    #     return mydict
+    #
+    # measured = read_csv("ipj_coupling.csv", ('PIP', 'DIP'))
+    #
+    # # plt.cla()
+    #
     # def r2d(rads):
     #     return rads * 180 / np.pi
     #
@@ -92,8 +111,8 @@ def compare_sim_to_phys(method, title):
     # rel_pip = r2d((np.pi - (mcp_angles - pip_angles)))
     # rel_dip = r2d((np.pi - (pip_angles - dip_angles)))
     #
-    # plt.scatter(rel_pip, rel_dip, s=1., label="Simulated")
-    # # plt.scatter(180 - measured['PIP'], 180 - measured['DIP'], s=1., label="Physical")
+    # plt.scatter(rel_pip, rel_dip, label="Simulated")
+    # plt.scatter(180 - measured['PIP'], 180 - measured['DIP'], label="Physical")
     # plt.title("IPJ coupling simplified expression")
     # plt.xlabel("PIP relative angle [degrees]")
     # plt.ylabel("DIP relative angle [degrees]")
@@ -103,11 +122,11 @@ def compare_sim_to_phys(method, title):
 # Full grasp.
 compare_sim_to_phys("grasp", "full grasp")
 
-# Isometric PIP.
-compare_sim_to_phys("0PIP", "isometric PIP with higher friction")
-
-# Isometric MCP.
-compare_sim_to_phys("0MCP", "isometric MCP with higher friction")
-
-# Complex.
-compare_sim_to_phys("complex", "complex trajectory")
+# # Isometric PIP.
+# compare_sim_to_phys("0PIP", "isometric PIP with higher friction")
+#
+# # Isometric MCP.
+# compare_sim_to_phys("0MCP", "isometric MCP with higher friction")
+#
+# # Complex.
+# compare_sim_to_phys("complex", "complex trajectory")
