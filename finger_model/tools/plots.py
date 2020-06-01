@@ -1,4 +1,4 @@
-from simulation.simulator import *
+from finger_model.simulation.simulator import *
 from moviepy.editor import ImageSequenceClip
 
 import matplotlib.pyplot as plt

@@ -1,5 +1,5 @@
-from simulation.optimizer import *
-from simulation.loss_functions import *
+from finger_model.simulation.optimizer import *
+from finger_model.simulation.loss_functions import *
 
 import csv
 

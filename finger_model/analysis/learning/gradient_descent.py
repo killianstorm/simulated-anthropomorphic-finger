@@ -1,9 +1,9 @@
-from simulation.optimizer import *
-from simulation.loss_functions import *
+from finger_model.simulation.optimizer import *
+from finger_model.simulation.loss_functions import *
 
 import numpy as num
 import matplotlib.pyplot as plt
-from tools import plots
+from finger_model.tools import plots
 
 from datetime import datetime
 
@@ -67,7 +67,7 @@ def simulate_ctrnn_params_and_animate(params, name, tendons=False):
     plot_torques_or_forces(approximation['torques'], params['interval'], title + " for approximated trajectory " + name, tendons)
 
     print("Animating the comparison between the reference and the approximation.")
-    plots.animate(reference, dt, name, approximation, di=100)
+    plots.animate(reference, dt, name, approximation, di=10)
 
     print("Process has finished.")
 

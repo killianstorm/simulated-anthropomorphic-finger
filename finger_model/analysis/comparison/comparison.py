@@ -1,8 +1,8 @@
 import csv
 import matplotlib.pyplot as plt
 
-from simulation.optimizer import *
-from simulation.loss_functions import *
+from finger_model.simulation.optimizer import *
+from finger_model.simulation.loss_functions import *
 from tools import plots
 
 import numpy as num
