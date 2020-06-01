@@ -71,6 +71,8 @@ def animate(reference, dt, name=None, predicted=None, tendons=False, di=1):
     # Only to be used if no data about other phalanges.
     draw_end_effector_trajectory = False
 
+    di = 0.01 / dt # Set framerate of 100 Hz
+
     if predicted is None:
         key_points = reference['positions']
         torques = reference['torques']

@@ -14,7 +14,7 @@ p_sine = {
 t1 = time.time()
 reference = simulate_sine(p_sine)
 print("Time passed: ", time.time() - t1)
-plots.animate(reference, dt, "keystroke", tendons=True, di=10)
+plots.animate(reference, dt, "keystroke", tendons=True)
 
 # Learn to reproduce trajectory using gradient descent.
 learn_gradient_descent(reference, interval, 250, .1, loss_function=loss_angles, tendons=False, name="keystroke")
