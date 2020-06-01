@@ -96,6 +96,11 @@ def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
 
     best_params = array_to_dict(result.x)
 
+    endtime = datetime.now()
+    print("End time: " + str(starttime.strftime("_%d-%b-%Y_(%H:%M:%S.%f)")))
+    print("Time passed: " + str(endtime - starttime))
+    print("Time per iteration: " + str((endtime - starttime) / iterations))
+
     return {**best_params, **static_params}
 
 
