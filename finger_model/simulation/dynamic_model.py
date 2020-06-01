@@ -21,7 +21,7 @@ MAX_FORCE_TENDONS = 40.
 MAX_TORQUE = 2.
 
 # True if using tendons, False if using torques
-ENABLE_TENDONS = True
+ENABLE_TENDONS = False
 
 # True if using ligaments, False if not.
 ENABLE_LIGAMENTS = False
@@ -254,6 +254,9 @@ def equations_of_motion():
     c_fr_pip = 0.1
     c_fr_dip = 0.05
 
+    def sigmoid_heaviside(x):
+        return 1. / (1 + exp(- 16 * (x - 1)))
+
     if ENABLE_LIGAMENTS:
         # If using ligaments.
         c_ligament = 25.
@@ -263,9 +266,9 @@ def equations_of_motion():
               (r_mp, tau2 * N.z),
               (r_dp, tau3 * N.z),
 
-              (r_pp,    (-c_fr_mcp * alpha1d - Heaviside(-tau1) * Heaviside(mcp_angle_bounds[0] - alpha1) * c_ligament * alpha1d - Heaviside(tau1) * Heaviside(alpha1 - mcp_angle_bounds[1]) * c_ligament * alpha1d) * N.z),  # Joints
-              (j_pp_mp, (-c_fr_pip * alpha2d - Heaviside(-tau2) * Heaviside(pip_angle_bounds[0] - alpha2) * c_ligament * alpha2d - Heaviside(tau2) * Heaviside(alpha2 - pip_angle_bounds[1]) * c_ligament * alpha2d) * N.z),
-              (j_mp_dp, (-c_fr_dip * alpha3d - Heaviside(-tau3) * Heaviside(dip_angle_bounds[0] - alpha3) * c_ligament * alpha3d - Heaviside(tau3) * Heaviside(alpha3 - dip_angle_bounds[1]) * c_ligament * alpha3d) * N.z)
+              (r_pp,    (-c_fr_mcp * alpha1d - sigmoid_heaviside(-tau1) * sigmoid_heaviside(mcp_angle_bounds[0] - alpha1) * c_ligament * alpha1d - sigmoid_heaviside(tau1) * sigmoid_heaviside(alpha1 - mcp_angle_bounds[1]) * c_ligament * alpha1d) * N.z),  # Joints
+              (j_pp_mp, (-c_fr_pip * alpha2d - sigmoid_heaviside(-tau2) * sigmoid_heaviside(pip_angle_bounds[0] - alpha2) * c_ligament * alpha2d - sigmoid_heaviside(tau2) * sigmoid_heaviside(alpha2 - pip_angle_bounds[1]) * c_ligament * alpha2d) * N.z),
+              (j_mp_dp, (-c_fr_dip * alpha3d - sigmoid_heaviside(-tau3) * sigmoid_heaviside(dip_angle_bounds[0] - alpha3) * c_ligament * alpha3d - sigmoid_heaviside(tau3) * sigmoid_heaviside(alpha3 - dip_angle_bounds[1]) * c_ligament * alpha3d) * N.z)
               ]
     else:
         # If not using ligaments.
@@ -313,7 +316,7 @@ def equations_of_motion():
     fm = LM.forcing_full.subs(unknown_dict)
 
     # Map sympy functions to jax numpy functions when lambdifying
-    mapping = {'sin': np.sin, 'cos': np.cos, 'pi': np.pi, 'array': np.array, 'ImmutableDenseMatrix': np.array, 'Heaviside': lambda x: np.heaviside(x, 1)}
+    mapping = {'sin': np.sin, 'cos': np.cos, 'pi': np.pi, 'array': np.array, 'ImmutableDenseMatrix': np.array, 'exp': np.exp}
 
     # Lambdify matrices.
     mass_matrix = lambdify([unknowns] + parameters, mm, mapping)

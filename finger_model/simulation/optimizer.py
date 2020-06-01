@@ -2,6 +2,9 @@ from jax import value_and_grad
 from simulation.simulator import *
 from datetime import datetime
 
+from scipy.optimize import minimize
+
+
 def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
     """
     Performs gradient descent.
@@ -12,6 +15,10 @@ def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
         grad_params_names: the names of the params of which to optimise
         init: dict containing initial values for the parameters to optimise
     """
+
+    size = RNN_SIZE_TORQUES
+    if ENABLE_TENDONS:
+        size = RNN_SIZE_TENDONS
 
     starttime = datetime.now()
     print("Current time is " + str(starttime.strftime("_%d-%b-%Y_(%H:%M:%S.%f)")))
@@ -46,40 +53,85 @@ def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
             static_params[key] = init[key]
         momentum[key] = 0.
 
-    # Beta value for momentum
-    beta = 0.9
+    def dict_to_array(d):
+        total = np.concatenate([
+            d[RNN_TAUS],
+            d[RNN_BIASES],
+            d[RNN_GAINS],
+            d[RNN_STATES],
+            d[RNN_WEIGHTS].ravel()
+        ])
+        return total
 
-    # Perform gradient descent.
-    for i in range(iterations):
+    def array_to_dict(a):
+        d = {}
+        d[RNN_TAUS] = a[:size]
+        d[RNN_BIASES] = a[size:2 * size]
+        d[RNN_GAINS] = a[2 * size:3 * size]
+        d[RNN_STATES] = a[3 * size:4 * size]
+        d[RNN_WEIGHTS] = a[4 * size:].reshape((size, size))
+        return d
 
-        # Take grad and get value.
-        vals, grads = grad_function(grad_params, static_params)
+    def callback(params):
+        print("Iteration done")
+        print("Params: ")
+        print(params)
 
-        print("########### ITERATION ", i, " LOSS: ", vals)
+    def objective(params):
+        p = array_to_dict(params)
+        return _loss_wrapper({**p, **static_params})
 
-        # Every 5th iteration, print current grads, momentum and optimised parameters.
-        if i % 5 == 0:
-            print("GRADS: ", grads, " MOMENTUM: ", momentum)
+    objective_with_grad = jit(value_and_grad(objective))
 
-            print("## Current optimal parameters")
-            print(grad_params)
-            print("##")
+    result = minimize(
+        objective_with_grad,
+        dict_to_array(grad_params),
+        jac=True,
+        method='CG',
+        options={
+            'maxiter': iterations,
+            'disp': True
+        },
+        callback=callback)
 
-        # Update parameters and momentum.
-        for key in grads:
-            momentum[key] = beta * momentum[key] + (1 - beta) * grads[key]
-            grad_params[key] -= learning_rate * momentum[key]
+    best_params = array_to_dict(result.x)
 
-        nexttime = datetime.now()
+    return {**best_params, **static_params}
 
-        if i == 0:
-            print("Compiling took (in seconds): " + str(nexttime.timestamp() - starttime.timestamp()))
-            starttime = datetime.now()
-        else:
-            print("Current time: " + str(nexttime.strftime("_%d-%b-%Y_(%H:%M:%S.%f)")))
-            print("Time passed: " + str(nexttime - starttime))
-            print("Average seconds per iteration: " + str((nexttime.timestamp() - starttime.timestamp()) / i))
 
-        print ("###########\n")
+    # # Beta value for momentum
+    # beta = 0.9
+    #
+    # # Perform gradient descent.
+    # for i in range(iterations):
+    #
+    #     # Take grad and get value.
+    #     vals, grads = grad_function(grad_params, static_params)
+    #
+    #     print("########### ITERATION ", i, " LOSS: ", vals)
+    #
+    #     # Every 5th iteration, print current grads, momentum and optimised parameters.
+    #     if i % 5 == 0:
+    #         print("GRADS: ", grads, " MOMENTUM: ", momentum)
+    #
+    #         print("## Current optimal parameters")
+    #         print(grad_params)
+    #         print("##")
+    #
+    #     # Update parameters and momentum.
+    #     for key in grads:
+    #         momentum[key] = beta * momentum[key] + (1 - beta) * grads[key]
+    #         grad_params[key] -= learning_rate * momentum[key]
+    #
+    #     nexttime = datetime.now()
+    #
+    #     if i == 0:
+    #         print("Compiling took (in seconds): " + str(nexttime.timestamp() - starttime.timestamp()))
+    #         starttime = datetime.now()
+    #     else:
+    #         print("Current time: " + str(nexttime.strftime("_%d-%b-%Y_(%H:%M:%S.%f)")))
+    #         print("Time passed: " + str(nexttime - starttime))
+    #         print("Average seconds per iteration: " + str((nexttime.timestamp() - starttime.timestamp()) / i))
+    #
+    #     print ("###########\n")
 
-    return {**grad_params, **static_params}

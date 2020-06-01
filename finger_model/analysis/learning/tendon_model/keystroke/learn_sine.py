@@ -16,7 +16,7 @@ import time
 t1 = time.time()
 reference = simulate_sine(p_sine)
 print("Time passed: ", time.time() - t1)
-plots.animate(reference, dt, "sine", tendons=True, di=100)
+# plots.animate(reference, dt, "sine_ligaments", tendons=True, di=100)
 
 # Learn to reproduce trajectory using gradient descent.
-learn_gradient_descent(reference, interval, 100, .01, loss_function=loss_angles, tendons=True, name="sine")
+learn_gradient_descent(reference, interval, 1000, .01, loss_function=loss_angles, tendons=True, name="sine")

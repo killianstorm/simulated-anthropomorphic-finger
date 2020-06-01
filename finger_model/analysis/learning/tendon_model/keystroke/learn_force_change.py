@@ -24,7 +24,7 @@ import time
 t1 = time.time()
 reference = simulate_predefined(p_predefined)
 print("Time passed: ", time.time() - t1)
-plots.animate(reference, dt, "force_change", tendons=True, di=100)
+# plots.animate(reference, dt, "force_change", tendons=True, di=100)
 
 # Learn to reproduce trajectory using gradient descent.
 learn_gradient_descent(reference, interval, 1000, .01, loss_function=loss_angles, tendons=True, name="force_change")
