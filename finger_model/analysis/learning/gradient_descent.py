@@ -75,7 +75,7 @@ def simulate_ctrnn_params_and_animate(params, name, tendons=False):
     print("DONE")
 
     loss = loss_end_effector(reference, approximation)
-    print("The loss is: ", loss)
+    print("The end effector loss is: ", loss)
 
     print("Plotting comparison between reference and approximated")
 
@@ -126,7 +126,7 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
 
     # Plot reference trajectory.
     plt.cla()
-    plt.plot(reference['end_effector'][0], reference['end_effector'][1])
+    plt.plot(reference['end_effector'][0], reference['end_effector'][1], label="end effector trajectory")
     ti = "Reference trajectory " + name
     plt.title(ti)
     plot_finger()
@@ -177,7 +177,7 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
         p = array_to_dict(params, RNN_SIZE_TENDONS)
         p['interval'] = interval
         sim = simulate_rnn_oscillator(p)
-        loss = loss_end_effector(sim, reference)
+        loss = loss_function(sim, reference)
         losses.append(loss)
         plt.plot(sim['end_effector'][0], sim['end_effector'][1], color=tuple(grey))
         grey[0] -= offset
