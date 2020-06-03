@@ -1,6 +1,5 @@
 from finger_model.analysis.learning.gradient_descent import *
 
-
 # Interval.
 tmax, dt = 1., 0.001
 interval = num.arange(0, tmax + dt, dt)
@@ -17,11 +16,11 @@ p_predefined = {
     'F_ed': np.zeros(interval.shape[0]),
 }
 
-name = "full grasp trajectory \n with angle loss function"
+name = "full grasp trajectory \n with end-effector loss function"
 reference = simulate_predefined(p_predefined)
 # plots.animate(reference, dt, name, tendons=True)
 
-loss_function = loss_angles
+loss_function = loss_end_effector
 
 # Learn to reproduce trajectory using gradient descent.
 learn_gradient_descent(reference, interval, 250, loss_function=loss_function, tendons=True, name=name)

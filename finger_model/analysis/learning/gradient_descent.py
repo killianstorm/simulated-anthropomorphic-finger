@@ -214,7 +214,7 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
         plt.savefig(title + ".png", dpi=244)
         plt.show()
 
-        plt.plot(np.arange(0, iterations, 1), losses)
+        plt.plot(np.arange(0, len(losses), 1), losses)
         plt.xlabel("Iterations")
         plt.ylabel("Loss (RMSE)")
         ti = "Loss convergence for " + name

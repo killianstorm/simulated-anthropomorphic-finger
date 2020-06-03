@@ -2,17 +2,17 @@ from finger_model.analysis.learning.gradient_descent import *
 
 
 # Interval.
-tmax, dt = 1., 0.001
+tmax, dt = 1.5, 0.001
 interval = num.arange(0, tmax + dt, dt)
 
 ed, fp = [], []
 for i in interval:
-    if i < tmax / 2.:
-        fp.append(10.)
+    if i < tmax / 8.:
+        fp.append(5.)
         ed.append(0.)
     else:
         fp.append(0.)
-        ed.append(10.)
+        ed.append(7.5)
 
 p_predefined = {
     'interval': interval,

@@ -10,11 +10,11 @@ p_sine = {
     'interval': interval
 }
 
-name = "sine trajectory \n with end-effector loss function"
+name = "sine trajectory \n with angle loss function"
 reference = simulate_sine(p_sine)
 # plots.animate(reference, dt, name, tendons=True)
 
-loss_function = loss_end_effector
+loss_function = loss_angles
 
 # Learn to reproduce trajectory using gradient descent.
 learn_gradient_descent(reference, interval, 250, loss_function=loss_function, tendons=True, name=name)
