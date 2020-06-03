@@ -6,6 +6,33 @@ import matplotlib.pyplot as plt
 from finger_model.tools import plots
 
 from datetime import datetime
+import matplotlib as mpl
+
+
+def plot_finger():
+    plt.plot([0, lengths[0], lengths[0] + lengths[1], np.sum(lengths)], [0, 0, 0, 0], marker='.', linewidth=3, markersize=15, color='#1f77b4')
+    plt.text(0 - 0.015, 0.025, 'MCP')
+    plt.text(lengths[0] - 0.015, 0.025, 'PIP')
+    plt.text(lengths[0] + lengths[1] - 0.015, 0.025, 'DIP')
+
+    axes = plt.gca()
+    axes.set_xlim([-0.175, 0.275])
+    axes.set_ylim([-0.25, 0.15])
+    axes.set_aspect('equal')
+
+    plt.xlabel("x [m]")
+    plt.ylabel("z [m]")
+    plt.legend()
+
+
+def array_to_dict(a, size):
+    d = {}
+    d[RNN_TAUS] = a[:size]
+    d[RNN_BIASES] = a[size:2 * size]
+    d[RNN_GAINS] = a[2 * size:3 * size]
+    d[RNN_STATES] = a[3 * size:4 * size]
+    d[RNN_WEIGHTS] = a[4 * size:].reshape((size, size))
+    return d
 
 
 def plot_torques_or_forces(torques, interval, title, tendons=False):
@@ -52,10 +79,12 @@ def simulate_ctrnn_params_and_animate(params, name, tendons=False):
 
     print("Plotting comparison between reference and approximated")
 
+
     plt.plot(reference['end_effector'][0], reference['end_effector'][1], label="reference")
     plt.plot(approximation['end_effector'][0], approximation['end_effector'][1], label="approximated")
     ti = "Comparison reference and approximated for " + name
     plt.title(ti)
+    plot_finger()
     plt.savefig(ti + ".png", dpi=244)
     plt.show()
 
@@ -63,16 +92,16 @@ def simulate_ctrnn_params_and_animate(params, name, tendons=False):
 
     title = "Forces" if tendons else "Torques"
     if 'torques' in reference:
-        plot_torques_or_forces(reference['torques'], params['interval'], title + " for reference trajectory " + name, tendons)
-    plot_torques_or_forces(approximation['torques'], params['interval'], title + " for approximated trajectory " + name, tendons)
+        plot_torques_or_forces(reference['torques'], params['interval'], title + " for reference " + name, tendons)
+    plot_torques_or_forces(approximation['torques'], params['interval'], title + " for approximated " + name, tendons)
 
     print("Animating the comparison between the reference and the approximation.")
-    plots.animate(reference, dt, name, approximation, di=10)
+    plots.animate(reference, dt, name, approximation)
 
     print("Process has finished.")
 
 
-def learn_gradient_descent(reference, interval, iterations, learning_rate, name, loss_function=loss_angles, tendons=False):
+def learn_gradient_descent(reference, interval, iterations, name, loss_function=loss_angles, tendons=False):
     """
     Learn given reference trajectory by using gradient descent. An animation is created at the end.
     arguments:
@@ -86,26 +115,36 @@ def learn_gradient_descent(reference, interval, iterations, learning_rate, name,
 
     name = str(name)
 
+    print("Performing gradient descent on model with " + "tendons" if ENABLE_TENDONS else "torques" + " for " + str(iterations) + " iterations.")
+    print("Experiment name: " + name)
+    print("Reference duration: " + str(interval[-1]))
+    print("dt: " + str(interval[1] - interval[0]))
+
+    starttime = datetime.now()
+    print("Start time is " + str(starttime.strftime("_%d-%b-%Y_(%H:%M:%S.%f)")))
+
+
     # Plot reference trajectory.
     plt.cla()
     plt.plot(reference['end_effector'][0], reference['end_effector'][1])
     ti = "Reference trajectory " + name
     plt.title(ti)
+    plot_finger()
     plt.savefig(ti + ".png", dpi=244)
     plt.show()
 
     size = RNN_SIZE_TENDONS if tendons else RNN_SIZE_TORQUES
 
     # Random initialisation.
-    init_params = {
-        'interval': interval,
-        'reference': reference,
-        RNN_TAUS: np.array(num.random.rand(size), dtype="float64"),
-        RNN_BIASES: np.array(num.random.rand(size), dtype="float64"),
-        RNN_GAINS: np.array(num.random.rand(size), dtype="float64"),
-        RNN_STATES: np.array(num.random.rand(size), dtype="float64"),
-        RNN_WEIGHTS: np.array(num.random.rand(size * size), dtype="float64")
-    }
+    # init_params = {
+    #     'interval': interval,
+    #     'reference': reference,
+    #     RNN_TAUS: np.array(num.random.rand(size), dtype="float64"),
+    #     RNN_BIASES: np.array(num.random.rand(size), dtype="float64"),
+    #     RNN_GAINS: np.array(num.random.rand(size), dtype="float64"),
+    #     RNN_STATES: np.array(num.random.rand(size), dtype="float64"),
+    #     RNN_WEIGHTS: np.array(num.random.rand(size * size), dtype="float64")
+    # }
 
     # 0.5 initialisation
     # init_params = {
@@ -118,16 +157,87 @@ def learn_gradient_descent(reference, interval, iterations, learning_rate, name,
     #     RNN_WEIGHTS: np.zeros(size * size) + 0.5
     # }
 
+    init_params = {
+        'interval': interval,
+        'reference': reference,
+        RNN_TAUS: np.ones(size),
+        RNN_BIASES: np.ones(size),
+        RNN_GAINS: np.ones(size),
+        RNN_STATES: np.ones(size),
+        RNN_WEIGHTS: np.ones(size * size)
+    }
+
+    losses = []
+
+    grey = [0.95, 0.95, 0.95]
+    offset = 0.95 / (iterations + 1)
+    current_iteration = [0]
+
+    def callback(params):
+        p = array_to_dict(params, RNN_SIZE_TENDONS)
+        p['interval'] = interval
+        sim = simulate_rnn_oscillator(p)
+        loss = loss_end_effector(sim, reference)
+        losses.append(loss)
+        plt.plot(sim['end_effector'][0], sim['end_effector'][1], color=tuple(grey))
+        grey[0] -= offset
+        grey[1] -= offset
+        grey[2] -= offset
+        print("### Current loss for iteration " + str(current_iteration[0]) + " is: " + str(loss))
+
+        if current_iteration[0] % 5 == 0:
+            print("Current optimal params are ")
+            print(params)
+
+        current_iteration[0] += 1
+
+        temptime = datetime.now()
+        print("Time passed since start: " + str(temptime - starttime))
+        print("Average time per iteration: " + str((temptime - starttime) / current_iteration[0]))
+        print()
+
+
+    def after():
+        plt.plot(reference['end_effector'][0], reference['end_effector'][1], label='reference')
+
+        cmap0 = mpl.colors.LinearSegmentedColormap.from_list(
+            'white2black', ['white', 'black'])
+        # plot
+        norm = mpl.colors.Normalize(vmin=0, vmax=iterations)
+        cbar = plt.colorbar(
+            mpl.cm.ScalarMappable(norm=norm, cmap=cmap0), fraction=.1)
+        cbar.ax.get_yaxis().labelpad = 15
+        cbar.ax.set_ylabel('Number of iterations', rotation=270)
+        title = "Convergence of the " + name + " after " + str(iterations) + " iterations"
+        plt.title(title)
+        plot_finger()
+        plt.savefig(title + ".png", dpi=244)
+        plt.show()
+
+        plt.plot(np.arange(0, iterations, 1), losses)
+        plt.xlabel("Iterations")
+        plt.ylabel("Loss (RMSE)")
+        ti = "Loss convergence for " + name
+        plt.title(ti)
+        plt.savefig(ti + ".png", dpi=244)
+        plt.show()
+
+        print("The losses convergence:")
+        print(losses)
 
     # Params to take grad of.
     grad_params = [RNN_TAUS, RNN_BIASES, RNN_GAINS, RNN_STATES, RNN_WEIGHTS]
 
-    print("Starting gradient descent...")
-    gradbest = gradient_descent(loss_function, iterations, learning_rate, grad_params, init_params)
+    gradbest = gradient_descent(loss_function, iterations, grad_params, init_params, callback=(callback, after))
     print("Gradient descent has finished.")
 
     print("The best solution seems to be:")
     print(gradbest)
+
+    endtime = datetime.now()
+    print("End time: " + str(starttime.strftime("_%d-%b-%Y_(%H:%M:%S.%f)")))
+    print("Total time passed: " + str(endtime - starttime))
+    print("Average time per iteration: " + str((endtime - starttime) / iterations))
 
     simulate_ctrnn_params_and_animate(gradbest, name, tendons)
 

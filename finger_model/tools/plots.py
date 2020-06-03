@@ -63,7 +63,7 @@ def rotate(point, origin, angle):
     return qx, qy
 
 
-def animate(reference, dt, name=None, predicted=None, tendons=False, di=1):
+def animate(reference, dt, name=None, approximation=None, tendons=True, di=1):
     """
     Creates an animation of a simulated trajectory. It also allows a second trajectory to be plotted for comparison.
     """
@@ -73,14 +73,14 @@ def animate(reference, dt, name=None, predicted=None, tendons=False, di=1):
 
     di = int(0.01 / dt) # Set framerate of 100 Hz
 
-    if predicted is None:
+    if approximation is None:
         key_points = reference['positions']
         torques = reference['torques']
         angles = reference['angles']
     else:
-        key_points = predicted['positions']
-        torques = predicted['torques']
-        angles = predicted['angles']
+        key_points = approximation['positions']
+        torques = approximation['torques']
+        angles = approximation['angles']
 
     fig = plt.figure(figsize=(8.3333, 6.25), dpi=288)
     ax = fig.add_subplot(111)
@@ -94,12 +94,12 @@ def animate(reference, dt, name=None, predicted=None, tendons=False, di=1):
         plt.cla()
 
         # Plot reference or approximated finger movement.
-        if predicted is None:
+        if approximation is None:
             plt.plot(key_points[:4, i], key_points[4:, i], marker='.', linewidth=5, markersize=5, label="ref. finger")
             plt.scatter(reference['end_effector'][0][:i], reference['end_effector'][1][:i], s=0.1, label="ref. trajectory")
         else:
             plt.plot(key_points[:4, i], key_points[4:, i], marker='.', linewidth=5, markersize=5, label="approx. finger")
-            plt.scatter(predicted['end_effector'][0][:i], predicted['end_effector'][1][:i], s=0.1, label="approx. trajectory")
+            plt.scatter(approximation['end_effector'][0][:i], approximation['end_effector'][1][:i], s=0.1, label="approx. trajectory")
 
             if 'positions' in reference:
                 plt.plot(reference['positions'][:4, i], reference['positions'][4:, i], marker='.', label="ref. finger")

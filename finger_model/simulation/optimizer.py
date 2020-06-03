@@ -4,8 +4,9 @@ from datetime import datetime
 
 from scipy.optimize import minimize
 
+import matplotlib.pyplot as plt
 
-def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
+def gradient_descent(loss, iterations, grad_params_names, init, callback=None):
     """
     Performs gradient descent.
     arguments:
@@ -19,9 +20,6 @@ def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
     size = RNN_SIZE_TORQUES
     if ENABLE_TENDONS:
         size = RNN_SIZE_TENDONS
-
-    starttime = datetime.now()
-    print("Current time is " + str(starttime.strftime("_%d-%b-%Y_(%H:%M:%S.%f)")))
 
     @jit
     def _loss_wrapper(p):
@@ -72,15 +70,19 @@ def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
         d[RNN_WEIGHTS] = a[4 * size:].reshape((size, size))
         return d
 
-    def callback(params):
+    def default_callback(params):
         print("Iteration done")
         print("Params: ")
         print(params)
 
+    if callback is None:
+        iteration_callback = default_callback
+    else:
+        iteration_callback = callback[0]
+
     def objective(params):
         p = array_to_dict(params)
         return _loss_wrapper({**p, **static_params})
-
 
     objective_with_grad = jit(value_and_grad(objective))
 
@@ -93,51 +95,12 @@ def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
             'maxiter': iterations,
             'disp': True
         },
-        callback=callback)
+        callback=iteration_callback)
+
+    if callback is not None:
+        after = callback[1]
+        after()
 
     best_params = array_to_dict(result.x)
 
-    endtime = datetime.now()
-    print("End time: " + str(starttime.strftime("_%d-%b-%Y_(%H:%M:%S.%f)")))
-    print("Time passed: " + str(endtime - starttime))
-    print("Time per iteration: " + str((endtime - starttime) / iterations))
-
     return {**best_params, **static_params}
-
-
-    # # Beta value for momentum
-    # beta = 0.9
-    #
-    # # Perform gradient descent.
-    # for i in range(iterations):
-    #
-    #     # Take grad and get value.
-    #     vals, grads = grad_function(grad_params, static_params)
-    #
-    #     print("########### ITERATION ", i, " LOSS: ", vals)
-    #
-    #     # Every 5th iteration, print current grads, momentum and optimised parameters.
-    #     if i % 5 == 0:
-    #         print("GRADS: ", grads, " MOMENTUM: ", momentum)
-    #
-    #         print("## Current optimal parameters")
-    #         print(grad_params)
-    #         print("##")
-    #
-    #     # Update parameters and momentum.
-    #     for key in grads:
-    #         momentum[key] = beta * momentum[key] + (1 - beta) * grads[key]
-    #         grad_params[key] -= learning_rate * momentum[key]
-    #
-    #     nexttime = datetime.now()
-    #
-    #     if i == 0:
-    #         print("Compiling took (in seconds): " + str(nexttime.timestamp() - starttime.timestamp()))
-    #         starttime = datetime.now()
-    #     else:
-    #         print("Current time: " + str(nexttime.strftime("_%d-%b-%Y_(%H:%M:%S.%f)")))
-    #         print("Time passed: " + str(nexttime - starttime))
-    #         print("Average seconds per iteration: " + str((nexttime.timestamp() - starttime.timestamp()) / i))
-    #
-    #     print ("###########\n")
-

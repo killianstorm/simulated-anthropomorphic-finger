@@ -6,19 +6,6 @@ tmax, dt = 1., 0.001
 interval = num.arange(0, tmax + dt, dt)
 
 ed, fp = [], []
-# which = False
-# period = 500 * dt
-# for i in interval:
-#     if i % period == 0:
-#         which = not which
-#
-#     if which:
-#         fp.append(10.)
-#         ed.append(0.)
-#     else:
-#         ed.append(10.)
-#         fp.append(0.)
-
 for i in interval:
     if i < tmax / 2.:
         fp.append(10.)
@@ -35,11 +22,11 @@ p_predefined = {
     'F_ed': np.array(ed),
 }
 
-import time
-t1 = time.time()
+name = "keystroke trajectory \n with angle loss function"
 reference = simulate_predefined(p_predefined)
-print("Time passed: ", time.time() - t1)
-# plots.animate(reference, dt, "keystroke", tendons=True, di=100)
+# plots.animate(reference, dt, name, tendons=True)
+
+loss_function = loss_angles
 
 # Learn to reproduce trajectory using gradient descent.
-learn_gradient_descent(reference, interval, 10, .01, loss_function=loss_angles, tendons=True, name="keystroke")
+learn_gradient_descent(reference, interval, 250, loss_function=loss_function, tendons=True, name=name)
