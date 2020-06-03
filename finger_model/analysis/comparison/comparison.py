@@ -71,21 +71,22 @@ def compare_sim_to_phys(method, title):
     print("The loss is: " + str(loss))
 
     # Plot simulated trajectory along physical trajectory.
-    plt.plot([0, lengths[0], lengths[0] + lengths[1], np.sum(lengths)], [0, 0, 0, 0], marker='.', linewidth=3, markersize=15)
+    plt.plot([0, lengths[0], lengths[0] + lengths[1], np.sum(lengths)], [0, 0, 0, 0], marker='.', linewidth=3, markersize=15, color='#1f77b4')
     plt.text(0 - 0.015, 0.025, 'MCP')
     plt.text(lengths[0] - 0.015, 0.025, 'PIP')
     plt.text(lengths[0] + lengths[1] - 0.015, 0.025, 'DIP')
 
     axes = plt.gca()
-    axes.set_xlim([-0.125, 0.225])
+    axes.set_xlim([-0.175, 0.275])
     axes.set_ylim([-0.25, 0.15])
+    axes.set_aspect('equal')
 
     plt.scatter(simulated_trajectory['end_effector'][0], simulated_trajectory['end_effector'][1], s=5., label="simulation")
     plt.scatter(physical_trajectory['x'], -physical_trajectory['z'], s=5., label="physical")
-    plt.legend(loc='lower left')
     plt.title("Comparison for " + title)
     plt.xlabel("x [m]")
     plt.ylabel("z [m]")
+    plt.legend()
     # plt.savefig("comparison_" + method + ".png", dpi=244)
     plt.show()
 
