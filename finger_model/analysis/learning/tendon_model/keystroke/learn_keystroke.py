@@ -2,24 +2,30 @@ from finger_model.analysis.learning.gradient_descent import *
 
 
 # Interval.
-tmax, dt = 1., 0.0001
+tmax, dt = 1., 0.001
 interval = num.arange(0, tmax + dt, dt)
 
 ed, fp = [], []
-which = False
-period = 5000 * dt
-for i in interval:
-    if i % period == 0:
-        which = not which
+# which = False
+# period = 500 * dt
+# for i in interval:
+#     if i % period == 0:
+#         which = not which
+#
+#     if which:
+#         fp.append(10.)
+#         ed.append(0.)
+#     else:
+#         ed.append(10.)
+#         fp.append(0.)
 
-    if which:
+for i in interval:
+    if i < tmax / 2.:
         fp.append(10.)
         ed.append(0.)
     else:
-        ed.append(10.)
         fp.append(0.)
-
-
+        ed.append(10.)
 
 p_predefined = {
     'interval': interval,
@@ -36,4 +42,4 @@ print("Time passed: ", time.time() - t1)
 # plots.animate(reference, dt, "keystroke", tendons=True, di=100)
 
 # Learn to reproduce trajectory using gradient descent.
-learn_gradient_descent(reference, interval, 100, .01, loss_function=loss_angles, tendons=True, name="keystroke")
+learn_gradient_descent(reference, interval, 10, .01, loss_function=loss_angles, tendons=True, name="keystroke")

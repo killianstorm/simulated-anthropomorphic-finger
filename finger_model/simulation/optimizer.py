@@ -73,17 +73,14 @@ def gradient_descent(loss, iterations, learning_rate, grad_params_names, init):
         return d
 
     def callback(params):
-        global iteration_count
-        print("Iteration " + str(iteration_count) + " done")
+        print("Iteration done")
         print("Params: ")
         print(params)
-        iteration_count += 1
 
     def objective(params):
         p = array_to_dict(params)
         return _loss_wrapper({**p, **static_params})
 
-    iteration_count = 0
 
     objective_with_grad = jit(value_and_grad(objective))
 

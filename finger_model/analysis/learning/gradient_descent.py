@@ -107,6 +107,18 @@ def learn_gradient_descent(reference, interval, iterations, learning_rate, name,
         RNN_WEIGHTS: np.array(num.random.rand(size * size), dtype="float64")
     }
 
+    # 0.5 initialisation
+    # init_params = {
+    #     'interval': interval,
+    #     'reference': reference,
+    #     RNN_TAUS: np.zeros(size) + 0.5,
+    #     RNN_BIASES: np.zeros(size) + 0.5,
+    #     RNN_GAINS: np.zeros(size) + 0.5,
+    #     RNN_STATES: np.zeros(size) + 0.5,
+    #     RNN_WEIGHTS: np.zeros(size * size) + 0.5
+    # }
+
+
     # Params to take grad of.
     grad_params = [RNN_TAUS, RNN_BIASES, RNN_GAINS, RNN_STATES, RNN_WEIGHTS]
 

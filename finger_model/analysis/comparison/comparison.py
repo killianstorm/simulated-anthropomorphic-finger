@@ -67,8 +67,19 @@ def compare_sim_to_phys(method, title):
     }
     simulated_trajectory = simulate_predefined(params)
 
+    loss = np.sqrt(np.mean((np.array([physical_trajectory['x'], physical_trajectory['z']]) - simulated_trajectory['end_effector']) ** 2))
+    print("The loss is: " + str(loss))
+
     # Plot simulated trajectory along physical trajectory.
     plt.plot([0, lengths[0], lengths[0] + lengths[1], np.sum(lengths)], [0, 0, 0, 0], marker='.', linewidth=3, markersize=15)
+    plt.text(0 - 0.015, 0.025, 'MCP')
+    plt.text(lengths[0] - 0.015, 0.025, 'PIP')
+    plt.text(lengths[0] + lengths[1] - 0.015, 0.025, 'DIP')
+
+    axes = plt.gca()
+    axes.set_xlim([-0.125, 0.225])
+    axes.set_ylim([-0.25, 0.15])
+
     plt.scatter(simulated_trajectory['end_effector'][0], simulated_trajectory['end_effector'][1], s=5., label="simulation")
     plt.scatter(physical_trajectory['x'], -physical_trajectory['z'], s=5., label="physical")
     plt.legend(loc='lower left')
@@ -123,10 +134,11 @@ def compare_sim_to_phys(method, title):
 compare_sim_to_phys("grasp", "full grasp")
 
 # # Isometric PIP.
-# compare_sim_to_phys("0PIP", "isometric PIP with higher friction")
+compare_sim_to_phys("0PIP", "extended PIP with higher friction")
 #
 # # Isometric MCP.
-# compare_sim_to_phys("0MCP", "isometric MCP with higher friction")
+compare_sim_to_phys("0MCP", "extended MCP with higher friction")
 #
 # # Complex.
-# compare_sim_to_phys("complex", "complex trajectory")
+compare_sim_to_phys("complex", "complex trajectory")
+
