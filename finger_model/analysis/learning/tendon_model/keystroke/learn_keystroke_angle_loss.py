@@ -1,5 +1,6 @@
 from finger_model.analysis.learning.gradient_descent import *
 
+# Precision erros after 144 iterations. Loss = 0.84501
 
 # Interval.
 tmax, dt = 1.5, 0.001
