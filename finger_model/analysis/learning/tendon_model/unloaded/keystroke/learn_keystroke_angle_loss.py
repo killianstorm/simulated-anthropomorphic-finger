@@ -3,14 +3,14 @@ from finger_model.analysis.learning.gradient_descent import *
 # Precision erros after 144 iterations. Loss = 0.84501
 
 # Interval.
-tmax, dt = 1.5, 0.001
+tmax, dt = 2., 0.001
 interval = num.arange(0, tmax + dt, dt)
 
 ed, fp = [], []
 for i in interval:
-    if i < tmax / 8.:
+    if i < tmax / 4.:
         fp.append(5.)
-        ed.append(0.)
+        ed.append(9.)
     else:
         fp.append(0.)
         ed.append(7.5)
@@ -30,4 +30,4 @@ reference = simulate_predefined(p_predefined)
 loss_function = loss_angles
 
 # Learn to reproduce trajectory using gradient descent.
-learn_gradient_descent(reference, interval, 250, loss_function=loss_function, tendons=True, name=name)
+learn_gradient_descent(reference, interval, 3, loss_function=loss_function, tendons=True, name=name)

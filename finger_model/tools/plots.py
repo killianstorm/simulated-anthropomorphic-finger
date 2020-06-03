@@ -88,10 +88,14 @@ def animate(reference, dt, name=None, approximation=None, tendons=True, di=1):
     images = []
     N = key_points.shape[1]
 
-
     for i in tqdm.tqdm(range(0, N, di)):
 
         plt.cla()
+
+        axes = plt.gca()
+        axes.set_xlim([-0.175, 0.275])
+        axes.set_ylim([-0.25, 0.15])
+        axes.set_aspect('equal')
 
         # Plot reference or approximated finger movement.
         if approximation is None:
@@ -106,6 +110,18 @@ def animate(reference, dt, name=None, approximation=None, tendons=True, di=1):
             plt.scatter(reference['end_effector'][0][:i], reference['end_effector'][1][:i], s=0.1, label="ref. trajectory")
 
             plt.legend()
+
+        if ENABLE_PIANO_KEY:
+
+            p_c = pianokey_coordinates[1]
+            if key_points[7, i] < pianokey_coordinates[1]:
+                p_c = key_points[7, i]
+
+            rect = patches.Rectangle((pianokey_coordinates[0], p_c - pianokey_height), 1,
+                                     pianokey_height, linewidth=3, edgecolor='k', facecolor='none')
+            axes.add_patch(rect)
+
+            plt.text(pianokey_coordinates[0] + 0.05, p_c - pianokey_height + 0.05, "PIANO KEY")
 
         # Plot reference trajectory.
 

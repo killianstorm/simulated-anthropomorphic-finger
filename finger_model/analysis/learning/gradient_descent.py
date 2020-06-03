@@ -3,6 +3,7 @@ from finger_model.simulation.loss_functions import *
 
 import numpy as num
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 from finger_model.tools import plots
 
 from datetime import datetime
@@ -19,6 +20,12 @@ def plot_finger():
     axes.set_xlim([-0.175, 0.275])
     axes.set_ylim([-0.25, 0.15])
     axes.set_aspect('equal')
+
+    if ENABLE_PIANO_KEY:
+        rect = patches.Rectangle((pianokey_coordinates[0], pianokey_coordinates[1] - pianokey_height), 1,
+                                 pianokey_height, linewidth=3, edgecolor='k', facecolor='none')
+        axes.add_patch(rect)
+        plt.text(pianokey_coordinates[0] + 0.05, pianokey_coordinates[1] - pianokey_height + 0.05, "PIANO KEY")
 
     plt.xlabel("x [m]")
     plt.ylabel("z [m]")
@@ -169,9 +176,10 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
 
     losses = []
 
-    grey = [0.95, 0.95, 0.95]
-    offset = 0.95 / (iterations + 1)
+
     current_iteration = [0]
+
+    lines = []
 
     def callback(params):
         p = array_to_dict(params, RNN_SIZE_TENDONS)
@@ -179,10 +187,9 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
         sim = simulate_rnn_oscillator(p)
         loss = loss_function(sim, reference)
         losses.append(loss)
-        plt.plot(sim['end_effector'][0], sim['end_effector'][1], color=tuple(grey))
-        grey[0] -= offset
-        grey[1] -= offset
-        grey[2] -= offset
+        l, = plt.plot(sim['end_effector'][0], sim['end_effector'][1])
+        lines.append(l)
+
         print("### Current loss for iteration " + str(current_iteration[0]) + " is: " + str(loss))
 
         if current_iteration[0] % 5 == 0:
@@ -211,6 +218,16 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
         title = "Convergence of the " + name + " after " + str(iterations) + " iterations"
         plt.title(title)
         plot_finger()
+
+        grey = [0.9, 0.9, 0.9]
+        offset = 0.9 / (len(lines) + 1)
+        for l in lines:
+            color = tuple(grey)
+            l.set_color(color)
+            grey[0] -= offset
+            grey[1] -= offset
+            grey[2] -= offset
+
         plt.savefig(title + ".png", dpi=244)
         plt.show()
 

@@ -27,12 +27,12 @@ ENABLE_TENDONS = True
 ENABLE_LIGAMENTS = True
 
 # True if simulating piano key load, False if not.
-ENABLE_LOAD = False
+ENABLE_PIANO_KEY = True
 
 # Location and width of the pianokey, don't change if you don't know what you are doing.
-pianokey_coordinates = [0.15, -0.1]
-pianokey_height = 0.5
-piano_force = 1.
+pianokey_coordinates = [0.075, -0.075]
+pianokey_height = 0.1
+piano_force = 10.
 
 # Lengths of each phalanx.
 lengths = np.array([0.09955, 0.06687, 0.04291])
@@ -269,11 +269,11 @@ def equations_of_motion():
         # return (x + abs(x)) / (2 * (x + 1 / 10))
 
     load_dp, load_mp, load_pp = 0, 0, 0
-    if ENABLE_LOAD:
+    if ENABLE_PIANO_KEY:
         def load(length):
-            return - sigmoid_heaviside(abs(x3 - pianokey_coordinates[0])) * \
-                  sigmoid_heaviside(abs(z3 - pianokey_coordinates)) * \
-                  length * piano_force * (z3 - pianokey_coordinates[1])
+            return sigmoid_heaviside(x3 - pianokey_coordinates[0]) * \
+                  sigmoid_heaviside(-(z3 - pianokey_coordinates[1])) * \
+                  length * piano_force * abs(z3 - pianokey_coordinates[1])
         load_dp = load(lengths[2])
         load_mp = load(lengths[1] + lengths[2])
         load_pp = load(lengths[0] + lengths[1] + lengths[2])
