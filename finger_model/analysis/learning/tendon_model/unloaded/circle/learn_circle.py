@@ -3,7 +3,7 @@ from finger_model.analysis.learning.gradient_descent import *
 # Precision loss after 14 iterations. Loss = 0.1495
 
 # Interval.
-tmax, dt = 1., 0.001
+tmax, dt = 1., 0.0001
 interval = num.arange(0, tmax + dt, dt)
 
 r = 0.03

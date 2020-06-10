@@ -210,12 +210,12 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
         cmap0 = mpl.colors.LinearSegmentedColormap.from_list(
             'white2black', ['white', 'black'])
         # plot
-        norm = mpl.colors.Normalize(vmin=0, vmax=iterations)
+        norm = mpl.colors.Normalize(vmin=0, vmax=len(losses))
         cbar = plt.colorbar(
             mpl.cm.ScalarMappable(norm=norm, cmap=cmap0), fraction=.1)
         cbar.ax.get_yaxis().labelpad = 15
-        cbar.ax.set_ylabel('Number of iterations', rotation=270)
-        title = "Convergence of the " + name + " after " + str(iterations) + " iterations"
+        cbar.ax.set_ylabel('Approximated trajectory after n number of iterations', rotation=270)
+        title = "Convergence of the " + name + " after " + str(len(losses)) + " iterations"
         plt.title(title)
         plot_finger()
 

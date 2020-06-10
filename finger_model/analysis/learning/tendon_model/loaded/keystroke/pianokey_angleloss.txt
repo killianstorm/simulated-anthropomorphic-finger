@@ -1,0 +1,1436 @@
+/home/kstorm/thesis/venv/bin/python /home/kstorm/thesis/finger_model/analysis/learning/tendon_model/loaded/keystroke/learn_keystroke_angle_loss.py
+/home/kstorm/thesis/venv/lib/python3.8/site-packages/jax/lib/xla_bridge.py:116: UserWarning: No GPU/TPU found, falling back to CPU.
+  warnings.warn('No GPU/TPU found, falling back to CPU.')
+100%|██████████| 201/201 [00:22<00:00,  9.13it/s]
+Moviepy - Building video loaded piano keystroke trajectory
+ with angle loss function_04-Jun-2020_(01:48:27.958826).mp4.
+Moviepy - Writing video loaded piano keystroke trajectory
+ with angle loss function_04-Jun-2020_(01:48:27.958826).mp4
+
+Moviepy - Done !
+Moviepy - video ready loaded piano keystroke trajectory
+ with angle loss function_04-Jun-2020_(01:48:27.958826).mp4
+Performing gradient descent on model with tendons
+Experiment name: loaded piano keystroke trajectory
+ with angle loss function
+Reference duration: 2.0
+dt: 0.001
+Start time is _04-Jun-2020_(01:48:37.907401)
+### Current loss for iteration 0 is: 1.4447125053100245
+Current optimal params are
+[ 1.04394306  0.98331723  1.11610703  0.95706875  0.68390398  1.09635702
+  0.29661944  1.3078863   0.32193451  1.21035932 -0.52932607  1.66055081
+  0.70174599  1.08937433  0.3442576   1.29024298  0.9840429   0.9840429
+  0.9840429   0.9840429   1.00612875  1.00612875  1.00612875  1.00612875
+  0.95742098  0.95742098  0.95742098  0.95742098  1.01557715  1.01557715
+  1.01557715  1.01557715]
+Time passed since start: 0:03:34.527931
+Average time per iteration: 0:03:34.527931
+
+### Current loss for iteration 1 is: 0.858865690295835
+Time passed since start: 0:03:46.278095
+Average time per iteration: 0:01:53.139048
+
+### Current loss for iteration 2 is: 0.8054683715963108
+Time passed since start: 0:05:01.017032
+Average time per iteration: 0:01:40.339011
+
+### Current loss for iteration 3 is: 0.7792493740486156
+Time passed since start: 0:05:48.366902
+Average time per iteration: 0:01:27.091726
+
+### Current loss for iteration 4 is: 0.7413810413287182
+Time passed since start: 0:05:57.751823
+Average time per iteration: 0:01:11.550365
+
+### Current loss for iteration 5 is: 0.7378800670413127
+Current optimal params are
+[ 1.08822254  1.02493461  1.28487769  0.93088257  0.08857863  1.0722258
+  0.1374142   1.51738548 -1.59444988  1.13215378 -1.40570987  2.08288942
+ -0.00649973  1.11668853  0.18309433  1.48670587  0.9981561   1.09716839
+  0.9821926   1.09805481  0.986796    0.9559686   0.99683763  0.95446277
+  0.90418161  0.96354857  0.91753494  0.96208272  1.02509187  1.02730916
+  1.02460525  1.02745601]
+Time passed since start: 0:06:34.247863
+Average time per iteration: 0:01:05.707977
+
+### Current loss for iteration 6 is: 0.7373463481751434
+Time passed since start: 0:07:11.140230
+Average time per iteration: 0:01:01.591461
+
+### Current loss for iteration 7 is: 0.731726963383791
+Time passed since start: 0:07:39.192331
+Average time per iteration: 0:00:57.399041
+
+### Current loss for iteration 8 is: 0.711669184342245
+Time passed since start: 0:07:58.627364
+Average time per iteration: 0:00:53.180818
+
+### Current loss for iteration 9 is: 0.7018407788455651
+Time passed since start: 0:08:20.107843
+Average time per iteration: 0:00:50.010784
+
+### Current loss for iteration 10 is: 0.700556228424761
+Current optimal params are
+[ 1.39249094  1.02510662  1.32171436  0.93159893 -0.0635894   1.17745943
+  0.35527366  1.51782453 -1.52230219  1.31306377 -1.56486653  2.08375852
+ -0.15508065  1.25299622  0.29616798  1.4858584   0.9388908   1.09969672
+  0.9403436   1.09469456  0.98707851  0.92576787  0.99481282  0.92338441
+  0.8809541   1.06751904  0.90905372  1.06690884  1.02490807  1.02858535
+  1.02456946  1.02875207]
+Time passed since start: 0:08:58.195464
+Average time per iteration: 0:00:48.926860
+
+### Current loss for iteration 11 is: 0.6741375886064022
+Time passed since start: 0:13:10.144768
+Average time per iteration: 0:01:05.845397
+
+### Current loss for iteration 12 is: 0.6735428886935263
+Time passed since start: 0:13:41.771456
+Average time per iteration: 0:01:03.213189
+
+### Current loss for iteration 13 is: 0.654783654130109
+Time passed since start: 0:14:13.568901
+Average time per iteration: 0:01:00.969207
+
+### Current loss for iteration 14 is: 0.649062901804974
+Time passed since start: 0:14:24.402120
+Average time per iteration: 0:00:57.626808
+
+### Current loss for iteration 15 is: 0.6428642830180913
+Current optimal params are
+[ 1.47031303  1.03184025  1.4627196   0.93264152 -0.17289058  1.28451183
+  0.86729911  1.52053335 -1.87894204  1.49256738 -1.78038756  2.08795607
+ -0.5172002   1.39167384  0.79189033  1.48697049  0.87516262  1.35174408
+  0.9161793   1.34775435  0.982013    0.89472119  0.99311675  0.89178567
+  0.82381233  1.08576748  0.88692996  1.08334408  1.02469806  1.03020412
+  1.02447894  1.03038289]
+Time passed since start: 0:14:35.086248
+Average time per iteration: 0:00:54.692890
+
+### Current loss for iteration 16 is: 0.6425566369801599
+Time passed since start: 0:14:57.239377
+Average time per iteration: 0:00:52.778787
+
+### Current loss for iteration 17 is: 0.6407405423761892
+Time passed since start: 0:15:19.144581
+Average time per iteration: 0:00:51.063588
+
+### Current loss for iteration 18 is: 0.6358600497058767
+Time passed since start: 0:15:40.800451
+Average time per iteration: 0:00:49.515813
+
+### Current loss for iteration 19 is: 0.6357909956674314
+Time passed since start: 0:16:01.866122
+Average time per iteration: 0:00:48.093306
+
+### Current loss for iteration 20 is: 0.635644150714044
+Current optimal params are
+[ 1.39749765  1.03447795  1.49214622  0.93276186 -0.15372766  1.30099231
+  0.9604447   1.52079201 -1.98554134  1.52037339 -1.80429135  2.08827399
+ -0.57079255  1.41133156  0.89086049  1.48736578  0.88455166  1.42419151
+  0.91163174  1.42052707  0.98022325  0.89162473  0.99285117  0.88861655
+  0.81209239  1.08040879  0.88281579  1.07754998  1.02467907  1.03007804
+  1.02445547  1.03025448]
+Time passed since start: 0:16:23.042351
+Average time per iteration: 0:00:46.811541
+
+### Current loss for iteration 21 is: 0.6348491644367774
+Time passed since start: 0:16:43.949899
+Average time per iteration: 0:00:45.634086
+
+### Current loss for iteration 22 is: 0.6345912392035017
+Time passed since start: 0:17:04.916329
+Average time per iteration: 0:00:44.561580
+
+### Current loss for iteration 23 is: 0.6298966369361527
+Time passed since start: 0:17:47.921186
+Average time per iteration: 0:00:44.496716
+
+### Current loss for iteration 24 is: 0.6296195472930121
+Time passed since start: 0:18:09.045808
+Average time per iteration: 0:00:43.561832
+
+### Current loss for iteration 25 is: 0.6291475018163444
+Current optimal params are
+[ 1.18210696  1.04260592  1.55099344  0.93418545 -0.22660475  1.34349904
+  0.90534965  1.51362615 -1.84588217  1.61024334 -1.6511091   2.07406865
+ -0.53109957  1.3895121   0.95994043  1.49229644  0.94371235  1.31267912
+  0.91219572  1.30805583  0.97781085  0.9554796   0.9931646   0.95293129
+  0.78797458  0.9573918   0.88126755  0.9534702   1.02350778  1.018096
+  1.02434454  1.01817594]
+Time passed since start: 0:18:30.020889
+Average time per iteration: 0:00:42.693111
+
+### Current loss for iteration 26 is: 0.6290950925965174
+Time passed since start: 0:18:51.099676
+Average time per iteration: 0:00:41.892581
+
+### Current loss for iteration 27 is: 0.6288658467346407
+Time passed since start: 0:19:12.083303
+Average time per iteration: 0:00:41.145832
+
+### Current loss for iteration 28 is: 0.6288367032260628
+Time passed since start: 0:19:33.081209
+Average time per iteration: 0:00:40.451076
+
+### Current loss for iteration 29 is: 0.6273953783743446
+Time passed since start: 0:20:14.480741
+Average time per iteration: 0:00:40.482691
+
+### Current loss for iteration 30 is: 0.6249817361972053
+Current optimal params are
+[ 1.00639809  1.05759369  1.63351104  0.9355758  -0.29288567  1.37826595
+  1.05778473  1.51655461 -1.82920927  1.67512525 -1.66121309  2.07392401
+ -0.59546027  1.38964021  1.35929878  1.50946958  0.86253519  1.3122564
+  0.91063438  1.30653399  0.9690524   0.99004164  0.99330794  0.98759248
+  0.7434101   0.71200197  0.8766836   0.7067368   1.02229093  1.00395573
+  1.02413056  1.00396632]
+Time passed since start: 0:20:35.202664
+Average time per iteration: 0:00:39.845247
+
+### Current loss for iteration 31 is: 0.6234706625762972
+Time passed since start: 0:20:55.762701
+Average time per iteration: 0:00:39.242584
+
+### Current loss for iteration 32 is: 0.6215508236823832
+Time passed since start: 0:21:06.242036
+Average time per iteration: 0:00:38.370971
+
+### Current loss for iteration 33 is: 0.6203130213171212
+Time passed since start: 0:21:27.662059
+Average time per iteration: 0:00:37.872414
+
+### Current loss for iteration 34 is: 0.6201431543437834
+Time passed since start: 0:21:49.804625
+Average time per iteration: 0:00:37.422989
+
+### Current loss for iteration 35 is: 0.6200931838482495
+Current optimal params are
+[ 0.90719339  1.0735769   1.7201983   0.93716064 -0.3493974   1.41742108
+  1.21468733  1.52020982 -1.72955668  1.74813869 -1.66482061  2.07435734
+ -0.61355779  1.39083008  1.79126907  1.52897112  0.75515781  1.27568731
+  0.90834505  1.2685936   0.95971126  1.02793289  0.99348253  1.02559233
+  0.6941815   0.43861796  0.87164281  0.43188721  1.02090857  0.9882334
+  1.02389388  0.98816821]
+Time passed since start: 0:22:11.709544
+Average time per iteration: 0:00:36.991932
+
+### Current loss for iteration 36 is: 0.620032348437527
+Time passed since start: 0:22:23.500615
+Average time per iteration: 0:00:36.310827
+
+### Current loss for iteration 37 is: 0.6200049570503583
+Time passed since start: 0:22:46.089455
+Average time per iteration: 0:00:35.949722
+
+### Current loss for iteration 38 is: 0.6199008645507043
+Time passed since start: 0:23:08.831933
+Average time per iteration: 0:00:35.611075
+
+### Current loss for iteration 39 is: 0.619815611385579
+Time passed since start: 0:23:20.147644
+Average time per iteration: 0:00:35.003691
+
+### Current loss for iteration 40 is: 0.6188057260076075
+Current optimal params are
+[ 0.97552912  1.07863362  1.69496013  0.93713482 -0.30613561  1.41385547
+  1.13015363  1.52557151 -1.7392783   1.74121099 -1.55991107  2.08133864
+ -0.60914796  1.38597252  1.80154225  1.5381248   0.66948371  1.31502968
+  0.90745679  1.30760591  0.95655224  1.02924034  0.99354335  1.02688952
+  0.68324805  0.34407426  0.87041397  0.3371467   1.02078069  0.98445086
+  1.023842    0.98437909]
+Time passed since start: 0:24:05.193995
+Average time per iteration: 0:00:35.248634
+
+### Current loss for iteration 41 is: 0.6174929967776924
+Time passed since start: 0:24:15.971937
+Average time per iteration: 0:00:34.665998
+
+### Current loss for iteration 42 is: 0.6152682155260192
+Time passed since start: 0:24:37.200352
+Average time per iteration: 0:00:34.353497
+
+### Current loss for iteration 43 is: 0.61282359152556
+Time passed since start: 0:24:47.969660
+Average time per iteration: 0:00:33.817492
+
+### Current loss for iteration 44 is: 0.6124421636403372
+Time passed since start: 0:25:08.715966
+Average time per iteration: 0:00:33.527021
+
+### Current loss for iteration 45 is: 0.6104376697044207
+Current optimal params are
+[ 1.07161381  1.08830957  1.66310009  0.93694253 -0.21992897  1.40484863
+  1.04055245  1.5363924  -1.86026932  1.72344912 -1.47340227  2.09598763
+ -0.64862902  1.37698596  1.85188256  1.55446768  0.50844842  1.44151426
+  0.90807506  1.43355741  0.95055919  1.02924591  0.99359447  1.02687043
+  0.67072507  0.20449085  0.86871588  0.19729568  1.02070632  0.97893329
+  1.02377413  0.97885265]
+Time passed since start: 0:25:30.446703
+Average time per iteration: 0:00:33.270580
+
+### Current loss for iteration 46 is: 0.6102679147430328
+Time passed since start: 0:25:52.060241
+Average time per iteration: 0:00:33.022558
+
+### Current loss for iteration 47 is: 0.6094016301209533
+Time passed since start: 0:26:14.657184
+Average time per iteration: 0:00:32.805358
+
+### Current loss for iteration 48 is: 0.6088266747369632
+Time passed since start: 0:26:36.807662
+Average time per iteration: 0:00:32.587911
+
+### Current loss for iteration 49 is: 0.6015557832285902
+Time passed since start: 0:27:20.652616
+Average time per iteration: 0:00:32.813052
+
+### Current loss for iteration 50 is: 0.5929618567627526
+Current optimal params are
+[ 1.75108795  1.11116037  1.51724558  0.93645871  0.09838087  1.37036203
+  0.91873227  1.56666183 -2.38392688  1.65469467 -1.62008389  2.14020192
+ -0.76533907  1.35607664  2.12878257  1.58755245 -0.03615349  1.87883882
+  0.92186566  1.86909055  0.93628309  1.01576782  0.99371504  1.01329882
+  0.65643532 -0.19312969  0.85278616 -0.20120792  1.02116776  0.97610273
+  1.02359391  0.9760191 ]
+Time passed since start: 0:27:31.592911
+Average time per iteration: 0:00:32.384175
+
+### Current loss for iteration 51 is: 0.5928931701523822
+Time passed since start: 0:27:53.071650
+Average time per iteration: 0:00:32.174455
+
+### Current loss for iteration 52 is: 0.5926884519521947
+Time passed since start: 0:28:14.631451
+Average time per iteration: 0:00:31.974178
+
+### Current loss for iteration 53 is: 0.5926752100659538
+Time passed since start: 0:28:36.579701
+Average time per iteration: 0:00:31.788513
+
+### Current loss for iteration 54 is: 0.5925828055689413
+Time passed since start: 0:30:08.317133
+Average time per iteration: 0:00:32.878493
+
+### Current loss for iteration 55 is: 0.5925655369036255
+Current optimal params are
+[ 1.76616686  1.11252189  1.51987086  0.93647312  0.09824634  1.36415176
+  0.92807809  1.56754129 -2.38490742  1.64336783 -1.63043476  2.14150644
+ -0.76572391  1.351293    2.13324098  1.58837752 -0.05205538  1.87920681
+  0.92216859  1.8693535   0.93540109  1.01435288  0.99369059  1.01187334
+  0.65680713 -0.18826132  0.85326436 -0.19632334  1.02116301  0.97615619
+  1.02359752  0.97607271]
+Time passed since start: 0:30:31.118522
+Average time per iteration: 0:00:32.698545
+
+### Current loss for iteration 56 is: 0.5923189456338259
+Time passed since start: 0:34:19.480149
+Average time per iteration: 0:00:36.131231
+
+### Current loss for iteration 57 is: 0.5922211901195545
+Time passed since start: 0:34:40.759043
+Average time per iteration: 0:00:35.875156
+
+### Current loss for iteration 58 is: 0.5896697403140159
+Time passed since start: 0:35:12.992651
+Average time per iteration: 0:00:35.813435
+
+### Current loss for iteration 59 is: 0.5887579328955882
+Time passed since start: 0:35:34.703702
+Average time per iteration: 0:00:35.578395
+
+### Current loss for iteration 60 is: 0.5882032619187805
+Current optimal params are
+[ 1.96947527  1.16083053  1.40793832  0.93699601  0.19766848  1.14051548
+  0.89316468  1.59442743 -2.62875261  1.23735863 -1.6499346   2.18106969
+ -0.80089389  1.1722888   2.15653368  1.61506891 -0.51129349  2.01704836
+  0.9325921   2.00426681  0.9036297   0.97013089  0.99317074  0.96727835
+  0.63709938 -0.24597258  0.85944048 -0.25450461  1.0209516   0.97632407
+  1.02363036  0.97623847]
+Time passed since start: 0:35:56.398646
+Average time per iteration: 0:00:35.350797
+
+### Current loss for iteration 61 is: 0.5850320915276878
+Time passed since start: 0:36:18.088606
+Average time per iteration: 0:00:35.130461
+
+### Current loss for iteration 62 is: 0.5849749528863017
+Time passed since start: 0:36:39.567495
+Average time per iteration: 0:00:34.913770
+
+### Current loss for iteration 63 is: 0.584744013757597
+Time passed since start: 0:37:01.613765
+Average time per iteration: 0:00:34.712715
+
+### Current loss for iteration 64 is: 0.5847036288753832
+Time passed since start: 0:37:23.096475
+Average time per iteration: 0:00:34.509177
+
+### Current loss for iteration 65 is: 0.5843079622070965
+Current optimal params are
+[ 2.0304552   1.16672589  1.40056174  0.93712301  0.19412998  1.12314162
+  0.89717397  1.59573512 -2.59661781  1.19862008 -1.64381113  2.18293001
+ -0.78093274  1.16019886  2.15241945  1.61653483 -0.55449912  1.99548698
+  0.93278452  1.98079685  0.89956874  0.96509532  0.99299815  0.96200208
+  0.63291835 -0.23785401  0.86191079 -0.24638233  1.02085399  0.97617463
+  1.02363631  0.9760818 ]
+Time passed since start: 0:38:06.356787
+Average time per iteration: 0:00:34.641770
+
+### Current loss for iteration 66 is: 0.5842333668496836
+Time passed since start: 0:38:27.982871
+Average time per iteration: 0:00:34.447506
+
+### Current loss for iteration 67 is: 0.5838108099501025
+Time passed since start: 0:38:49.278502
+Average time per iteration: 0:00:34.254096
+
+### Current loss for iteration 68 is: 0.5836740911843794
+Time passed since start: 0:39:10.665913
+Average time per iteration: 0:00:34.067622
+
+### Current loss for iteration 69 is: 0.583383648661031
+Time passed since start: 0:39:42.851104
+Average time per iteration: 0:00:34.040730
+
+### Current loss for iteration 70 is: 0.5830136116794458
+Current optimal params are
+[ 2.07369225  1.18506462  1.37278704  0.93739534  0.20181786  1.06949069
+  0.89391792  1.59900305 -2.6102516   1.07858709 -1.62058384  2.18760467
+ -0.76980149  1.12294305  2.13940765  1.62014099 -0.64192243  1.99536966
+  0.93410273  1.97740683  0.88690776  0.94950445  0.99256568  0.94562094
+  0.62223316 -0.22785551  0.8674956  -0.23662768  1.02065076  0.97585137
+  1.02364879  0.97574122]
+Time passed since start: 0:39:54.020331
+Average time per iteration: 0:00:33.718596
+
+### Current loss for iteration 71 is: 0.5829256987619063
+Time passed since start: 0:40:15.999939
+Average time per iteration: 0:00:33.555555
+
+### Current loss for iteration 72 is: 0.5828803864092001
+Time passed since start: 0:40:38.216001
+Average time per iteration: 0:00:33.400219
+
+### Current loss for iteration 73 is: 0.582858425700701
+Time passed since start: 0:40:49.245186
+Average time per iteration: 0:00:33.097908
+
+### Current loss for iteration 74 is: 0.5828126732887713
+Time passed since start: 0:41:11.329399
+Average time per iteration: 0:00:32.951059
+
+### Current loss for iteration 75 is: 0.5827544761750058
+Current optimal params are
+[ 2.09726365  1.19063182  1.36043218  0.93751414  0.2017047   1.06771388
+  0.8931242   1.60024691 -2.61030043  1.06963178 -1.61563382  2.18937746
+ -0.76424194  1.1263433   2.13684081  1.62152965 -0.67921631  1.99153153
+  0.93466344  1.97176061  0.88292625  0.94464848  0.99239804  0.94044853
+  0.61800726 -0.22589303  0.86955517 -0.23485288  1.02056127  0.97571738
+  1.02365292  0.97559763]
+Time passed since start: 0:41:22.292664
+Average time per iteration: 0:00:32.661746
+
+### Current loss for iteration 76 is: 0.582652455018138
+Time passed since start: 0:41:54.546103
+Average time per iteration: 0:00:32.656443
+
+### Current loss for iteration 77 is: 0.5826343091565545
+Time passed since start: 0:42:16.462418
+Average time per iteration: 0:00:32.518749
+
+### Current loss for iteration 78 is: 0.5826198225283099
+Time passed since start: 0:42:27.410789
+Average time per iteration: 0:00:32.245706
+
+### Current loss for iteration 79 is: 0.5826036988891067
+Time passed since start: 0:42:38.205406
+Average time per iteration: 0:00:31.977568
+
+### Current loss for iteration 80 is: 0.5825461773294529
+Current optimal params are
+[ 2.09105472  1.19254619  1.35770605  0.93754163  0.20414197  1.06812003
+  0.89446517  1.60059325 -2.62199674  1.06791414 -1.61646974  2.18987644
+ -0.76731859  1.12884913  2.13715197  1.62189774 -0.68699457  1.99717801
+  0.93496837  1.97727986  0.88153668  0.94269692  0.99233491  0.93834959
+  0.61715883 -0.22484204  0.87014497 -0.23382304  1.02054207  0.97569759
+  1.02365434  0.97557575]
+Time passed since start: 0:42:59.558026
+Average time per iteration: 0:00:31.846395
+
+### Current loss for iteration 81 is: 0.5825191126266441
+Time passed since start: 0:43:21.055660
+Average time per iteration: 0:00:31.720191
+
+### Current loss for iteration 82 is: 0.5825152677104681
+Time passed since start: 0:43:42.552656
+Average time per iteration: 0:00:31.597020
+
+### Current loss for iteration 83 is: 0.5824697100135887
+Time passed since start: 0:44:14.316066
+Average time per iteration: 0:00:31.599001
+
+### Current loss for iteration 84 is: 0.5824628614934481
+Time passed since start: 0:44:35.540960
+Average time per iteration: 0:00:31.476952
+
+### Current loss for iteration 85 is: 0.5824277373284533
+Current optimal params are
+[ 2.09319222  1.19444797  1.35288839  0.93758277  0.20424008  1.07050856
+  0.89431467  1.60102184 -2.62780676  1.07037278 -1.61562948  2.19048829
+ -0.76837932  1.13316332  2.13677691  1.62237218 -0.69927822  1.9988602
+  0.93524891  1.97844775  0.88011546  0.94091082  0.99226951  0.936425
+  0.61569028 -0.2245261   0.8708678  -0.23359769  1.02051148  0.97565578
+  1.02365573  0.97553025]
+Time passed since start: 0:44:56.886444
+Average time per iteration: 0:00:31.359145
+
+### Current loss for iteration 86 is: 0.5824020039851473
+Time passed since start: 0:45:18.508637
+Average time per iteration: 0:00:31.247226
+
+### Current loss for iteration 87 is: 0.5798160674146181
+Time passed since start: 0:46:02.411123
+Average time per iteration: 0:00:31.391035
+
+### Current loss for iteration 88 is: 0.579536545539718
+Time passed since start: 0:46:24.467849
+Average time per iteration: 0:00:31.286156
+
+### Current loss for iteration 89 is: 0.5781286293966181
+Time passed since start: 0:46:47.076557
+Average time per iteration: 0:00:31.189740
+
+### Current loss for iteration 90 is: 0.5778795882778959
+Current optimal params are
+[ 2.21048433  1.31763432  1.10081096  0.94011854  0.27729379  1.18304621
+  0.96581429  1.62844002 -2.99453559  1.138074   -1.62433887  2.22971848
+ -0.77669617  1.37870286  2.13340484  1.65237891 -1.47090886  2.11238996
+  0.95332532  2.06037222  0.78796537  0.81725829  0.98747587  0.80350509
+  0.53056747 -0.14691061  0.92063041 -0.15869992  1.01863446  0.97330872
+  1.02376299  0.9729684 ]
+Time passed since start: 0:47:08.822719
+Average time per iteration: 0:00:31.085964
+
+### Current loss for iteration 91 is: 0.5741663747942191
+Time passed since start: 0:47:50.736721
+Average time per iteration: 0:00:31.203660
+
+### Current loss for iteration 92 is: 0.5716082583936577
+Time passed since start: 0:48:12.117952
+Average time per iteration: 0:00:31.098042
+
+### Current loss for iteration 93 is: 0.5712994213502726
+Time passed since start: 0:48:43.430348
+Average time per iteration: 0:00:31.100323
+
+### Current loss for iteration 94 is: 0.5712907904329425
+Time passed since start: 0:50:44.550491
+Average time per iteration: 0:00:32.047900
+
+### Current loss for iteration 95 is: 0.5712547647014689
+Current optimal params are
+[ 2.44180499  1.62429985  0.43060269  0.94637619  0.45274827  1.38361059
+  1.10148384  1.69589372 -3.94759104  1.13254089 -1.57896424  2.32620855
+ -0.82717691  1.91071194  2.0955398   1.7263194  -3.37019441  2.41558987
+  0.99843604  2.28765589  0.55606911  0.50897312  0.97536158  0.47226218
+  0.30992235  0.03366113  1.04660521  0.01489759  1.01398619  0.96740782
+  1.02403175  0.96653762]
+Time passed since start: 0:51:05.437613
+Average time per iteration: 0:00:31.931642
+
+### Current loss for iteration 96 is: 0.570695361161109
+Time passed since start: 0:51:36.296901
+Average time per iteration: 0:00:31.920587
+
+### Current loss for iteration 97 is: 0.5705543040762896
+Time passed since start: 0:51:56.998481
+Average time per iteration: 0:00:31.806107
+
+### Current loss for iteration 98 is: 0.5589069283081649
+Time passed since start: 0:52:58.040323
+Average time per iteration: 0:00:32.101417
+
+### Current loss for iteration 99 is: 0.5586976748207674
+Time passed since start: 0:53:19.629425
+Average time per iteration: 0:00:31.996294
+
+### Current loss for iteration 100 is: 0.5555340047624301
+Current optimal params are
+[ 2.50693381  1.62268824  0.42649871  0.94636626  0.43135218  1.2529825
+  1.02297706  1.69674052 -3.91466781  0.75264848 -1.49938215  2.32744679
+ -0.77555103  1.78419167  2.08264259  1.72726653 -3.44804699  2.34384012
+  0.99954779  2.21462877  0.54609032  0.50455777  0.97613389  0.46816958
+  0.3095325  -0.02713091  1.0382932  -0.0507023   1.01399421  0.96731682
+  1.02401944  0.96643873]
+Time passed since start: 0:53:50.189732
+Average time per iteration: 0:00:31.982077
+
+### Current loss for iteration 101 is: 0.5553096302795328
+Time passed since start: 0:54:11.098825
+Average time per iteration: 0:00:31.873518
+
+### Current loss for iteration 102 is: 0.555187291411987
+Time passed since start: 0:54:31.818019
+Average time per iteration: 0:00:31.765223
+
+### Current loss for iteration 103 is: 0.5543368369801884
+Time passed since start: 0:54:52.699871
+Average time per iteration: 0:00:31.660576
+
+### Current loss for iteration 104 is: 0.5542978237111601
+Time passed since start: 0:55:14.365124
+Average time per iteration: 0:00:31.565382
+
+### Current loss for iteration 105 is: 0.5534311171120808
+Current optimal params are
+[ 2.48295744  1.62303528  0.43441555  0.94636529  0.43894555  1.24795903
+  1.00894014  1.69677792 -3.93244879  0.73016606 -1.48778243  2.32750018
+ -0.78194142  1.77750121  2.08168691  1.7273241  -3.44799099  2.35631177
+  1.00090188  2.22861275  0.54525694  0.50599222  0.976508    0.469836
+  0.31203546 -0.03842268  1.03566534 -0.06378145  1.01399578  0.96729844
+  1.02401586  0.9664176 ]
+Time passed since start: 0:55:46.542906
+Average time per iteration: 0:00:31.571159
+
+### Current loss for iteration 106 is: 0.5529085829193893
+Time passed since start: 0:56:07.938868
+Average time per iteration: 0:00:31.476064
+
+### Current loss for iteration 107 is: 0.5528891282006569
+Time passed since start: 0:56:29.493750
+Average time per iteration: 0:00:31.384201
+
+### Current loss for iteration 108 is: 0.5519316789465468
+Time passed since start: 0:57:22.262485
+Average time per iteration: 0:00:31.580390
+
+### Current loss for iteration 109 is: 0.5518346591903677
+Time passed since start: 0:57:44.209273
+Average time per iteration: 0:00:31.492812
+
+### Current loss for iteration 110 is: 0.5512979232757094
+Current optimal params are
+[ 2.45078265  1.62349477  0.47654322  0.94639211  0.43187008  1.22618569
+  0.97244474  1.69752934 -3.97001328  0.63238975 -1.47511461  2.32858766
+ -0.76215069  1.75154893  2.09289704  1.72818416 -3.52873936  2.33145689
+  1.00742953  2.20175979  0.53970347  0.5094446   0.97818481  0.47401847
+  0.32209959 -0.07898334  1.0241013  -0.11147762  1.01397869  0.96720502
+  1.02400049  0.96631008]
+Time passed since start: 0:58:05.968495
+Average time per iteration: 0:00:31.405122
+
+### Current loss for iteration 111 is: 0.5512853759457835
+Time passed since start: 0:58:27.983868
+Average time per iteration: 0:00:31.321285
+
+### Current loss for iteration 112 is: 0.550649690418026
+Time passed since start: 0:59:11.865925
+Average time per iteration: 0:00:31.432442
+
+### Current loss for iteration 113 is: 0.5506231365347222
+Time passed since start: 0:59:33.400445
+Average time per iteration: 0:00:31.345618
+
+### Current loss for iteration 114 is: 0.5504451767874226
+Time passed since start: 0:59:54.800507
+Average time per iteration: 0:00:31.259135
+
+### Current loss for iteration 115 is: 0.550425745944232
+Current optimal params are
+[ 2.44808347  1.62309935  0.488827    0.94640457  0.42450768  1.23215569
+  0.98332969  1.69777994 -3.97654559  0.66148376 -1.49009195  2.32895288
+ -0.75402369  1.75868725  2.09863676  1.72843821 -3.55695687  2.3177321
+  1.00925584  2.18627658  0.53887597  0.50842018  0.97822073  0.47285087
+  0.32446233 -0.0744215   1.02377627 -0.10633255  1.01397066  0.96720299
+  1.02400077  0.96630766]
+Time passed since start: 1:00:16.289952
+Average time per iteration: 0:00:31.174913
+
+### Current loss for iteration 116 is: 0.5501298917240827
+Time passed since start: 1:00:49.290762
+Average time per iteration: 0:00:31.190519
+
+### Current loss for iteration 117 is: 0.5501119824628349
+Time passed since start: 1:01:11.282891
+Average time per iteration: 0:00:31.112567
+
+### Current loss for iteration 118 is: 0.5499850165170257
+Time passed since start: 1:01:33.200698
+Average time per iteration: 0:00:31.035300
+
+### Current loss for iteration 119 is: 0.5499709877110992
+Time passed since start: 1:01:55.399690
+Average time per iteration: 0:00:30.961664
+
+### Current loss for iteration 120 is: 0.5499011250347406
+Current optimal params are
+[ 2.42046001  1.62301241  0.4953336   0.94641523  0.42553458  1.23236886
+  0.97751138  1.69798982 -3.99953154  0.66189485 -1.4893835   2.32925742
+ -0.75746939  1.75895811  2.10087199  1.72866373 -3.57601448  2.32125265
+  1.0118903   2.19075467  0.5376471   0.50832704  0.97846675  0.47279284
+  0.32723413 -0.08110824  1.02151771 -0.11438434  1.01396401  0.96718926
+  1.02399879  0.96629158]
+Time passed since start: 1:02:16.778530
+Average time per iteration: 0:00:30.882467
+
+### Current loss for iteration 121 is: 0.5498537727944519
+Time passed since start: 1:02:38.269171
+Average time per iteration: 0:00:30.805485
+
+### Current loss for iteration 122 is: 0.5493926144041661
+Time passed since start: 1:03:10.382890
+Average time per iteration: 0:00:30.816121
+
+### Current loss for iteration 123 is: 0.5493773634869257
+Time passed since start: 1:03:32.482919
+Average time per iteration: 0:00:30.745830
+
+### Current loss for iteration 124 is: 0.5490929583445271
+Time passed since start: 1:04:05.680648
+Average time per iteration: 0:00:30.765445
+
+### Current loss for iteration 125 is: 0.5482258003562596
+Current optimal params are
+[ 2.35156527  1.62149146  0.50645792  0.94648586  0.41143164  1.23164256
+  0.97709329  1.69925524 -4.06878546  0.66155016 -1.51347875  2.3310938
+ -0.7276752   1.76364613  2.11851575  1.72999298 -3.71161061  2.28092783
+  1.02288288  2.14688393  0.5315772   0.50349953  0.97886856  0.46738309
+  0.3348828  -0.09600083  1.01566631 -0.13243997  1.01391347  0.96713671
+  1.02399621  0.96623086]
+Time passed since start: 1:04:28.210369
+Average time per iteration: 0:00:30.700082
+
+### Current loss for iteration 126 is: 0.5408087697404567
+Time passed since start: 1:04:49.998117
+Average time per iteration: 0:00:30.629906
+
+### Current loss for iteration 127 is: 0.5406487626107808
+Time passed since start: 1:05:11.880534
+Average time per iteration: 0:00:30.561567
+
+### Current loss for iteration 128 is: 0.539665509828126
+Time passed since start: 1:05:33.715002
+Average time per iteration: 0:00:30.493915
+
+### Current loss for iteration 129 is: 0.5394249834895671
+Time passed since start: 1:05:56.089218
+Average time per iteration: 0:00:30.431456
+
+### Current loss for iteration 130 is: 0.5382590920091193
+Current optimal params are
+[ 2.04983996  1.61642019  0.52817787  0.94672556  0.37440088  1.21969428
+  0.95462907  1.70350735 -4.3459615   0.61659877 -1.57052898  2.33726341
+ -0.66633982  1.77024974  2.16981957  1.73446431 -4.15288402  2.18788795
+  1.06280538  2.04861367  0.5101188   0.4869536   0.98026873  0.44884265
+  0.36085063 -0.15730596  0.99474489 -0.20618588  1.01374269  0.96695201
+  1.02398677  0.96601744]
+Time passed since start: 1:06:17.997432
+Average time per iteration: 0:00:30.366393
+
+### Current loss for iteration 131 is: 0.5381947762006336
+Time passed since start: 1:06:39.882644
+Average time per iteration: 0:00:30.302141
+
+### Current loss for iteration 132 is: 0.537463911121879
+Time passed since start: 1:07:23.250261
+Average time per iteration: 0:00:30.400378
+
+### Current loss for iteration 133 is: 0.5374395965258784
+Time passed since start: 1:07:45.721724
+Average time per iteration: 0:00:30.341207
+
+### Current loss for iteration 134 is: 0.5363156495791263
+Time passed since start: 1:08:40.261640
+Average time per iteration: 0:00:30.520457
+
+### Current loss for iteration 135 is: 0.536082485327509
+Current optimal params are
+[ 1.9997441   1.61521646  0.45400971  0.94675085  0.37974431  1.20721385
+  0.95305501  1.70371964 -4.37544411  0.56427008 -1.55386046  2.33756876
+ -0.66778474  1.76490471  2.15831856  1.73466642 -4.17621367  2.19332388
+  1.06591213  2.05540552  0.50919561  0.48103887  0.97901063  0.44170927
+  0.35080074 -0.15019835  1.00211076 -0.19625934  1.01371763  0.96695918
+  1.02399686  0.96602785]
+Time passed since start: 1:09:01.767772
+Average time per iteration: 0:00:30.454175
+
+### Current loss for iteration 136 is: 0.5349068721817387
+Time passed since start: 1:09:24.132762
+Average time per iteration: 0:00:30.395130
+
+### Current loss for iteration 137 is: 0.5342188580251801
+Time passed since start: 1:09:46.522428
+Average time per iteration: 0:00:30.337119
+
+### Current loss for iteration 138 is: 0.5341313517108867
+Time passed since start: 1:11:25.732476
+Average time per iteration: 0:00:30.832608
+
+### Current loss for iteration 139 is: 0.5328550346357751
+Time passed since start: 1:11:56.808705
+Average time per iteration: 0:00:30.834348
+
+### Current loss for iteration 140 is: 0.532720408273949
+Current optimal params are
+[ 1.90782653  1.6124824   0.35141913  0.94680379  0.36773107  1.20084465
+  0.9785973   1.70440384 -4.43341187  0.55239809 -1.54833836  2.3385627
+ -0.64811866  1.77190832  2.14450129  1.73532119 -4.26992033  2.1652102
+  1.07501487  2.02373782  0.50718921  0.47002115  0.97687231  0.42834197
+  0.33755914 -0.1195653   1.0159879  -0.15690178  1.01367116  0.96698378
+  1.0240161   0.96606082]
+Time passed since start: 1:12:17.330544
+Average time per iteration: 0:00:30.761210
+
+### Current loss for iteration 141 is: 0.5306758483530897
+Time passed since start: 1:12:48.082528
+Average time per iteration: 0:00:30.761145
+
+### Current loss for iteration 142 is: 0.5298978731313633
+Time passed since start: 1:13:08.487447
+Average time per iteration: 0:00:30.688723
+
+### Current loss for iteration 143 is: 0.5291718292779024
+Time passed since start: 1:13:18.782626
+Average time per iteration: 0:00:30.547102
+
+### Current loss for iteration 144 is: 0.5288663699862988
+Time passed since start: 1:13:38.740628
+Average time per iteration: 0:00:30.474073
+
+### Current loss for iteration 145 is: 0.5262213087851308
+Current optimal params are
+[ 1.63787339  1.60872319  0.17829024  0.94690448  0.34948184  1.20850144
+  0.99973961  1.70597806 -4.59792985  0.62512138 -1.51948349  2.34085197
+ -0.61801075  1.79675603  2.11833169  1.73688762 -4.48892882  2.11982569
+  1.10143685  1.97541238  0.50243995  0.4556643   0.97464854  0.41115869
+  0.31891068 -0.08200385  1.03220241 -0.10958507  1.01358932  0.96699282
+  1.02403977  0.96607515]
+Time passed since start: 1:14:17.231989
+Average time per iteration: 0:00:30.528986
+
+### Current loss for iteration 146 is: 0.5260449192799719
+Time passed since start: 1:14:36.418436
+Average time per iteration: 0:00:30.451826
+
+### Current loss for iteration 147 is: 0.5223455657465048
+Time passed since start: 1:15:04.803633
+Average time per iteration: 0:00:30.437862
+
+### Current loss for iteration 148 is: 0.5221888207859517
+Time passed since start: 1:15:23.470026
+Average time per iteration: 0:00:30.358859
+
+### Current loss for iteration 149 is: 0.5199332613616625
+Time passed since start: 1:15:51.190751
+Average time per iteration: 0:00:30.341272
+
+### Current loss for iteration 150 is: 0.5192165629446996
+Current optimal params are
+[ 1.6081729   1.60839303  0.14974803  0.94692874  0.33259912  1.20385211
+  0.99491586  1.70645509 -4.62510484  0.60741968 -1.51755203  2.34154376
+ -0.57670795  1.79363322  2.12108368  1.7373997  -4.57458147  2.06882103
+  1.10539043  1.9172245   0.5005703   0.45433421  0.97471853  0.40963903
+  0.31077499 -0.08835237  1.03319389 -0.11715702  1.01356793  0.96696796
+  1.02403992  0.96604584]
+Time passed since start: 1:16:09.878934
+Average time per iteration: 0:00:30.264099
+
+### Current loss for iteration 151 is: 0.5191458998687389
+Time passed since start: 1:16:28.583137
+Average time per iteration: 0:00:30.188047
+
+### Current loss for iteration 152 is: 0.5177511646457628
+Time passed since start: 1:16:56.316964
+Average time per iteration: 0:00:30.172006
+
+### Current loss for iteration 153 is: 0.5176848158039299
+Time passed since start: 1:17:21.882057
+Average time per iteration: 0:00:30.142091
+
+### Current loss for iteration 154 is: 0.5166289309654741
+Time passed since start: 1:17:49.755490
+Average time per iteration: 0:00:30.127455
+
+### Current loss for iteration 155 is: 0.51577941047683
+Current optimal params are
+[ 1.59618485  1.60925987  0.14856577  0.94691445  0.33492393  1.18482502
+  0.97419536  1.70649338 -4.63066588  0.50630974 -1.50953363  2.34160103
+ -0.56718803  1.77011107  2.12550084  1.7374768  -4.58691866  2.06259654
+  1.10604528  1.91002517  0.49887653  0.4579044   0.97584754  0.41413606
+  0.30666585 -0.10794981  1.02912884 -0.14229122  1.01357899  0.96693742
+  1.02403095  0.96600728]
+Time passed since start: 1:17:59.274497
+Average time per iteration: 0:00:29.995349
+
+### Current loss for iteration 156 is: 0.5153537383684946
+Time passed since start: 1:18:18.162045
+Average time per iteration: 0:00:29.924599
+
+### Current loss for iteration 157 is: 0.5131860349467408
+Time passed since start: 1:18:37.048462
+Average time per iteration: 0:00:29.854737
+
+### Current loss for iteration 158 is: 0.5131686516314997
+Time passed since start: 1:18:56.116875
+Average time per iteration: 0:00:29.786899
+
+### Current loss for iteration 159 is: 0.5130629992857928
+Time passed since start: 1:19:15.145905
+Average time per iteration: 0:00:29.719662
+
+### Current loss for iteration 160 is: 0.5129195109387109
+Current optimal params are
+[ 1.5936191   1.61008618  0.16405125  0.94691149  0.33052849  1.18755767
+  0.9626826   1.70650224 -4.63234639  0.51738859 -1.50833152  2.34161267
+ -0.5637314   1.76961729  2.12990844  1.73750986 -4.59551956  2.05613607
+  1.10610371  1.90217476  0.49897337  0.46044562  0.97646189  0.41736209
+  0.30517077 -0.12016563  1.02610429 -0.15820965  1.01358049  0.96691852
+  1.02402588  0.96598304]
+Time passed since start: 1:19:24.647966
+Average time per iteration: 0:00:29.594087
+
+### Current loss for iteration 161 is: 0.5125865498587324
+Time passed since start: 1:19:43.462957
+Average time per iteration: 0:00:29.527549
+
+### Current loss for iteration 162 is: 0.5124135401290238
+Time passed since start: 1:20:02.013068
+Average time per iteration: 0:00:29.460203
+
+### Current loss for iteration 163 is: 0.5123687589308343
+Time passed since start: 1:20:20.681003
+Average time per iteration: 0:00:29.394396
+
+### Current loss for iteration 164 is: 0.5117105765569829
+Time passed since start: 1:20:48.568382
+Average time per iteration: 0:00:29.385263
+
+### Current loss for iteration 165 is: 0.5116937073227124
+Current optimal params are
+[ 1.56875274  1.61095053  0.16666957  0.94689895  0.32968555  1.18586686
+  0.95639187  1.70655956 -4.64327904  0.50123046 -1.51466166  2.34169933
+ -0.56082355  1.76371307  2.13742181  1.73758879 -4.60954464  2.05281884
+  1.10819746  1.89842722  0.49839391  0.46371968  0.97740771  0.4215749
+  0.30036836 -0.13024932  1.02401656 -0.17201249  1.01359152  0.96690184
+  1.02401932  0.96596075]
+Time passed since start: 1:21:07.496500
+Average time per iteration: 0:00:29.322268
+
+### Current loss for iteration 166 is: 0.5115355424073389
+Time passed since start: 1:21:35.417015
+Average time per iteration: 0:00:29.313874
+
+### Current loss for iteration 167 is: 0.5114926460203295
+Time passed since start: 1:21:54.163359
+Average time per iteration: 0:00:29.250972
+
+### Current loss for iteration 168 is: 0.5106653279722918
+Time passed since start: 1:22:22.085125
+Average time per iteration: 0:00:29.243107
+
+### Current loss for iteration 169 is: 0.5105887129392711
+Time passed since start: 1:22:40.741399
+Average time per iteration: 0:00:29.180832
+
+### Current loss for iteration 170 is: 0.5086662692720803
+Current optimal params are
+[ 1.48222064  1.61350219  0.18485804  0.94685502  0.31804036  1.18732305
+  0.95717869  1.70681788 -4.68151042  0.48863035 -1.55855774  2.34209
+ -0.54579222  1.7519958   2.16873481  1.73790019 -4.66995654  2.03045035
+  1.11543672  1.87176354  0.49676011  0.47386758  0.98038443  0.43474608
+  0.28349507 -0.15142427  1.02005541 -0.20253803  1.01363211  0.96686173
+  1.02399992  0.96590541]
+Time passed since start: 1:23:08.580002
+Average time per iteration: 0:00:29.172982
+
+### Current loss for iteration 171 is: 0.508562873895528
+Time passed since start: 1:23:27.609936
+Average time per iteration: 0:00:29.114011
+
+### Current loss for iteration 172 is: 0.5029496894866915
+Time passed since start: 1:24:05.050621
+Average time per iteration: 0:00:29.162142
+
+### Current loss for iteration 173 is: 0.5021911319092327
+Time passed since start: 1:24:24.934629
+Average time per iteration: 0:00:29.108820
+
+### Current loss for iteration 174 is: 0.4958564973949749
+Time passed since start: 1:25:02.873613
+Average time per iteration: 0:00:29.159278
+
+### Current loss for iteration 175 is: 0.48760218632734226
+Current optimal params are
+[ 1.00401022  1.62581445  0.20610672  0.94663355  0.28999303  1.18919022
+  0.96248972  1.70804827 -4.88566976  0.39294133 -1.75503483  2.34395647
+ -0.49202815  1.69050484  2.31177059  1.7393708  -4.94076937  1.95992823
+  1.15621523  1.79001642  0.48833146  0.52267805  0.99477178  0.4980912
+  0.19952598 -0.24636459  1.00477145 -0.34025892  1.01383862  0.96667905
+  1.02390754  0.96565222]
+Time passed since start: 1:25:12.378490
+Average time per iteration: 0:00:29.047605
+
+### Current loss for iteration 176 is: 0.48748954060073746
+Time passed since start: 1:25:31.313982
+Average time per iteration: 0:00:28.990474
+
+### Current loss for iteration 177 is: 0.48728952904631884
+Time passed since start: 1:25:49.968722
+Average time per iteration: 0:00:28.932409
+
+### Current loss for iteration 178 is: 0.48667886414603484
+Time passed since start: 1:26:08.442142
+Average time per iteration: 0:00:28.873978
+
+### Current loss for iteration 179 is: 0.486236851757814
+Time passed since start: 1:26:27.008911
+Average time per iteration: 0:00:28.816716
+
+### Current loss for iteration 180 is: 0.486227645355925
+Current optimal params are
+[ 0.99205543  1.62581316  0.20607647  0.94663136  0.29319102  1.18873641
+  0.96443883  1.70804277 -4.88841143  0.38948501 -1.75517006  2.34394953
+ -0.4997386   1.68996959  2.31136582  1.73935993 -4.93509308  1.96813131
+  1.15717076  1.8009324   0.4883126   0.52273407  0.99479503  0.49817074
+  0.19959517 -0.24457904  1.00529067 -0.33790598  1.01384124  0.96668187
+  1.02390769  0.96565592]
+Time passed since start: 1:26:45.623266
+Average time per iteration: 0:00:28.760350
+
+### Current loss for iteration 181 is: 0.48618619404761765
+Time passed since start: 1:27:04.155770
+Average time per iteration: 0:00:28.704153
+
+### Current loss for iteration 182 is: 0.4861753926001357
+Time passed since start: 1:27:22.773102
+Average time per iteration: 0:00:28.649033
+
+### Current loss for iteration 183 is: 0.4861359716600418
+Time passed since start: 1:27:41.368958
+Average time per iteration: 0:00:28.594397
+
+### Current loss for iteration 184 is: 0.48612534030912696
+Time passed since start: 1:27:59.941826
+Average time per iteration: 0:00:28.540226
+
+### Current loss for iteration 185 is: 0.4861058875903108
+Current optimal params are
+[ 0.98354855  1.62586686  0.21088567  0.94662947  0.2945046   1.18874188
+  0.96487362  1.70803988 -4.8904138   0.38905627 -1.75583608  2.343946
+ -0.50424941  1.68963666  2.31173183  1.73935514 -4.93256715  1.97251062
+  1.15775145  1.80676145  0.4883352   0.52298076  0.99486733  0.49850786
+  0.19986232 -0.24446642  1.00519933 -0.33783771  1.01384331  0.96668252
+  1.02390729  0.96565669]
+Time passed since start: 1:28:18.416819
+Average time per iteration: 0:00:28.486112
+
+### Current loss for iteration 186 is: 0.4855391961647873
+Time passed since start: 1:28:46.066993
+Average time per iteration: 0:00:28.481642
+
+### Current loss for iteration 187 is: 0.4854981656502847
+Time passed since start: 1:29:04.581833
+Average time per iteration: 0:00:28.428627
+
+### Current loss for iteration 188 is: 0.4853506398202146
+Time passed since start: 1:29:22.881860
+Average time per iteration: 0:00:28.375036
+
+### Current loss for iteration 189 is: 0.48526989526963954
+Time passed since start: 1:29:41.422711
+Average time per iteration: 0:00:28.323277
+
+### Current loss for iteration 190 is: 0.4851026472434504
+Current optimal params are
+[ 0.97109629  1.62615871  0.23565927  0.94662478  0.29211683  1.18937235
+  0.96207163  1.70805645 -4.89357631  0.39136299 -1.76120695  2.34397132
+ -0.49895853  1.6886003   2.31621796  1.73937816 -4.94146554  1.96672418
+  1.15796717  1.7990784   0.4884662   0.52420528  0.99522278  0.50017515
+  0.20038331 -0.2496351   1.00314389 -0.34512539  1.01384778  0.9666782
+  1.02390447  0.96565054]
+Time passed since start: 1:30:00.133466
+Average time per iteration: 0:00:28.272950
+
+### Current loss for iteration 191 is: 0.48503398839168016
+Time passed since start: 1:30:18.790049
+Average time per iteration: 0:00:28.222865
+
+### Current loss for iteration 192 is: 0.48466702528828876
+Time passed since start: 1:30:37.641906
+Average time per iteration: 0:00:28.174310
+
+### Current loss for iteration 193 is: 0.484574139984773
+Time passed since start: 1:30:56.662359
+Average time per iteration: 0:00:28.127126
+
+### Current loss for iteration 194 is: 0.4843557009302607
+Time passed since start: 1:31:15.879068
+Average time per iteration: 0:00:28.081431
+
+### Current loss for iteration 195 is: 0.4842066738282888
+Current optimal params are
+[ 0.89236225  1.62706846  0.29589333  0.9466038   0.28993401  1.18901806
+  0.95516701  1.70811484 -4.91258257  0.38095906 -1.77826582  2.34406334
+ -0.49776994  1.68270091  2.32988366  1.73944306 -4.96214372  1.96407971
+  1.16129322  1.79570957  0.48880042  0.52826787  0.99643711  0.50571768
+  0.19941792 -0.26406381  0.99784758 -0.36569576  1.01386932  0.9666723
+  1.02389579  0.96564127]
+Time passed since start: 1:31:34.938741
+Average time per iteration: 0:00:28.035402
+
+### Current loss for iteration 196 is: 0.48356678843838846
+Time passed since start: 1:31:54.342204
+Average time per iteration: 0:00:27.991585
+
+### Current loss for iteration 197 is: 0.4835579216382721
+Time passed since start: 1:32:14.010706
+Average time per iteration: 0:00:27.949549
+
+### Current loss for iteration 198 is: 0.4825274394974776
+Time passed since start: 1:32:52.551337
+Average time per iteration: 0:00:28.002771
+
+### Current loss for iteration 199 is: 0.4823716092547222
+Time passed since start: 1:33:11.790987
+Average time per iteration: 0:00:27.958955
+
+### Current loss for iteration 200 is: 0.4822513895910193
+Current optimal params are
+[ 0.82764503  1.62745736  0.29454019  0.94659196  0.29129312  1.18693711
+  0.94984619  1.70815847 -4.92750064  0.3619034  -1.78456617  2.34413169
+ -0.50013047  1.67815954  2.33549001  1.73948154 -4.97355549  1.96674698
+  1.16432728  1.79943362  0.48904617  0.5300725   0.99695355  0.50817626
+  0.19408571 -0.27186105  0.99664066 -0.37662274  1.01388178  0.96667509
+  1.02389274  0.96564442]
+Time passed since start: 1:33:21.519445
+Average time per iteration: 0:00:27.868256
+
+### Current loss for iteration 201 is: 0.48215921739094053
+Time passed since start: 1:33:31.240988
+Average time per iteration: 0:00:27.778421
+
+### Current loss for iteration 202 is: 0.4820706754161631
+Time passed since start: 1:33:40.800350
+Average time per iteration: 0:00:27.688672
+
+### Current loss for iteration 203 is: 0.4810124094174531
+Time passed since start: 1:34:09.512368
+Average time per iteration: 0:00:27.693688
+
+### Current loss for iteration 204 is: 0.48081305224813
+Time passed since start: 1:34:28.829938
+Average time per iteration: 0:00:27.652829
+
+### Current loss for iteration 205 is: 0.48073820817517293
+Current optimal params are
+[ 0.81324372  1.62759462  0.2862207   0.9465897   0.28975003  1.1867454
+  0.94515263  1.70817405 -4.93090279  0.35972704 -1.78559195  2.34415512
+ -0.49559183  1.67720277  2.33720933  1.73949967 -4.9813265   1.96227224
+  1.1648784   1.79334636  0.48919308  0.53063131  0.99709154  0.50894242
+  0.19159877 -0.27647378  0.99588335 -0.38303435  1.01388373  0.96667403
+  1.02389177  0.96564277]
+Time passed since start: 1:34:48.140143
+Average time per iteration: 0:00:27.612331
+
+### Current loss for iteration 206 is: 0.4803234355872789
+Time passed since start: 1:35:07.217929
+Average time per iteration: 0:00:27.571101
+
+### Current loss for iteration 207 is: 0.48032006477419487
+Time passed since start: 1:35:26.375010
+Average time per iteration: 0:00:27.530649
+
+### Current loss for iteration 208 is: 0.4800666851528232
+Time passed since start: 1:36:04.691492
+Average time per iteration: 0:00:27.582256
+
+### Current loss for iteration 209 is: 0.47998624821047126
+Time passed since start: 1:36:23.959439
+Average time per iteration: 0:00:27.542664
+
+### Current loss for iteration 210 is: 0.4798897185221716
+Current optimal params are
+[ 0.8100699   1.62756569  0.27771687  0.94658942  0.28881006  1.18630791
+  0.94579879  1.70818546 -4.93155517  0.35652582 -1.78689901  2.34417216
+ -0.49098904  1.67691609  2.33785384  1.73950958 -4.98608101  1.95820306
+  1.16488218  1.78779743  0.48923785  0.53052406  0.99704488  0.50879305
+  0.18997576 -0.27650931  0.9964206  -0.38303235  1.01388398  0.96667597
+  1.0238923   0.96564544]
+Time passed since start: 1:36:33.627264
+Average time per iteration: 0:00:27.457949
+
+### Current loss for iteration 211 is: 0.47976999520439306
+Time passed since start: 1:36:43.437866
+Average time per iteration: 0:00:27.374707
+
+### Current loss for iteration 212 is: 0.4797463892907351
+Time passed since start: 1:37:02.639810
+Average time per iteration: 0:00:27.336337
+
+### Current loss for iteration 213 is: 0.4797426578887471
+Time passed since start: 1:37:21.689320
+Average time per iteration: 0:00:27.297614
+
+### Current loss for iteration 214 is: 0.4797340312270041
+Time passed since start: 1:37:50.152082
+Average time per iteration: 0:00:27.303033
+
+### Current loss for iteration 215 is: 0.4789609499913986
+Current optimal params are
+[ 0.79295111  1.62749501  0.25269686  0.94658753  0.28711078  1.18532473
+  0.94822456  1.70821094 -4.93491977  0.34936546 -1.79068677  2.34421097
+ -0.48538925  1.67626324  2.33960444  1.73952616 -4.99467649  1.95284712
+  1.16533405  1.78049098  0.48942893  0.53028883  0.99691922  0.50846438
+  0.1849761  -0.2761207   0.99816745 -0.3823571   1.01388617  0.96668333
+  1.02389392  0.96565558]
+Time passed since start: 1:38:28.142961
+Average time per iteration: 0:00:27.352514
+
+### Current loss for iteration 216 is: 0.47896047791700985
+Time passed since start: 1:39:00.132576
+Average time per iteration: 0:00:27.373883
+
+### Current loss for iteration 217 is: 0.47895441997585014
+Time passed since start: 1:39:28.697651
+Average time per iteration: 0:00:27.379347
+
+### Current loss for iteration 218 is: 0.4789353301175729
+Time passed since start: 1:39:47.865375
+Average time per iteration: 0:00:27.341851
+
+### Current loss for iteration 219 is: 0.4787737268058864
+Time passed since start: 1:40:16.237975
+Average time per iteration: 0:00:27.346536
+
+### Current loss for iteration 220 is: 0.478730004614775
+Current optimal params are
+[ 0.780645    1.62754862  0.25545303  0.94658447  0.28526727  1.18548543
+  0.95090061  1.70822599 -4.9373375   0.35034484 -1.79718897  2.34423443
+ -0.48130924  1.67606854  2.34329177  1.73953617 -5.00138692  1.94853559
+  1.16529434  1.77456215  0.4896694   0.53054502  0.99694409  0.50882051
+  0.18292513 -0.27684586  0.99846117 -0.38336887  1.01388944  0.96668738
+  1.02389404  0.96566107]
+Time passed since start: 1:40:35.482728
+Average time per iteration: 0:00:27.309877
+
+### Current loss for iteration 221 is: 0.47871761664741336
+Time passed since start: 1:40:54.572171
+Average time per iteration: 0:00:27.272848
+
+### Current loss for iteration 222 is: 0.4785661506631935
+Time passed since start: 1:41:23.101614
+Average time per iteration: 0:00:27.278483
+
+### Current loss for iteration 223 is: 0.4785634894134738
+Time passed since start: 1:41:42.041851
+Average time per iteration: 0:00:27.241258
+
+### Current loss for iteration 224 is: 0.47848916964612215
+Time passed since start: 1:42:10.546963
+Average time per iteration: 0:00:27.246875
+
+### Current loss for iteration 225 is: 0.4784632431692874
+Current optimal params are
+[ 0.77403937  1.62759066  0.25598687  0.94658309  0.28623654  1.18557038
+  0.95038543  1.70822215 -4.93851597  0.35073043 -1.79831169  2.34422931
+ -0.48462634  1.67590349  2.34414339  1.73952973 -4.99938759  1.95166833
+  1.16548436  1.77885306  0.48977326  0.53072387  0.99697673  0.50906923
+  0.18223847 -0.2778198   0.99830848 -0.3847361   1.01389092  0.96668847
+  1.02389387  0.96566253]
+Time passed since start: 1:42:29.564721
+Average time per iteration: 0:00:27.210463
+
+### Current loss for iteration 226 is: 0.4784561687093681
+Time passed since start: 1:42:48.582780
+Average time per iteration: 0:00:27.174373
+
+### Current loss for iteration 227 is: 0.4784530526688503
+Time passed since start: 1:43:07.603772
+Average time per iteration: 0:00:27.138613
+
+### Current loss for iteration 228 is: 0.4782385133182427
+Time passed since start: 1:43:45.409235
+Average time per iteration: 0:00:27.185193
+
+### Current loss for iteration 229 is: 0.4782351298655918
+Time passed since start: 1:44:04.331053
+Average time per iteration: 0:00:27.149265
+
+### Current loss for iteration 230 is: 0.4782344243661838
+Current optimal params are
+[ 0.76430267  1.62771394  0.26520167  0.94657963  0.2854858   1.18553703
+  0.94976923  1.70822595 -4.94032618  0.34951454 -1.8043873   2.34423599
+ -0.4823516   1.67514191  2.34832724  1.73953146 -5.00344361  1.94949305
+  1.16518487  1.77582412  0.49003132  0.53124697  0.99708613  0.50979753
+  0.18078585 -0.2812344   0.99748986 -0.3895364   1.01389433  0.96668995
+  1.02389306  0.96566444]
+Time passed since start: 1:44:23.440590
+Average time per iteration: 0:00:27.114461
+
+### Current loss for iteration 231 is: 0.4781185970467705
+Time passed since start: 1:45:10.795359
+Average time per iteration: 0:00:27.201704
+
+### Current loss for iteration 232 is: 0.4781006179162205
+Time passed since start: 1:45:29.786979
+Average time per iteration: 0:00:27.166468
+
+### Current loss for iteration 233 is: 0.478099844458267
+Time passed since start: 1:45:48.869723
+Average time per iteration: 0:00:27.131922
+
+### Current loss for iteration 234 is: 0.47806059117764255
+Time passed since start: 1:46:26.773395
+Average time per iteration: 0:00:27.177759
+
+### Current loss for iteration 235 is: 0.47806024993940044
+Current optimal params are
+[ 0.75942531  1.62771832  0.2629172   0.94657859  0.28611704  1.18525115
+  0.9500913   1.70822574 -4.94117491  0.34714627 -1.8056792   2.34423619
+ -0.48374374  1.67480798  2.34907547  1.73952828 -5.00279718  1.9509746
+  1.16526613  1.7778493   0.4901      0.53128152  0.99708055  0.509845
+  0.17980893 -0.28155436  0.9976796  -0.38996291  1.01389547  0.96669171
+  1.02389322  0.96566685]
+Time passed since start: 1:46:45.793175
+Average time per iteration: 0:00:27.143191
+
+### Current loss for iteration 236 is: 0.4780062990323166
+Time passed since start: 1:47:23.599916
+Average time per iteration: 0:00:27.188185
+
+### Current loss for iteration 237 is: 0.47798363585003545
+Time passed since start: 1:47:42.709676
+Average time per iteration: 0:00:27.154242
+
+### Current loss for iteration 238 is: 0.4779708525225439
+Time passed since start: 1:48:01.783671
+Average time per iteration: 0:00:27.120434
+
+### Current loss for iteration 239 is: 0.4779566483619143
+Time passed since start: 1:48:11.458911
+Average time per iteration: 0:00:27.047745
+
+### Current loss for iteration 240 is: 0.47794487126049306
+Current optimal params are
+[ 0.75055831  1.62777291  0.26298456  0.94657579  0.28571857  1.18472905
+  0.95036294  1.70823119 -4.94276262  0.3424837  -1.81093271  2.34424527
+ -0.4813821   1.67393723  2.35243626  1.73952961 -5.00643237  1.94899234
+  1.16501248  1.77508537  0.49031547  0.5315325   0.99711023  0.51019394
+  0.17752576 -0.28378298  0.99759299 -0.39305233  1.01389827  0.96669476
+  1.02389316  0.96567099]
+Time passed since start: 1:48:21.129226
+Average time per iteration: 0:00:26.975640
+
+### Current loss for iteration 241 is: 0.47786269603580256
+Time passed since start: 1:48:40.264827
+Average time per iteration: 0:00:26.943243
+
+### Current loss for iteration 242 is: 0.4778257443924333
+Time passed since start: 1:48:59.375969
+Average time per iteration: 0:00:26.911012
+
+### Current loss for iteration 243 is: 0.477808307830093
+Time passed since start: 1:49:18.356927
+Average time per iteration: 0:00:26.878512
+
+### Current loss for iteration 244 is: 0.47780290646473017
+Time passed since start: 1:49:37.551805
+Average time per iteration: 0:00:26.847150
+
+### Current loss for iteration 245 is: 0.4777918603075576
+Current optimal params are
+[ 0.74807484  1.62781727  0.26173149  0.94657536  0.28578468  1.18505296
+  0.94864364  1.70822798 -4.94319579  0.34488338 -1.81103582  2.34424061
+ -0.48260991  1.67403467  2.35286054  1.73952653 -5.00590415  1.94993506
+  1.16504446  1.77638111  0.49039971  0.5316945   0.9971408   0.51041987
+  0.17699829 -0.28531215  0.99723256 -0.39519581  1.01389861  0.96669437
+  1.02389289  0.96567042]
+Time passed since start: 1:49:56.817386
+Average time per iteration: 0:00:26.816331
+
+### Current loss for iteration 246 is: 0.477790392798705
+Time passed since start: 1:50:15.987017
+Average time per iteration: 0:00:26.785373
+
+### Current loss for iteration 247 is: 0.47776215211135226
+Time passed since start: 1:50:44.681959
+Average time per iteration: 0:00:26.793072
+
+### Current loss for iteration 248 is: 0.4777594757727455
+Time passed since start: 1:51:03.889070
+Average time per iteration: 0:00:26.762607
+
+### Current loss for iteration 249 is: 0.47771002940289475
+Time passed since start: 1:51:32.527148
+Average time per iteration: 0:00:26.770109
+
+Warning: Maximum number of iterations has been exceeded.
+         Current function value: 0.477710
+         Iterations: 250
+         Function evaluations: 585
+         Gradient evaluations: 581
+The losses convergence:
+[DeviceArray(1.44471251, dtype=float64), DeviceArray(0.85886569, dtype=float64), DeviceArray(0.80546837, dtype=float64), DeviceArray(0.77924937, dtype=float64), DeviceArray(0.74138104, dtype=float64), DeviceArray(0.73788007, dtype=float64), DeviceArray(0.73734635, dtype=float64), DeviceArray(0.73172696, dtype=float64), DeviceArray(0.71166918, dtype=float64), DeviceArray(0.70184078, dtype=float64), DeviceArray(0.70055623, dtype=float64), DeviceArray(0.67413759, dtype=float64), DeviceArray(0.67354289, dtype=float64), DeviceArray(0.65478365, dtype=float64), DeviceArray(0.6490629, dtype=float64), DeviceArray(0.64286428, dtype=float64), DeviceArray(0.64255664, dtype=float64), DeviceArray(0.64074054, dtype=float64), DeviceArray(0.63586005, dtype=float64), DeviceArray(0.635791, dtype=float64), DeviceArray(0.63564415, dtype=float64), DeviceArray(0.63484916, dtype=float64), DeviceArray(0.63459124, dtype=float64), DeviceArray(0.62989664, dtype=float64), DeviceArray(0.62961955, dtype=float64), DeviceArray(0.6291475, dtype=float64), DeviceArray(0.62909509, dtype=float64), DeviceArray(0.62886585, dtype=float64), DeviceArray(0.6288367, dtype=float64), DeviceArray(0.62739538, dtype=float64), DeviceArray(0.62498174, dtype=float64), DeviceArray(0.62347066, dtype=float64), DeviceArray(0.62155082, dtype=float64), DeviceArray(0.62031302, dtype=float64), DeviceArray(0.62014315, dtype=float64), DeviceArray(0.62009318, dtype=float64), DeviceArray(0.62003235, dtype=float64), DeviceArray(0.62000496, dtype=float64), DeviceArray(0.61990086, dtype=float64), DeviceArray(0.61981561, dtype=float64), DeviceArray(0.61880573, dtype=float64), DeviceArray(0.617493, dtype=float64), DeviceArray(0.61526822, dtype=float64), DeviceArray(0.61282359, dtype=float64), DeviceArray(0.61244216, dtype=float64), DeviceArray(0.61043767, dtype=float64), DeviceArray(0.61026791, dtype=float64), DeviceArray(0.60940163, dtype=float64), DeviceArray(0.60882667, dtype=float64), DeviceArray(0.60155578, dtype=float64), DeviceArray(0.59296186, dtype=float64), DeviceArray(0.59289317, dtype=float64), DeviceArray(0.59268845, dtype=float64), DeviceArray(0.59267521, dtype=float64), DeviceArray(0.59258281, dtype=float64), DeviceArray(0.59256554, dtype=float64), DeviceArray(0.59231895, dtype=float64), DeviceArray(0.59222119, dtype=float64), DeviceArray(0.58966974, dtype=float64), DeviceArray(0.58875793, dtype=float64), DeviceArray(0.58820326, dtype=float64), DeviceArray(0.58503209, dtype=float64), DeviceArray(0.58497495, dtype=float64), DeviceArray(0.58474401, dtype=float64), DeviceArray(0.58470363, dtype=float64), DeviceArray(0.58430796, dtype=float64), DeviceArray(0.58423337, dtype=float64), DeviceArray(0.58381081, dtype=float64), DeviceArray(0.58367409, dtype=float64), DeviceArray(0.58338365, dtype=float64), DeviceArray(0.58301361, dtype=float64), DeviceArray(0.5829257, dtype=float64), DeviceArray(0.58288039, dtype=float64), DeviceArray(0.58285843, dtype=float64), DeviceArray(0.58281267, dtype=float64), DeviceArray(0.58275448, dtype=float64), DeviceArray(0.58265246, dtype=float64), DeviceArray(0.58263431, dtype=float64), DeviceArray(0.58261982, dtype=float64), DeviceArray(0.5826037, dtype=float64), DeviceArray(0.58254618, dtype=float64), DeviceArray(0.58251911, dtype=float64), DeviceArray(0.58251527, dtype=float64), DeviceArray(0.58246971, dtype=float64), DeviceArray(0.58246286, dtype=float64), DeviceArray(0.58242774, dtype=float64), DeviceArray(0.582402, dtype=float64), DeviceArray(0.57981607, dtype=float64), DeviceArray(0.57953655, dtype=float64), DeviceArray(0.57812863, dtype=float64), DeviceArray(0.57787959, dtype=float64), DeviceArray(0.57416637, dtype=float64), DeviceArray(0.57160826, dtype=float64), DeviceArray(0.57129942, dtype=float64), DeviceArray(0.57129079, dtype=float64), DeviceArray(0.57125476, dtype=float64), DeviceArray(0.57069536, dtype=float64), DeviceArray(0.5705543, dtype=float64), DeviceArray(0.55890693, dtype=float64), DeviceArray(0.55869767, dtype=float64), DeviceArray(0.555534, dtype=float64), DeviceArray(0.55530963, dtype=float64), DeviceArray(0.55518729, dtype=float64), DeviceArray(0.55433684, dtype=float64), DeviceArray(0.55429782, dtype=float64), DeviceArray(0.55343112, dtype=float64), DeviceArray(0.55290858, dtype=float64), DeviceArray(0.55288913, dtype=float64), DeviceArray(0.55193168, dtype=float64), DeviceArray(0.55183466, dtype=float64), DeviceArray(0.55129792, dtype=float64), DeviceArray(0.55128538, dtype=float64), DeviceArray(0.55064969, dtype=float64), DeviceArray(0.55062314, dtype=float64), DeviceArray(0.55044518, dtype=float64), DeviceArray(0.55042575, dtype=float64), DeviceArray(0.55012989, dtype=float64), DeviceArray(0.55011198, dtype=float64), DeviceArray(0.54998502, dtype=float64), DeviceArray(0.54997099, dtype=float64), DeviceArray(0.54990113, dtype=float64), DeviceArray(0.54985377, dtype=float64), DeviceArray(0.54939261, dtype=float64), DeviceArray(0.54937736, dtype=float64), DeviceArray(0.54909296, dtype=float64), DeviceArray(0.5482258, dtype=float64), DeviceArray(0.54080877, dtype=float64), DeviceArray(0.54064876, dtype=float64), DeviceArray(0.53966551, dtype=float64), DeviceArray(0.53942498, dtype=float64), DeviceArray(0.53825909, dtype=float64), DeviceArray(0.53819478, dtype=float64), DeviceArray(0.53746391, dtype=float64), DeviceArray(0.5374396, dtype=float64), DeviceArray(0.53631565, dtype=float64), DeviceArray(0.53608249, dtype=float64), DeviceArray(0.53490687, dtype=float64), DeviceArray(0.53421886, dtype=float64), DeviceArray(0.53413135, dtype=float64), DeviceArray(0.53285503, dtype=float64), DeviceArray(0.53272041, dtype=float64), DeviceArray(0.53067585, dtype=float64), DeviceArray(0.52989787, dtype=float64), DeviceArray(0.52917183, dtype=float64), DeviceArray(0.52886637, dtype=float64), DeviceArray(0.52622131, dtype=float64), DeviceArray(0.52604492, dtype=float64), DeviceArray(0.52234557, dtype=float64), DeviceArray(0.52218882, dtype=float64), DeviceArray(0.51993326, dtype=float64), DeviceArray(0.51921656, dtype=float64), DeviceArray(0.5191459, dtype=float64), DeviceArray(0.51775116, dtype=float64), DeviceArray(0.51768482, dtype=float64), DeviceArray(0.51662893, dtype=float64), DeviceArray(0.51577941, dtype=float64), DeviceArray(0.51535374, dtype=float64), DeviceArray(0.51318603, dtype=float64), DeviceArray(0.51316865, dtype=float64), DeviceArray(0.513063, dtype=float64), DeviceArray(0.51291951, dtype=float64), DeviceArray(0.51258655, dtype=float64), DeviceArray(0.51241354, dtype=float64), DeviceArray(0.51236876, dtype=float64), DeviceArray(0.51171058, dtype=float64), DeviceArray(0.51169371, dtype=float64), DeviceArray(0.51153554, dtype=float64), DeviceArray(0.51149265, dtype=float64), DeviceArray(0.51066533, dtype=float64), DeviceArray(0.51058871, dtype=float64), DeviceArray(0.50866627, dtype=float64), DeviceArray(0.50856287, dtype=float64), DeviceArray(0.50294969, dtype=float64), DeviceArray(0.50219113, dtype=float64), DeviceArray(0.4958565, dtype=float64), DeviceArray(0.48760219, dtype=float64), DeviceArray(0.48748954, dtype=float64), DeviceArray(0.48728953, dtype=float64), DeviceArray(0.48667886, dtype=float64), DeviceArray(0.48623685, dtype=float64), DeviceArray(0.48622765, dtype=float64), DeviceArray(0.48618619, dtype=float64), DeviceArray(0.48617539, dtype=float64), DeviceArray(0.48613597, dtype=float64), DeviceArray(0.48612534, dtype=float64), DeviceArray(0.48610589, dtype=float64), DeviceArray(0.4855392, dtype=float64), DeviceArray(0.48549817, dtype=float64), DeviceArray(0.48535064, dtype=float64), DeviceArray(0.4852699, dtype=float64), DeviceArray(0.48510265, dtype=float64), DeviceArray(0.48503399, dtype=float64), DeviceArray(0.48466703, dtype=float64), DeviceArray(0.48457414, dtype=float64), DeviceArray(0.4843557, dtype=float64), DeviceArray(0.48420667, dtype=float64), DeviceArray(0.48356679, dtype=float64), DeviceArray(0.48355792, dtype=float64), DeviceArray(0.48252744, dtype=float64), DeviceArray(0.48237161, dtype=float64), DeviceArray(0.48225139, dtype=float64), DeviceArray(0.48215922, dtype=float64), DeviceArray(0.48207068, dtype=float64), DeviceArray(0.48101241, dtype=float64), DeviceArray(0.48081305, dtype=float64), DeviceArray(0.48073821, dtype=float64), DeviceArray(0.48032344, dtype=float64), DeviceArray(0.48032006, dtype=float64), DeviceArray(0.48006669, dtype=float64), DeviceArray(0.47998625, dtype=float64), DeviceArray(0.47988972, dtype=float64), DeviceArray(0.47977, dtype=float64), DeviceArray(0.47974639, dtype=float64), DeviceArray(0.47974266, dtype=float64), DeviceArray(0.47973403, dtype=float64), DeviceArray(0.47896095, dtype=float64), DeviceArray(0.47896048, dtype=float64), DeviceArray(0.47895442, dtype=float64), DeviceArray(0.47893533, dtype=float64), DeviceArray(0.47877373, dtype=float64), DeviceArray(0.47873, dtype=float64), DeviceArray(0.47871762, dtype=float64), DeviceArray(0.47856615, dtype=float64), DeviceArray(0.47856349, dtype=float64), DeviceArray(0.47848917, dtype=float64), DeviceArray(0.47846324, dtype=float64), DeviceArray(0.47845617, dtype=float64), DeviceArray(0.47845305, dtype=float64), DeviceArray(0.47823851, dtype=float64), DeviceArray(0.47823513, dtype=float64), DeviceArray(0.47823442, dtype=float64), DeviceArray(0.4781186, dtype=float64), DeviceArray(0.47810062, dtype=float64), DeviceArray(0.47809984, dtype=float64), DeviceArray(0.47806059, dtype=float64), DeviceArray(0.47806025, dtype=float64), DeviceArray(0.4780063, dtype=float64), DeviceArray(0.47798364, dtype=float64), DeviceArray(0.47797085, dtype=float64), DeviceArray(0.47795665, dtype=float64), DeviceArray(0.47794487, dtype=float64), DeviceArray(0.4778627, dtype=float64), DeviceArray(0.47782574, dtype=float64), DeviceArray(0.47780831, dtype=float64), DeviceArray(0.47780291, dtype=float64), DeviceArray(0.47779186, dtype=float64), DeviceArray(0.47779039, dtype=float64), DeviceArray(0.47776215, dtype=float64), DeviceArray(0.47775948, dtype=float64), DeviceArray(0.47771003, dtype=float64)]
+Gradient descent has finished.
+The best solution seems to be:
+{'rnn_tau': DeviceArray([0.73714265, 1.62787514, 0.26231022, 0.94657235], dtype=float64), 'rnn_bias': DeviceArray([0.28648788, 1.18492026, 0.94938257, 1.70822662], dtype=float64), 'rnn_gains': DeviceArray([-4.94507942,  0.34342934, -1.81595887,  2.34423985], dtype=float64), 'rnn_states': DeviceArray([-0.48489297,  1.67354513,  2.3559032 ,  1.73951868], dtype=float64), 'rnn_weights': DeviceArray([[-5.00560947,  1.95213028,  1.16496038,  1.7793703 ],
+             [ 0.4906549 ,  0.53195009,  0.99715998,  0.51077542],
+             [ 0.17478629, -0.28697391,  0.9973187 , -0.39750044],
+             [ 1.01390176,  0.96669816,  1.02389297,  0.96567561]],            dtype=float64), 'interval': array([0.000e+00, 1.000e-03, 2.000e-03, ..., 1.998e+00, 1.999e+00,
+       2.000e+00]), 'reference': {'angles': array([[ 1.57079633,  1.57079633,  1.57079633,  0.        ,  0.        ,
+         0.        ],
+       [ 1.57077952,  1.57072457,  1.57070722, -0.03788625, -0.13176099,
+        -0.16816044],
+       [ 1.57071622,  1.57054458,  1.57047987, -0.08972628, -0.22483393,
+        -0.28058386],
+       ...,
+       [ 1.40433245,  1.82583223,  1.8671968 ,  0.18868499,  0.56340721,
+         0.56292002],
+       [ 1.40452107,  1.82639551,  1.8677596 ,  0.18854587,  0.56316451,
+         0.56268084],
+       [ 1.40470955,  1.82695855,  1.86832216,  0.18840613,  0.5629204 ,
+         0.56244035]]), 'end_effector': array([[ 2.09330000e-01,  2.09330000e-01,  2.09329995e-01, ...,
+         2.03919813e-01,  2.03906349e-01,  2.03892853e-01],
+       [-1.28177657e-17, -1.02951469e-05, -3.83878170e-05, ...,
+         1.29080552e-02,  1.29861132e-02,  1.30641231e-02]]), 'end_position': [0, array(0.09818012), array(0.16286812), array(0.20389285), 0, array(-0.01645803), array(0.00048481), array(0.01306412)], 'positions': array([[ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00, ...,
+         0.00000000e+00,  0.00000000e+00,  0.00000000e+00],
+       [ 9.95500000e-02,  9.95500000e-02,  9.95499997e-02, ...,
+         9.81739058e-02,  9.81770153e-02,  9.81801190e-02],
+       [ 1.66420000e-01,  1.66420000e-01,  1.66419998e-01, ...,
+         1.62880945e-01,  1.62874541e-01,  1.62868116e-01],
+       ...,
+       [-6.09567944e-18, -1.67357281e-06, -7.97445119e-06, ...,
+        -1.64950513e-02, -1.64765339e-02, -1.64580296e-02],
+       [-1.01902860e-17, -6.47169085e-06, -2.48086188e-05, ...,
+         3.74922113e-04,  4.29885413e-04,  4.84814502e-04],
+       [-1.28177657e-17, -1.02951469e-05, -3.83878170e-05, ...,
+         1.29080552e-02,  1.29861132e-02,  1.30641231e-02]]), 'torques': array([[0. , 0. , 5. , 9. ],
+       [0. , 0. , 5. , 9. ],
+       [0. , 0. , 5. , 9. ],
+       ...,
+       [0. , 0. , 0. , 7.5],
+       [0. , 0. , 0. , 7.5],
+       [0. , 0. , 0. , 7.5]]), 'velocities': array([[ 0.        , -0.03788625, -0.08972628, ...,  0.18868499,
+         0.18854587,  0.18840613],
+       [ 0.        , -0.13176099, -0.22483393, ...,  0.56340721,
+         0.56316451,  0.5629204 ],
+       [ 0.        , -0.16816044, -0.28058386, ...,  0.56292002,
+         0.56268084,  0.56244035]])}}
+End time: _04-Jun-2020_(01:48:37.907401)
+Total time passed: 1:51:39.660557
+Average time per iteration: 0:00:26.798642
+Simulating the solution...DONE
+The end effector loss is:  0.008171547712055144
+Plotting comparison between reference and approximated
+Plotting the used forces/torques
+Animating the comparison between the reference and the approximation.
+100%|██████████| 201/201 [00:54<00:00,  3.67it/s]
+Moviepy - Building video loaded piano keystroke trajectory
+ with angle loss function_04-Jun-2020_(03:41:21.022094).mp4.
+Moviepy - Writing video loaded piano keystroke trajectory
+ with angle loss function_04-Jun-2020_(03:41:21.022094).mp4
+
+t:  72%|███████▏  | 146/202 [05:32<00:04, 13.39it/s, now=None]
+Process finished with exit code 137 (interrupted by signal 9: SIGKILL)

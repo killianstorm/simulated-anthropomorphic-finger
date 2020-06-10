@@ -21,4 +21,4 @@ plots.animate(reference, dt, name, tendons=True)
 loss_function = loss_angles
 
 # Learn to reproduce trajectory using gradient descent.
-learn_gradient_descent(reference, interval, 25, loss_function=loss_function, tendons=True, name=name)
+learn_gradient_descent(reference, interval, 250, loss_function=loss_function, tendons=True, name=name)

@@ -1,7 +1,7 @@
 from finger_model.analysis.learning.gradient_descent import *
 
 # Interval.
-tmax, dt = 1.8, 0.001
+tmax, dt = 1.8, 0.0001
 interval = num.arange(0, tmax + dt, dt)
 
 p_sine = {
