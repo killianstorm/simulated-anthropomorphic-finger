@@ -50,7 +50,7 @@ def compare_sim_to_phys(method, title):
     plt.xlabel("time [s]")
     plt.ylabel("F [N]")
     plt.legend()
-    # plt.savefig("forces_" + method + ".png", dpi=244)
+    plt.savefig("forces_" + method + ".png", dpi=244)
     plt.show()
 
     # Interval of 5 seconds.
@@ -135,10 +135,10 @@ def compare_sim_to_phys(method, title):
 compare_sim_to_phys("grasp", "full grasp")
 
 # # Isometric PIP.
-compare_sim_to_phys("0PIP", "extended PIP with higher friction")
+compare_sim_to_phys("0PIP", "extended PIP")
 #
 # # Isometric MCP.
-compare_sim_to_phys("0MCP", "extended MCP with higher friction")
+compare_sim_to_phys("0MCP", "extended MCP")
 #
 # # Complex.
 compare_sim_to_phys("complex", "complex trajectory")
