@@ -1,0 +1,129 @@
+/home/kstorm/thesis/venv/bin/python /home/kstorm/thesis/finger_model/analysis/learning/tendon_model/unloaded/sine/learn_sine_with_end_effector_loss.py
+/home/kstorm/thesis/venv/lib/python3.8/site-packages/jax/lib/xla_bridge.py:116: UserWarning: No GPU/TPU found, falling back to CPU.
+  warnings.warn('No GPU/TPU found, falling back to CPU.')
+Performing gradient descent on model with tendons
+Experiment name: sine trajectory
+ with end-effector loss function
+Reference duration: 1.8
+dt: 0.001
+Start time is _04-Jun-2020_(02:10:59.550543)
+### Current loss for iteration 0 is: 0.11430060877320009
+Current optimal params are
+[ 0.97117996  1.01761501  0.61112555  1.08340526  0.2015611   0.95985668
+  1.37847573  1.27439309 -0.56153997  0.90088643  2.17898734  1.45719708
+  0.18859739  0.96708027  1.21605279  1.30935632  1.01205971  1.01205971
+  1.01205971  1.01205971  0.99347169  0.99347169  0.99347169  0.99347169
+  1.14609903  1.14609903  1.14609903  1.14609903  0.96834624  0.96834624
+  0.96834624  0.96834624]
+Time passed since start: 0:02:57.230708
+Average time per iteration: 0:02:57.230708
+
+### Current loss for iteration 1 is: 0.11274504756097622
+Time passed since start: 0:03:36.209766
+Average time per iteration: 0:01:48.104883
+
+### Current loss for iteration 2 is: 0.11268857185476767
+Time passed since start: 0:03:40.381209
+Average time per iteration: 0:01:13.460403
+
+### Current loss for iteration 3 is: 0.10598738402167723
+Time passed since start: 0:03:55.665231
+Average time per iteration: 0:00:58.916308
+
+### Current loss for iteration 4 is: 0.10394970005966221
+Time passed since start: 0:04:11.756236
+Average time per iteration: 0:00:50.351247
+
+### Current loss for iteration 5 is: 0.10384059680623893
+Current optimal params are
+[ 0.33667163  0.89442793  0.29340494  1.14205061  1.51561378  1.55331789
+  1.66947007  1.67423475 -2.86179533  2.07259367  3.1322614   2.13329384
+  1.32951533  1.49031401  1.37337336  1.72833954  1.05906901  1.16968769
+  1.18462997  1.18411569  0.9957967   1.06059724  1.0647506   1.06451895
+  1.26753029  1.26680812  1.26669932  1.26671147  0.94287844  0.9519689
+  0.95237788  0.95234215]
+Time passed since start: 0:04:27.732052
+Average time per iteration: 0:00:44.622009
+
+### Current loss for iteration 6 is: 0.10381789746293486
+Time passed since start: 0:04:45.674351
+Average time per iteration: 0:00:40.810622
+
+### Current loss for iteration 7 is: 0.10381077138532586
+Time passed since start: 0:05:05.968040
+Average time per iteration: 0:00:38.246005
+
+Optimization terminated successfully.
+         Current function value: 0.103811
+         Iterations: 8
+         Function evaluations: 51
+         Gradient evaluations: 51
+The losses convergence:
+[DeviceArray(0.11430061, dtype=float64), DeviceArray(0.11274505, dtype=float64), DeviceArray(0.11268857, dtype=float64), DeviceArray(0.10598738, dtype=float64), DeviceArray(0.1039497, dtype=float64), DeviceArray(0.1038406, dtype=float64), DeviceArray(0.1038179, dtype=float64), DeviceArray(0.10381077, dtype=float64)]
+Gradient descent has finished.
+The best solution seems to be:
+{'rnn_tau': DeviceArray([0.21008999, 0.81822294, 0.35809312, 1.11968599], dtype=float64), 'rnn_bias': DeviceArray([1.68347525, 1.86376628, 1.5866124 , 1.9759787 ], dtype=float64), 'rnn_gains': DeviceArray([-3.04595457,  2.5596325 ,  3.0449692 ,  2.62089584], dtype=float64), 'rnn_states': DeviceArray([1.47676283, 1.75334757, 1.29968169, 2.00320618], dtype=float64), 'rnn_weights': DeviceArray([[1.05944734, 1.19032421, 1.2052643 , 1.20477661],
+             [0.99603872, 1.10804111, 1.11221837, 1.11199139],
+             [1.26733459, 1.25781963, 1.25771439, 1.25771154],
+             [0.94307269, 0.97888079, 0.9793033 , 0.97927373]],            dtype=float64), 'interval': array([0.000e+00, 1.000e-03, 2.000e-03, ..., 1.798e+00, 1.799e+00,
+       1.800e+00]), 'reference': {'angles': DeviceArray([[ 1.57079633,  1.57079633,  1.57079633,  0.        ,
+               0.        ,  0.        ],
+             [ 1.57074057,  1.57079597,  1.57080866, -0.10424544,
+              -0.01745381,  0.01400735],
+             [ 1.57059599,  1.57074656,  1.5707983 , -0.18253144,
+              -0.0851256 , -0.04214738],
+             ...,
+             [ 0.10162967, -1.42089825, -3.10371568,  0.04562001,
+              -1.88385017, -1.96291153],
+             [ 0.10167298, -1.42277988, -3.10567609,  0.04101141,
+              -1.87927784, -1.95773974],
+             [ 0.10171172, -1.42465658, -3.1076309 ,  0.036469  ,
+              -1.8740177 , -1.95178356]], dtype=float64), 'end_effector': DeviceArray([[ 2.09330000e-01,  2.09330000e-01,  2.09329998e-01, ...,
+              -5.76452258e-02, -5.75755458e-02, -5.75062710e-02],
+             [-1.28177657e-17, -5.04579292e-06, -2.31871971e-05, ...,
+              -6.61433026e-02, -6.60153304e-02, -6.58878692e-02]],            dtype=float64), 'end_position': [0, DeviceArray(0.01010795, dtype=float64), DeviceArray(-0.05604925, dtype=float64), DeviceArray(-0.05750627, dtype=float64), 0, DeviceArray(-0.09903551, dtype=float64), DeviceArray(-0.10877313, dtype=float64), DeviceArray(-0.06588787, dtype=float64)], 'positions': DeviceArray([[ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00, ...,
+               0.00000000e+00,  0.00000000e+00,  0.00000000e+00],
+             [ 9.95500000e-02,  9.95499998e-02,  9.95499980e-02, ...,
+               1.00998267e-02,  1.01041162e-02,  1.01079522e-02],
+             [ 1.66420000e-01,  1.66420000e-01,  1.66419998e-01, ...,
+              -5.60203134e-02, -5.60346972e-02, -5.60492523e-02],
+             ...,
+             [-6.09567944e-18, -5.55071997e-06, -1.99440119e-05, ...,
+              -9.90363368e-02, -9.90358992e-02, -9.90355078e-02],
+             [-1.01902860e-17, -5.57479844e-06, -2.32719701e-05, ...,
+              -1.09022525e-01, -1.08897656e-01, -1.08773125e-01],
+             [-1.28177657e-17, -5.04579292e-06, -2.31871971e-05, ...,
+              -6.61433026e-02, -6.60153304e-02, -6.58878692e-02]],            dtype=float64), 'torques': DeviceArray([[0.00000000e+00, 0.00000000e+00, 0.00000000e+00,
+              0.00000000e+00],
+             [0.00000000e+00, 4.99999479e-03, 4.49999325e-02,
+              4.37499777e-02],
+             [0.00000000e+00, 9.99995833e-03, 8.99994600e-02,
+              8.74998214e-02],
+             ...,
+             [0.00000000e+00, 1.95292785e+00, 1.16483807e+01,
+              1.22683168e-01],
+             [0.00000000e+00, 1.95400015e+00, 1.16199763e+01,
+              1.66432431e-01],
+             [0.00000000e+00, 1.95506024e+00, 1.15914673e+01,
+              2.10181184e-01]], dtype=float64), 'velocities': DeviceArray([[ 0.        , -0.10424544, -0.18253144, ...,  0.04562001,
+               0.04101141,  0.036469  ],
+             [ 0.        , -0.01745381, -0.0851256 , ..., -1.88385017,
+              -1.87927784, -1.8740177 ],
+             [ 0.        ,  0.01400735, -0.04214738, ..., -1.96291153,
+              -1.95773974, -1.95178356]], dtype=float64)}}
+End time: _04-Jun-2020_(02:10:59.550543)
+Total time passed: 0:05:07.107001
+Average time per iteration: 0:00:01.228428
+Simulating the solution...DONE
+The end effector loss is:  0.10381077138532586
+Plotting comparison between reference and approximated
+Plotting the used forces/torques
+Animating the comparison between the reference and the approximation.
+100%|██████████| 181/181 [01:06<00:00,  2.73it/s]
+Moviepy - Building video sine trajectory
+ with end-effector loss function_04-Jun-2020_(02:17:21.361753).mp4.
+Moviepy - Writing video sine trajectory
+ with end-effector loss function_04-Jun-2020_(02:17:21.361753).mp4
+
+t:   2%|▏         | 3/182 [00:16<14:19,  4.80s/it, now=None]
+Process finished with exit code 137 (interrupted by signal 9: SIGKILL)

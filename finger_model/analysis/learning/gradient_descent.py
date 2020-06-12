@@ -3,6 +3,7 @@ from finger_model.simulation.loss_functions import *
 
 import numpy as num
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 from finger_model.tools import plots
 
 from datetime import datetime
@@ -19,6 +20,12 @@ def plot_finger():
     axes.set_xlim([-0.175, 0.275])
     axes.set_ylim([-0.25, 0.15])
     axes.set_aspect('equal')
+
+    if ENABLE_PIANO_KEY:
+        rect = patches.Rectangle((pianokey_coordinates[0], pianokey_coordinates[1] - pianokey_height), 1,
+                                 pianokey_height, linewidth=3, edgecolor='k', facecolor='none')
+        axes.add_patch(rect)
+        plt.text(pianokey_coordinates[0] + 0.05, pianokey_coordinates[1] - pianokey_height + 0.05, "PIANO KEY")
 
     plt.xlabel("x [m]")
     plt.ylabel("z [m]")
@@ -71,11 +78,11 @@ def simulate_ctrnn_params_and_animate(params, name, tendons=False):
     dt = params['interval'][1] - params['interval'][0]
 
     print("Simulating the solution...", end="")
-    approximation = simulate_rnn_oscillator(params)
+    approximation = simulate_ctrnn(params)
     print("DONE")
 
     loss = loss_end_effector(reference, approximation)
-    print("The loss is: ", loss)
+    print("The end effector loss is: ", loss)
 
     print("Plotting comparison between reference and approximated")
 
@@ -101,7 +108,7 @@ def simulate_ctrnn_params_and_animate(params, name, tendons=False):
     print("Process has finished.")
 
 
-def learn_gradient_descent(reference, interval, iterations, name, loss_function=loss_angles, tendons=False):
+def learn_gradient_descent(reference, interval, iterations, name, loss_function=loss_angles, tendons=True):
     """
     Learn given reference trajectory by using gradient descent. An animation is created at the end.
     arguments:
@@ -126,7 +133,7 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
 
     # Plot reference trajectory.
     plt.cla()
-    plt.plot(reference['end_effector'][0], reference['end_effector'][1])
+    plt.plot(reference['end_effector'][0], reference['end_effector'][1], label="end effector trajectory")
     ti = "Reference trajectory " + name
     plt.title(ti)
     plot_finger()
@@ -169,20 +176,19 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
 
     losses = []
 
-    grey = [0.95, 0.95, 0.95]
-    offset = 0.95 / (iterations + 1)
     current_iteration = [0]
+
+    lines = []
 
     def callback(params):
         p = array_to_dict(params, RNN_SIZE_TENDONS)
         p['interval'] = interval
-        sim = simulate_rnn_oscillator(p)
-        loss = loss_end_effector(sim, reference)
+        sim = simulate_ctrnn(p)
+        loss = loss_function(sim, reference)
         losses.append(loss)
-        plt.plot(sim['end_effector'][0], sim['end_effector'][1], color=tuple(grey))
-        grey[0] -= offset
-        grey[1] -= offset
-        grey[2] -= offset
+        l, = plt.plot(sim['end_effector'][0], sim['end_effector'][1])
+        lines.append(l)
+
         print("### Current loss for iteration " + str(current_iteration[0]) + " is: " + str(loss))
 
         if current_iteration[0] % 5 == 0:
@@ -203,18 +209,28 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
         cmap0 = mpl.colors.LinearSegmentedColormap.from_list(
             'white2black', ['white', 'black'])
         # plot
-        norm = mpl.colors.Normalize(vmin=0, vmax=iterations)
+        norm = mpl.colors.Normalize(vmin=0, vmax=len(losses))
         cbar = plt.colorbar(
             mpl.cm.ScalarMappable(norm=norm, cmap=cmap0), fraction=.1)
         cbar.ax.get_yaxis().labelpad = 15
-        cbar.ax.set_ylabel('Number of iterations', rotation=270)
-        title = "Convergence of the " + name + " after " + str(iterations) + " iterations"
+        cbar.ax.set_ylabel('Approximated trajectory after n number of iterations', rotation=270)
+        title = "Convergence of the " + name + " after " + str(len(losses)) + " iterations"
         plt.title(title)
         plot_finger()
+
+        grey = [0.9, 0.9, 0.9]
+        offset = 0.9 / (len(lines) + 1)
+        for l in lines:
+            color = tuple(grey)
+            l.set_color(color)
+            grey[0] -= offset
+            grey[1] -= offset
+            grey[2] -= offset
+
         plt.savefig(title + ".png", dpi=244)
         plt.show()
 
-        plt.plot(np.arange(0, iterations, 1), losses)
+        plt.plot(np.arange(0, len(losses), 1), losses)
         plt.xlabel("Iterations")
         plt.ylabel("Loss (RMSE)")
         ti = "Loss convergence for " + name
@@ -228,7 +244,7 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
     # Params to take grad of.
     grad_params = [RNN_TAUS, RNN_BIASES, RNN_GAINS, RNN_STATES, RNN_WEIGHTS]
 
-    gradbest = gradient_descent(loss_function, iterations, grad_params, init_params, callback=(callback, after))
+    gradbest = minimise_with_gradient_descent(loss_function, iterations, grad_params, init_params, callback=(callback, after))
     print("Gradient descent has finished.")
 
     print("The best solution seems to be:")

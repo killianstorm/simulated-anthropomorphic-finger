@@ -6,7 +6,7 @@ from scipy.optimize import minimize
 
 import matplotlib.pyplot as plt
 
-def gradient_descent(loss, iterations, grad_params_names, init, callback=None):
+def minimise_with_gradient_descent(loss, iterations, grad_params_names, init, callback=None):
     """
     Performs gradient descent.
     arguments:
@@ -28,7 +28,7 @@ def gradient_descent(loss, iterations, grad_params_names, init, callback=None):
         """
         _reference = p['reference']
         _interval = p['interval']
-        _simulated = simulate_rnn_oscillator(p)
+        _simulated = simulate_ctrnn(p)
         return loss(_reference, _simulated)
 
     # Create grad function.

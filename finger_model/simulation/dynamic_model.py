@@ -26,6 +26,14 @@ ENABLE_TENDONS = True
 # True if using ligaments, False if not.
 ENABLE_LIGAMENTS = True
 
+# True if simulating piano key load, False if not.
+ENABLE_PIANO_KEY = False
+
+# Location and width of the pianokey, don't change if you don't know what you are doing.
+pianokey_coordinates = [0.075, -0.075]
+pianokey_height = 0.1
+piano_force = 10.
+
 # Lengths of each phalanx.
 lengths = np.array([0.09955, 0.06687, 0.04291])
 
@@ -170,20 +178,28 @@ def equations_of_motion():
     # Lagrangian.
     L = (T1 + T2 + T3) - V
 
-    # Declaration of angular movements.
+    ## Declaration of angular movements.
+
+    # The main reference frame.
     N = ReferenceFrame('N')
+
+    # Proximal phalanx absolute angular movement.
     r_pp = ReferenceFrame('rigid_pp')
     r_pp.set_ang_vel(N, thetad1 * N.z)
 
+    # Middle phalanx absolute angular movement.
     r_mp = ReferenceFrame('rigid_mp')
     r_mp.set_ang_vel(N, thetad2 * N.z)
 
+    # Distal phalanx absolute angular movement.
     r_dp = ReferenceFrame('rigid_dp')
     r_dp.set_ang_vel(N, thetad3 * N.z)
 
+    # PIP joint relative angular movement.
     j_pp_mp = ReferenceFrame('joint_pp_mp')
     j_pp_mp.set_ang_vel(N, alpha2d * N.z)
 
+    # DIP joint relative angular movement.
     j_mp_dp = ReferenceFrame('joint_mp_dp')
     j_mp_dp.set_ang_vel(N, alpha3d * N.z)
 
@@ -217,26 +233,6 @@ def equations_of_motion():
         M_FP_MCP = - F_fp * RADII[J_MCP][T_FP]
         M_ED_MCP = - F_ed * RADII[J_MCP][T_ED]
 
-        def spring(val, bounds, negative=False):
-            k = 0.01
-            s = (val - bounds[0]) / (bounds[1] - bounds[0]) * k
-
-            return 1 + (k - s) if negative else 1 + s
-
-        # Moments are added to become torques for each joint.
-        # tau3 =   M_FP_DIP * spring(alpha3, dip_angle_bounds) \
-        #        - M_ED_DIP * spring(alpha3, dip_angle_bounds, True)
-        #
-        # tau2 =   M_FS_PIP * spring(alpha2, pip_angle_bounds) \
-        #        - M_IO_PIP * spring(alpha2, pip_angle_bounds, True) \
-        #        + M_FP_PIP * spring(alpha2, pip_angle_bounds) \
-        #        - M_ED_PIP * spring(alpha2, pip_angle_bounds, True)
-        #
-        # tau1 =   M_FS_MCP * spring(alpha1, mcp_angle_bounds) \
-        #        + M_IO_MCP * spring(alpha1, mcp_angle_bounds) \
-        #        + M_FP_MCP * spring(alpha1, mcp_angle_bounds) \
-        #        - M_ED_MCP * spring(alpha1, mcp_angle_bounds, True)
-
         tau3 =   M_FP_DIP \
                - M_ED_DIP
 
@@ -260,29 +256,37 @@ def equations_of_motion():
         return 1. / (1 + exp(- 16 * x))
         # return (x + abs(x)) / (2 * (x + 1 / 10))
 
+    load_DIP, load_PIP, load_MCP = 0, 0, 0
+    if ENABLE_PIANO_KEY:
+        def load(length):
+            return sigmoid_heaviside(x3 - pianokey_coordinates[0]) * \
+                  sigmoid_heaviside(-(z3 - pianokey_coordinates[1])) * \
+                  length * piano_force * abs(z3 - pianokey_coordinates[1])
+        load_DIP = load(lengths[2])
+        load_PIP = load(lengths[1] + lengths[2])
+        load_MCP = load(lengths[0] + lengths[1] + lengths[2])
+
+    ligament_DIP, ligament_PIP, ligament_MCP = 0, 0, 0
     if ENABLE_LIGAMENTS:
         # If using ligaments.
-        c_ligament = 10.
+        counter_torque = 4.
 
-        # Force list with activated ligaments.
-        FL = [(r_pp, (tau1 - sigmoid_heaviside(-tau1) * sigmoid_heaviside(mcp_angle_bounds[0] - alpha1) * tau1 * 4 - sigmoid_heaviside(tau1) * sigmoid_heaviside(alpha1 - mcp_angle_bounds[1]) * tau1 * 4) * N.z),  # Tendon torques
-              (r_mp, (tau2 - sigmoid_heaviside(-tau2) * sigmoid_heaviside(pip_angle_bounds[0] - alpha2) * tau2 * 4 - sigmoid_heaviside(tau2) * sigmoid_heaviside(alpha2 - pip_angle_bounds[1]) * tau2 * 4) * N.z),
-              (r_dp, (tau3 - sigmoid_heaviside(-tau3) * sigmoid_heaviside(dip_angle_bounds[0] - alpha3) * tau3 * 4 - sigmoid_heaviside(tau3) * sigmoid_heaviside(alpha3 - dip_angle_bounds[1]) * tau3 * 4) * N.z),
+        def ligament(torque, relative_angle, angle_bounds):
+            return - sigmoid_heaviside(-torque) * sigmoid_heaviside(angle_bounds[0] - relative_angle) * torque * 4 - sigmoid_heaviside(torque) * sigmoid_heaviside(relative_angle - angle_bounds[1]) * torque * counter_torque
 
-              (r_pp,    (-c_fr_mcp * alpha1d) * N.z),  # Joints
-              (j_pp_mp, (-c_fr_pip * alpha2d) * N.z),
-              (j_mp_dp, (-c_fr_dip * alpha3d) * N.z)
-              ]
-    else:
-        # If not using ligaments.
-        # Force list with disabled ligaments.
-        FL = [(r_pp, tau1 * N.z),  # Tendon torques
-              (r_mp, tau2 * N.z),
-              (r_dp, tau3 * N.z),
+        ligament_MCP = ligament(tau1, alpha1, mcp_angle_bounds)
+        ligament_PIP = ligament(tau2, alpha2, pip_angle_bounds)
+        ligament_DIP = ligament(tau3, alpha3, dip_angle_bounds)
 
-              (r_pp,    (-c_fr_mcp * alpha1d) * N.z),  # Joints
-              (j_pp_mp, (-c_fr_pip * alpha2d) * N.z),
-              (j_mp_dp, (-c_fr_dip * alpha3d) * N.z)]
+    # Force list with optional ligaments and optional load.
+    FL = [(r_pp, (tau1 + ligament_MCP + load_MCP) * N.z),  # Tendon torques
+          (r_mp, (tau2 + ligament_PIP + load_PIP) * N.z),
+          (r_dp, (tau3 + ligament_DIP + load_DIP) * N.z),
+
+          (r_pp,    (-c_fr_mcp * alpha1d) * N.z),  # Joints
+          (j_pp_mp, (-c_fr_pip * alpha2d) * N.z),
+          (j_mp_dp, (-c_fr_dip * alpha3d) * N.z)
+          ]
 
     # Construction of Euler-Lagrange equations.
     LM = LagrangesMethod(L, [theta1, theta2, theta3], forcelist=FL, frame=N)
@@ -303,7 +307,7 @@ def equations_of_motion():
                     F_fs, F_io, F_fp, F_ed,
                     g, c_fr]
     else:
-        # If using tendons, request torques.
+        # If not using tendons, request torques.
         parameters = [
                     l1, m1, I1,
                     l2, m2, I2,
