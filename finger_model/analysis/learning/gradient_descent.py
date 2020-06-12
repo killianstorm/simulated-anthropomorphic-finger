@@ -4,7 +4,7 @@ from simulation.loss_functions import *
 import numpy as num
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from finger_model.tools import plots
+from tools import plots
 
 from datetime import datetime
 import matplotlib as mpl
