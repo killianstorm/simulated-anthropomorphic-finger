@@ -2,7 +2,7 @@
 
 ## Author
 
-This thesis was made by Killian Storm and was submitted Master's dissertation submitted in order to obtain the academic degree of Master of Science in Computer Science Engineering.
+This thesis was made by Killian Storm and was submitted in order to obtain the academic degree of Master of Science in Computer Science Engineering.
 
 ## Introduction
 
