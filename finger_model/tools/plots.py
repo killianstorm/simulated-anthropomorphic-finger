@@ -63,7 +63,7 @@ def rotate(point, origin, angle):
     return qx, qy
 
 
-def animate(reference, dt, name=None, approximation=None, tendons=True, di=1):
+def animate(reference, dt, name=None, approximation=None, tendons=True, callback=None, di=None):
     """
     Creates an animation of a simulated trajectory. It also allows a second trajectory to be plotted for comparison.
     """
@@ -71,7 +71,8 @@ def animate(reference, dt, name=None, approximation=None, tendons=True, di=1):
     # Only to be used if no data about other phalanges.
     draw_end_effector_trajectory = False
 
-    di = int(0.01 / dt) # Set framerate of 100 Hz
+    if di is None:
+        di = int(0.01 / dt) # Set framerate of 100 Hz
 
     if approximation is None:
         key_points = reference['positions']
@@ -207,6 +208,10 @@ def animate(reference, dt, name=None, approximation=None, tendons=True, di=1):
         plt.axis([-0.3, 0.3, -0.3, 0.3])
         plt.xlabel("x [m]")
         plt.ylabel("z [m]")
+
+        if callback is not None:
+            callback()
+
         images.append(fig2image(fig))
 
     filename = str(name) + datetime.now().strftime("_%d-%b-%Y_(%H:%M:%S.%f)") + ".mp4"

@@ -1,4 +1,4 @@
-from finger_model.simulation.dynamic_model import *
+from simulation.dynamic_model import *
 from jax import jit
 import jax
 import jax.ops

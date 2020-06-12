@@ -90,46 +90,12 @@ def compare_sim_to_phys(method, title):
     # plt.savefig("comparison_" + method + ".png", dpi=244)
     plt.show()
 
-    # Create animation
-    # plots.animate(simulated_trajectory, dt, "comparison_" + str(method), tendons=True)
+    def plot_physical():
+        plt.scatter(physical_trajectory['x'], -physical_trajectory['z'], s=5., label="physical trajectory")
 
-    # # Read csv.
-    # def read_csv(file, keys):
-    #     mydict = {}
-    #     with open(file, mode='r') as infile:
-    #         reader = csv.reader(infile)
-    #         mydict['time'] = []
-    #         mydict['F'] = []
-    #         for rows in reader:
-    #             mydict['time'].append(num.float64(rows[0]))
-    #             mydict['F'].append(num.float64(rows[1]))
-    #
-    #         mydict[keys[0]] = np.array(mydict['time'], dtype="float64")
-    #         mydict[keys[1]] = np.array(mydict['F'], dtype="float64")
-    #     return mydict
-    #
-    # measured = read_csv("ipj_coupling.csv", ('PIP', 'DIP'))
-    #
-    # # plt.cla()
-    #
-    # def r2d(rads):
-    #     return rads * 180 / np.pi
-    #
-    # mcp_angles = simulated_trajectory['angles'][:, 3]
-    # pip_angles = simulated_trajectory['angles'][:, 4]
-    # dip_angles = simulated_trajectory['angles'][:, 5]
-    #
-    # rel_mcp = r2d((np.pi / 2. + mcp_angles))
-    # rel_pip = r2d((np.pi - (mcp_angles - pip_angles)))
-    # rel_dip = r2d((np.pi - (pip_angles - dip_angles)))
-    #
-    # plt.scatter(rel_pip, rel_dip, label="Simulated")
-    # plt.scatter(180 - measured['PIP'], 180 - measured['DIP'], label="Physical")
-    # plt.title("IPJ coupling simplified expression")
-    # plt.xlabel("PIP relative angle [degrees]")
-    # plt.ylabel("DIP relative angle [degrees]")
-    # plt.legend()
-    # plt.show()
+    # Create animation
+    plots.animate(simulated_trajectory, dt, "comparison_" + str(method), callback=plot_physical, di=1)
+
 
 # Full grasp.
 compare_sim_to_phys("grasp", "full grasp")

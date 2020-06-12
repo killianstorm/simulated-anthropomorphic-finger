@@ -1,4 +1,4 @@
-from finger_model.analysis.learning.gradient_descent import *
+from analysis.learning.gradient_descent import *
 
 # Interval.
 tmax, dt = 1.8, 0.0001

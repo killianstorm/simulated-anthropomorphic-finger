@@ -1,5 +1,5 @@
 from jax import value_and_grad
-from finger_model.simulation.simulator import *
+from simulation.simulator import *
 from datetime import datetime
 
 from scipy.optimize import minimize

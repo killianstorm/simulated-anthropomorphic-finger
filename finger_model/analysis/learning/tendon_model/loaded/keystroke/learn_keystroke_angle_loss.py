@@ -1,4 +1,4 @@
-from finger_model.analysis.learning.gradient_descent import *
+from learning.gradient_descent import *
 
 # Precision erros after 144 iterations. Loss = 0.84501
 
