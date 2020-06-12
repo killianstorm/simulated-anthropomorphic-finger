@@ -97,15 +97,16 @@ def compare_sim_to_phys(method, title):
     plots.animate(simulated_trajectory, dt, "comparison_" + str(method), callback=plot_physical, di=1)
 
 
-# Full grasp.
-compare_sim_to_phys("grasp", "full grasp")
+if __name__ == '__main__':
+    # Full grasp.
+    compare_sim_to_phys("grasp", "full grasp")
 
-# # Isometric PIP.
-compare_sim_to_phys("0PIP", "extended PIP")
+    # # Isometric PIP.
+    compare_sim_to_phys("0PIP", "extended PIP")
 
-# # Isometric MCP.
-compare_sim_to_phys("0MCP", "extended MCP")
-#
-# # Complex.
-compare_sim_to_phys("complex", "complex trajectory")
+    # # Isometric MCP.
+    compare_sim_to_phys("0MCP", "extended MCP")
+    #
+    # # Complex.
+    compare_sim_to_phys("complex", "complex trajectory")
 
