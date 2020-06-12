@@ -106,7 +106,7 @@ gradbest = {
 
 print(gradbest)
 
-approximation = simulate_rnn_oscillator(gradbest)
+approximation = simulate_ctrnn(gradbest)
 
 plt.cla()
 plt.plot(interval, approximation['torques'][:, 0], label="MCP")

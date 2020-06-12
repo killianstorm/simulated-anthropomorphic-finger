@@ -105,7 +105,7 @@ def simulate_sine_RK4(p):
 
 
 @jit
-def simulate_rnn_oscillator(p):
+def simulate_ctrnn(p):
     """
     Simulates the finger with a continuous time recurrent neural network (CTRNN).
     arguments: dict containing taus, biases, states, gains and weights

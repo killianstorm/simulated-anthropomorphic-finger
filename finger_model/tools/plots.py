@@ -205,6 +205,8 @@ def animate(reference, dt, name=None, approximation=None, tendons=True, di=1):
         plt.axhline(0)
         plt.axis('equal')
         plt.axis([-0.3, 0.3, -0.3, 0.3])
+        plt.xlabel("x [m]")
+        plt.ylabel("z [m]")
         images.append(fig2image(fig))
 
     filename = str(name) + datetime.now().strftime("_%d-%b-%Y_(%H:%M:%S.%f)") + ".mp4"

@@ -20,7 +20,7 @@ p_predefined = {
 
 name = "full grasp trajectory \n with angle loss function"
 reference = simulate_predefined(p_predefined)
-# plots.animate(reference, dt, name, tendons=True)
+plots.animate(reference, dt, name, tendons=True)
 
 loss_function = loss_angles
 

@@ -78,7 +78,7 @@ def simulate_ctrnn_params_and_animate(params, name, tendons=False):
     dt = params['interval'][1] - params['interval'][0]
 
     print("Simulating the solution...", end="")
-    approximation = simulate_rnn_oscillator(params)
+    approximation = simulate_ctrnn(params)
     print("DONE")
 
     loss = loss_end_effector(reference, approximation)
@@ -108,7 +108,7 @@ def simulate_ctrnn_params_and_animate(params, name, tendons=False):
     print("Process has finished.")
 
 
-def learn_gradient_descent(reference, interval, iterations, name, loss_function=loss_angles, tendons=False):
+def learn_gradient_descent(reference, interval, iterations, name, loss_function=loss_angles, tendons=True):
     """
     Learn given reference trajectory by using gradient descent. An animation is created at the end.
     arguments:
@@ -176,7 +176,6 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
 
     losses = []
 
-
     current_iteration = [0]
 
     lines = []
@@ -184,7 +183,7 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
     def callback(params):
         p = array_to_dict(params, RNN_SIZE_TENDONS)
         p['interval'] = interval
-        sim = simulate_rnn_oscillator(p)
+        sim = simulate_ctrnn(p)
         loss = loss_function(sim, reference)
         losses.append(loss)
         l, = plt.plot(sim['end_effector'][0], sim['end_effector'][1])
@@ -245,7 +244,7 @@ def learn_gradient_descent(reference, interval, iterations, name, loss_function=
     # Params to take grad of.
     grad_params = [RNN_TAUS, RNN_BIASES, RNN_GAINS, RNN_STATES, RNN_WEIGHTS]
 
-    gradbest = gradient_descent(loss_function, iterations, grad_params, init_params, callback=(callback, after))
+    gradbest = minimise_with_gradient_descent(loss_function, iterations, grad_params, init_params, callback=(callback, after))
     print("Gradient descent has finished.")
 
     print("The best solution seems to be:")
