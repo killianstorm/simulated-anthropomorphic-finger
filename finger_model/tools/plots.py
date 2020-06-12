@@ -1,4 +1,4 @@
-from finger_model.simulation.simulator import *
+from simulation.simulator import *
 from moviepy.editor import ImageSequenceClip
 
 import matplotlib.pyplot as plt
@@ -63,7 +63,7 @@ def rotate(point, origin, angle):
     return qx, qy
 
 
-def animate(reference, dt, name=None, approximation=None, tendons=True, callback=None, di=None):
+def animate(reference, dt, name=None, approximation=None, tendons=True, callback=None, di=None, GIF=False):
     """
     Creates an animation of a simulated trajectory. It also allows a second trajectory to be plotted for comparison.
     """
@@ -214,10 +214,13 @@ def animate(reference, dt, name=None, approximation=None, tendons=True, callback
 
         images.append(fig2image(fig))
 
-    filename = str(name) + datetime.now().strftime("_%d-%b-%Y_(%H:%M:%S.%f)") + ".mp4"
+    filename = str(name) + datetime.now().strftime("_%d-%b-%Y_(%H:%M:%S.%f)")
 
     if name is None:
         ImageSequenceClip(images, fps=int(1/dt/di)).ipython_display()
+    elif not GIF:
+        ImageSequenceClip(images, fps=int(1/dt/di)).write_videofile(filename + ".mp4")
     else:
-        ImageSequenceClip(images, fps=int(1/dt/di)).write_videofile(filename)
+        ImageSequenceClip(images, fps=int(1 / dt / di)).write_gif(filename + ".gif")
+
     return filename

@@ -67,9 +67,6 @@ def compare_sim_to_phys(method, title):
     }
     simulated_trajectory = simulate_predefined(params)
 
-    loss = np.sqrt(np.mean((np.array([physical_trajectory['x'], physical_trajectory['z']]) - simulated_trajectory['end_effector']) ** 2))
-    print("The loss for " + title + " is : " + str(loss))
-
     # Plot simulated trajectory along physical trajectory.
     plt.plot([0, lengths[0], lengths[0] + lengths[1], np.sum(lengths)], [0, 0, 0, 0], marker='.', linewidth=3, markersize=15, color='#1f77b4')
     plt.text(0 - 0.015, 0.025, 'MCP')
@@ -94,8 +91,8 @@ def compare_sim_to_phys(method, title):
         plt.scatter(physical_trajectory['x'], -physical_trajectory['z'], s=5., label="physical trajectory")
 
     # Create animation
-    plots.animate(simulated_trajectory, dt, "comparison_" + str(method), callback=plot_physical, di=1)
-
+    an = plots.animate(simulated_trajectory, dt, "comparison_" + str(method), callback=plot_physical, di=1, GIF=True)
+    print("The animation is called:", an)
 
 if __name__ == '__main__':
     # Full grasp.
@@ -108,5 +105,5 @@ if __name__ == '__main__':
     compare_sim_to_phys("0MCP", "extended MCP")
     #
     # # Complex.
-    compare_sim_to_phys("complex", "complex trajectory")
+    compare_sim_to_phys("0MCP", "extended MCP")
 

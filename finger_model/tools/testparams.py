@@ -1,5 +1,5 @@
-from finger_model.simulation.optimizer import *
-from finger_model.simulation.loss_functions import *
+from simulation.optimizer import *
+from simulation.loss_functions import *
 
 import jax.numpy as np
 import matplotlib.pyplot as plt
