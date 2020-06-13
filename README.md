@@ -22,10 +22,11 @@ You can choose to either locally execute the files or execute the Jupyter notebo
 
 The results discussed in Chapter 6 can be reproduced by running 'finger_model/analysis/comparison/comparison.py'.
 
-The results discussed in Chapter 7 can be reproduced by the running desired experiment in 'finger_model/analysis/learning/'.
+The results discussed in Chapter 7 can be reproduced by the running desired experiment in 'finger_model/analysis/learning/tendon_model/'.
 
 #### Google CoLab
-The results of the comparison between the physical setup and the simulator (Chapter 6) can be reproduced by running [comparison](https://colab.research.google.com/github/killianstorm/simulated-anthropomorphic-finger/blob/master/finger_model/notebooks/comparison_physical_setup/comparison_physical_setup.ipynb).
+The results of the comparison between the physical setup and the simulator (Chapter 6) can be reproduced by running:
+ - [Comparison](https://colab.research.google.com/github/killianstorm/simulated-anthropomorphic-finger/blob/master/finger_model/notebooks/comparison_physical_setup/comparison_physical_setup.ipynb)
 
 The results of the optimisation algorithm (Chapter 7) can be reproduced by running the desired experiments:
 
