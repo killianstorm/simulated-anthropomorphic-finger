@@ -1,4 +1,4 @@
-*.mp4
+#*.mp4
 *.png
 __pycache__
 finger_model/simulation/__pycache__
