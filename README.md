@@ -46,18 +46,56 @@ The results of the optimisation algorithm (Chapter 7) can be reproduced by runni
 
 Full grasp:
 
+![](animations/comparison/comparison_grasp.gif)
+
 Extended PIP:
+
+![](animations/comparison/comparison_extendedPIP.gif)
 
 Extended MCP:
 
+![](animations/comparison/comparison_extendedMCP.gif)
+
 Complex:
+
+![](animations/comparison/comparison_complex.gif)
 
 ### Learning trajectories
 
-Full grasp:
+#### Unloaded
 
-Sine:
+Full grasp with angles/angle velocities loss function:
 
-Perfect circle:
+![](animations/learning/unloaded/fullgrasp_angles_loss.gif)
 
-Sudden force change:
+Full grasp with end-effector loss function:
+
+![](animations/learning/unloaded/fullgrasp_endeffector_loss.gif)
+
+Sine with angles/angle velocities loss function:
+
+![](animations/learning/unloaded/sine_angles_loss.gif)
+
+Sine with end-effector loss function:
+
+![](animations/learning/unloaded/sine_endeffector_loss.gif)
+
+Perfect circle with end-effector loss function:
+
+![](animations/learning/unloaded/perfectcircle_endeffector_loss.gif)
+
+Sudden force change with angles/angle velocities loss function:
+
+![](animations/learning/unloaded/suddenforcechange_angles_loss.gif)
+
+Sudden force change with end-effector loss function:
+
+![](animations/learning/unloaded/suddenforcechange_endeffector.gif)
+
+#### Loaded
+
+Piano key stroke with angles/angle velocities loss function:
+
+![](animations/learning/loaded/keystroke_angles_loss.gif)
+
+
