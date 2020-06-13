@@ -22,10 +22,11 @@ You can choose to either locally execute the files or execute the Jupyter notebo
 
 The results discussed in Chapter 6 can be reproduced by running 'finger_model/analysis/comparison/comparison.py'.
 
-The results discussed in Chapter 7 can be reproduced by the running desired experiment in 'finger_model/analysis/learning/'.
+The results discussed in Chapter 7 can be reproduced by the running desired experiment in 'finger_model/analysis/learning/tendon_model/'.
 
 #### Google CoLab
-The results of the comparison between the physical setup and the simulator (Chapter 6) can be reproduced by running [comparison](https://colab.research.google.com/github/killianstorm/simulated-anthropomorphic-finger/blob/master/finger_model/notebooks/comparison_physical_setup/comparison_physical_setup.ipynb).
+The results of the comparison between the physical setup and the simulator (Chapter 6) can be reproduced by running:
+ - [Comparison](https://colab.research.google.com/github/killianstorm/simulated-anthropomorphic-finger/blob/master/finger_model/notebooks/comparison_physical_setup/comparison_physical_setup.ipynb)
 
 The results of the optimisation algorithm (Chapter 7) can be reproduced by running the desired experiments:
 
@@ -46,18 +47,56 @@ The results of the optimisation algorithm (Chapter 7) can be reproduced by runni
 
 Full grasp:
 
+![](animations/comparison/comparison_grasp.gif)
+
 Extended PIP:
+
+![](animations/comparison/comparison_extendedPIP.gif)
 
 Extended MCP:
 
+![](animations/comparison/comparison_extendedMCP.gif)
+
 Complex:
+
+![](animations/comparison/comparison_complex.gif)
 
 ### Learning trajectories
 
-Full grasp:
+#### Unloaded
 
-Sine:
+Full grasp with angles/angle velocities loss function:
 
-Perfect circle:
+![](animations/learning/unloaded/fullgrasp_angles_loss.gif)
 
-Sudden force change:
+Full grasp with end-effector loss function:
+
+![](animations/learning/unloaded/fullgrasp_endeffector_loss.gif)
+
+Sine with angles/angle velocities loss function:
+
+![](animations/learning/unloaded/sine_angles_loss.gif)
+
+Sine with end-effector loss function:
+
+![](animations/learning/unloaded/sine_endeffector_loss.gif)
+
+Perfect circle with end-effector loss function:
+
+![](animations/learning/unloaded/perfectcircle_endeffector_loss.gif)
+
+Sudden force change with angles/angle velocities loss function:
+
+![](animations/learning/unloaded/suddenforcechange_angles_loss.gif)
+
+Sudden force change with end-effector loss function:
+
+![](animations/learning/unloaded/suddenforcechange_endeffector.gif)
+
+#### Loaded
+
+Piano key stroke with angles/angle velocities loss function:
+
+![](animations/learning/loaded/keystroke_angles_loss.gif)
+
+
