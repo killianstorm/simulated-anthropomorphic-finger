@@ -27,7 +27,7 @@ ENABLE_TENDONS = True
 ENABLE_LIGAMENTS = True
 
 # True if simulating piano key load, False if not.
-ENABLE_PIANO_KEY = True
+ENABLE_PIANO_KEY = False
 
 # Location and width of the pianokey, don't change if you don't know what you are doing.
 pianokey_coordinates = [0.075, -0.075]
