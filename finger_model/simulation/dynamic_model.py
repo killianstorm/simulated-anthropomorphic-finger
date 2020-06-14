@@ -27,7 +27,7 @@ ENABLE_TENDONS = True
 ENABLE_LIGAMENTS = True
 
 # True if simulating piano key load, False if not.
-ENABLE_PIANO_KEY = True
+ENABLE_PIANO_KEY = False
 
 # Location and width of the pianokey, don't change if you don't know what you are doing.
 pianokey_coordinates = [0.075, -0.075]
@@ -272,7 +272,7 @@ def equations_of_motion():
         counter_torque = 4.
 
         def ligament(torque, relative_angle, angle_bounds):
-            return - sigmoid_heaviside(-torque) * sigmoid_heaviside(angle_bounds[0] - relative_angle) * torque * 4 - sigmoid_heaviside(torque) * sigmoid_heaviside(relative_angle - angle_bounds[1]) * torque * counter_torque
+            return - sigmoid_heaviside(-torque) * sigmoid_heaviside(angle_bounds[0] - relative_angle) * torque * counter_torque - sigmoid_heaviside(torque) * sigmoid_heaviside(relative_angle - angle_bounds[1]) * torque * counter_torque
 
         ligament_MCP = ligament(tau1, alpha1, mcp_angle_bounds)
         ligament_PIP = ligament(tau2, alpha2, pip_angle_bounds)
