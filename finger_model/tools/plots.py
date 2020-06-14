@@ -216,9 +216,7 @@ def animate(reference, dt, name=None, approximation=None, tendons=True, callback
 
     filename = str(name) + datetime.now().strftime("_%d-%b-%Y_(%H:%M:%S.%f)")
 
-    if name is None:
-        ImageSequenceClip(images, fps=int(1/dt/di)).ipython_display()
-    elif not GIF:
+    if not GIF:
         ImageSequenceClip(images, fps=int(1/dt/di)).write_videofile(filename + ".mp4")
     else:
         ImageSequenceClip(images, fps=int(1 / dt / di)).write_gif(filename + ".gif")
