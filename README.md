@@ -95,6 +95,8 @@ Sudden force change with end-effector loss function:
 
 #### Loaded
 
+> **Note:** CoLab returns an unexpected error where Abs is not found, this error does not occur when the Python file is run locally.
+
 Piano key stroke with angles/angle velocities loss function:
 
 ![](animations/learning/loaded/keystroke_angles_loss.gif)
