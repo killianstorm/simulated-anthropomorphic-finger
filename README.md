@@ -37,6 +37,8 @@ The results of the optimisation algorithm (Chapter 7) can be reproduced by runni
  - [Sudden force change](https://colab.research.google.com/github/killianstorm/simulated-anthropomorphic-finger/blob/master/finger_model/notebooks/unloaded/learning_suddenforcechange.ipynb)
 
 ##### Loaded
+> **Note:** CoLab returns an unexpected error where Abs is not found, this error does not occur when the Python file is run locally.
+
 > **Note:** This notebook is set on another branch (pianokey) where ENABLE_PIANO_KEY is set to True.
 
  - [Pianokey](https://colab.research.google.com/github/killianstorm/simulated-anthropomorphic-finger/blob/pianokey/finger_model/notebooks/loaded/learning_pianokey.ipynb)
