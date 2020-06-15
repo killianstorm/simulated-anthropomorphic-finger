@@ -1,3 +1,6 @@
+import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__),'../../../../..'))
 from analysis.learning.gradient_descent import *
 import pickle
 
@@ -15,4 +18,4 @@ name = "loaded piano keystroke trajectory \n with angle loss function"
 loss_function = loss_angles
 
 # Learn to reproduce trajectory using gradient descent.
-learn_gradient_descent(reference, interval, 250, loss_function=loss_function, tendons=True, name=name)
+learn_gradient_descent(reference, interval, 2, loss_function=loss_function, tendons=True, name=name)
