@@ -6,7 +6,7 @@ This thesis was made by Killian Storm and was submitted in order to obtain the a
 
 ## Introduction
 
-This is the repository for my master's dissertation. It contains the book and the accompanying source code and animations.
+This is the repository for my master's dissertation. It contains the accompanying source code and animations.
 
 ## Usage
 
